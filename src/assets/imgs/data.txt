@@ -1,0 +1,1 @@
+background: linear-gradient(180deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
