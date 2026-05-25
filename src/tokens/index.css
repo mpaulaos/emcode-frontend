@@ -1,0 +1,381 @@
+/* =============================================================================
+   DESIGN SYSTEM TOKENS
+   Generated from Figma token export. Single source of truth.
+   Layer order: Brand (raw) → Alias (semantic) → Mapped (theme) → Responsive
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   1. BRAND — Raw color palette (Brand/Mode 1 + Alias/Mode 1)
+   These are never used directly in components. Reference via semantic tokens.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Purple */
+  --color-purple-50: #f5edff;
+  --color-purple-100: #eadaff;
+  --color-purple-200: #d5b5ff;
+  --color-purple-300: #c191ff;
+  --color-purple-400: #ac6cff;
+  --color-purple-500: #9747ff;
+  --color-purple-600: #7939cc;
+  --color-purple-700: #5b2b99;
+  --color-purple-800: #3c1c66;
+
+  /* Red */
+  --color-red-50: #f6e6ea;
+  --color-red-100: #edccd4;
+  --color-red-200: #db99a9;
+  --color-red-300: #c8667d;
+  --color-red-400: #b63352;
+  --color-red-500: #a40027;
+  --color-red-600: #83001f;
+  --color-red-700: #620017;
+  --color-red-800: #420010;
+
+  /* Green */
+  --color-green-50: #e6f3ee;
+  --color-green-100: #cde6db;
+  --color-green-200: #9bcdb8;
+  --color-green-300: #68b394;
+  --color-green-400: #369a71;
+  --color-green-500: #04814d;
+  --color-green-600: #03673e;
+  --color-green-700: #024d2e;
+  --color-green-800: #02341f;
+
+  /* Grey */
+  --color-grey-50: #f0f0f1;
+  --color-grey-100: #e0e0e1;
+  --color-grey-200: #c1c1c3;
+  --color-grey-300: #a2a2a6;
+  --color-grey-400: #838388;
+  --color-grey-500: #64646a;
+  --color-grey-600: #505055;
+  --color-grey-700: #3c3c40;
+  --color-grey-800: #28282a;
+
+  /* Orange */
+  --color-orange-50: #fef7ee;
+  --color-orange-100: #f9deb8;
+  --color-orange-200: #f6ce95;
+  --color-orange-300: #f3bd71;
+  --color-orange-400: #f0ad4e;
+  --color-orange-500: #c08a3e;
+  --color-orange-600: #90682f;
+  --color-orange-700: #60451f;
+  --color-orange-800: #302310;
+
+  /* Blue */
+  --color-blue-50: #e7e8fc;
+  --color-blue-100: #cfd0f8;
+  --color-blue-200: #9fa2f2;
+  --color-blue-300: #6e73eb;
+  --color-blue-400: #3e45e5;
+  --color-blue-500: #0e16de;
+  --color-blue-600: #0b12b2;
+  --color-blue-700: #080d85;
+  --color-blue-800: #060959;
+
+  /* White / Black */
+  --color-white: #fbfbfb;
+  --color-black: #121212;
+
+  /* ---------------------------------------------------------------------------
+     2. ALIAS — Semantic color groups (resolved from Brand palette)
+     Maps Figma's Primary / Success / Danger / Neutral / Warning / Information
+     --------------------------------------------------------------------------- */
+
+  /* Primary (purple) */
+  --primary-50: var(--color-purple-50);
+  --primary-100: var(--color-purple-100);
+  --primary-200: var(--color-purple-200);
+  --primary-300: var(--color-purple-300);
+  --primary-400: var(--color-purple-400);
+  --primary-500: var(--color-purple-500);
+  --primary-default: var(--color-purple-600);
+  --primary-700: var(--color-purple-700);
+  --primary-800: var(--color-purple-800);
+
+  /* Success (green) */
+  --success-50: var(--color-green-50);
+  --success-100: var(--color-green-100);
+  --success-200: var(--color-green-200);
+  --success-300: var(--color-green-300);
+  --success-400: var(--color-green-400);
+  --success-500: var(--color-green-500);
+  --success-600: var(--color-green-600);
+  --success-default: var(--color-green-700);
+  --success-800: var(--color-green-800);
+
+  /* Danger (red) */
+  --danger-50: var(--color-red-50);
+  --danger-100: var(--color-red-100);
+  --danger-200: var(--color-red-200);
+  --danger-300: var(--color-red-300);
+  --danger-400: var(--color-red-400);
+  --danger-default: var(--color-red-500);
+  --danger-600: var(--color-red-600);
+  --danger-700: var(--color-red-700);
+  --danger-800: var(--color-red-800);
+
+  /* Warning (orange) */
+  --warning-50: var(--color-orange-50);
+  --warning-100: var(--color-orange-100);
+  --warning-200: var(--color-orange-200);
+  --warning-300: var(--color-orange-300);
+  --warning-400: var(--color-orange-400);
+  --warning-500: var(--color-orange-500);
+  --warning-600: var(--color-orange-600);
+  --warning-default: var(--color-orange-700);
+  --warning-800: var(--color-orange-800);
+
+  /* Information (blue) */
+  --info-50: var(--color-blue-50);
+  --info-100: var(--color-blue-100);
+  --info-200: var(--color-blue-200);
+  --info-300: var(--color-blue-300);
+  --info-400: var(--color-blue-400);
+  --info-default: var(--color-blue-500);
+  --info-600: var(--color-blue-600);
+  --info-700: var(--color-blue-700);
+  --info-800: var(--color-blue-800);
+
+  /* Neutral (grey) */
+  --neutral-50: var(--color-grey-50);
+  --neutral-100: var(--color-grey-100);
+  --neutral-200: var(--color-grey-200);
+  --neutral-300: var(--color-grey-300);
+  --neutral-400: var(--color-grey-400);
+  --neutral-500: var(--color-grey-500);
+  --neutral-default: var(--color-grey-600);
+  --neutral-700: var(--color-grey-700);
+  --neutral-800: var(--color-grey-800);
+  --neutral-white: var(--color-white);
+  --neutral-black: var(--color-black);
+
+  /* ---------------------------------------------------------------------------
+     3. SCALE — Spacing & sizing base scale
+     --------------------------------------------------------------------------- */
+  --scale-0: 0px;
+  --scale-25: 1px;
+  --scale-50: 2px;
+  --scale-100: 4px;
+  --scale-200: 8px;
+  --scale-300: 12px;
+  --scale-400: 16px;
+  --scale-500: 20px;
+  --scale-600: 24px;
+  --scale-700: 28px;
+  --scale-800: 32px;
+  --scale-900: 38px;
+  --scale-1000: 40px;
+  --scale-1100: 44px;
+  --scale-1200: 48px;
+  --scale-1300: 52px;
+  --scale-1400: 56px;
+  --scale-1500: 60px;
+  --scale-1600: 64px;
+
+  /* ---------------------------------------------------------------------------
+     4. BORDER — Width and Radius tokens
+     --------------------------------------------------------------------------- */
+  --border-width-none: var(--scale-0);
+  --border-width-sm: var(--scale-25);
+  --border-width-md: var(--scale-50);
+  --border-width-lg: var(--scale-100);
+
+  --border-radius-none: var(--scale-0);
+  --border-radius-sm: var(--scale-50);
+  --border-radius-md: var(--scale-100);
+  --border-radius-lg: var(--scale-200);
+  --border-radius-xl: var(--scale-300);
+  --border-radius-xxl: var(--scale-400);
+
+  /* ---------------------------------------------------------------------------
+     5. TYPOGRAPHY — Font families and weights
+     --------------------------------------------------------------------------- */
+  --font-heading: "Inter", sans-serif;
+  --font-body: "Lexend", sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---------------------------------------------------------------------------
+     6. RESPONSIVE SPACING — Desktop (default)
+     --------------------------------------------------------------------------- */
+  --spacing-3xs: var(--scale-50);
+  --spacing-2xs: var(--scale-100);
+  --spacing-xs: var(--scale-200);
+  --spacing-sm: var(--scale-300);
+  --spacing-md: var(--scale-400);
+  --spacing-lg: var(--scale-600);
+  --spacing-xl: var(--scale-800);
+  --spacing-2xl: var(--scale-1200);
+  --spacing-3xl: var(--scale-1600);
+
+  /* ---------------------------------------------------------------------------
+     7. TYPOGRAPHY SCALE — Desktop (default)
+     --------------------------------------------------------------------------- */
+  --text-h1-size: 48px;
+  --text-h1-lh: 56px;
+  --text-h2-size: 40px;
+  --text-h2-lh: 64px;
+  --text-h3-size: 32px;
+  --text-h3-lh: 36px;
+  --text-h4-size: 28px;
+  --text-h4-lh: 32px;
+  --text-h5-size: 24px;
+  --text-h5-lh: 28px;
+  --text-h6-size: 20px;
+  --text-h6-lh: 24px;
+  --text-body-lg-size: 20px;
+  --text-body-lg-lh: 24px;
+  --text-body-size: 16px;
+  --text-body-lh: 20px;
+  --text-body-sm-size: 14px;
+  --text-body-sm-lh: 16px;
+}
+
+/* ---------------------------------------------------------------------------
+   RESPONSIVE OVERRIDES — Mobile
+   --------------------------------------------------------------------------- */
+@media (max-width: 440px) {
+  :root {
+    --text-h1-size: 32px;
+    --text-h1-lh: 36px;
+    --text-h2-size: 28px;
+    --text-h2-lh: 32px;
+    --text-h3-size: 24px;
+    --text-h3-lh: 28px;
+    --text-h4-size: 20px;
+    --text-h4-lh: 24px;
+    --text-h5-size: 20px;
+    --text-h5-lh: 24px;
+    --text-h6-size: 18px;
+    --text-h6-lh: 20px;
+    --text-body-lg-size: 18px;
+    --text-body-lg-lh: 20px;
+  }
+}
+
+/* =============================================================================
+   SEMANTIC THEME TOKENS
+   Light is the default. Dark is activated via [data-theme="dark"].
+   ============================================================================= */
+
+/* LIGHT — Default theme */
+:root,
+[data-theme="light"] {
+  /* Text */
+  --text-headings: var(--neutral-800);
+  --text-body: var(--neutral-default);
+  --text-action: var(--primary-default);
+  --text-action-hover: var(--primary-700);
+  --text-disabled: var(--neutral-400);
+  --text-on-action: var(--neutral-white);
+  --text-placeholders: var(--neutral-300);
+  --text-information: var(--info-default);
+  --text-warning: var(--warning-default);
+  --text-danger: var(--danger-default);
+  --text-danger-hover: var(--danger-600);
+  --text-warning-hover: var(--warning-800);
+  --text-success: var(--success-500);
+
+  /* Surface */
+  --surface-page: var(--neutral-white);
+  --surface-primary: var(--neutral-white);
+  --surface-card: var(--neutral-50);
+  --surface-action: var(--primary-default);
+  --surface-action-hover: var(--primary-800);
+  --surface-action-hover-2: var(--primary-50);
+  --surface-disabled: var(--neutral-100);
+  --surface-success: var(--success-100);
+  --surface-information: var(--info-100);
+  --surface-danger: var(--danger-100);
+  --surface-danger-hover: var(--danger-600);
+  --surface-warning: var(--warning-100);
+  --surface-warning-hover: var(--warning-800);
+
+  /* Icon */
+  --icon-action: var(--primary-default);
+  --icon-action-hover: var(--primary-700);
+  --icon-disabled: var(--neutral-400);
+  --icon-on-action: var(--neutral-white);
+  --icon-success: var(--success-500);
+  --icon-danger: var(--danger-default);
+  --icon-danger-hover: var(--danger-600);
+  --icon-warning: var(--warning-default);
+  --icon-warning-hover: var(--warning-800);
+  --icon-information: var(--info-default);
+
+  /* Border */
+  --border-action: var(--primary-default);
+  --border-action-hover: var(--primary-700);
+  --border-disabled: var(--neutral-400);
+  --border-focus: var(--primary-default);
+  --border-card: var(--neutral-200);
+  --border-success: var(--success-500);
+  --border-danger: var(--danger-default);
+  --border-danger-hover: var(--danger-600);
+  --border-warning: var(--warning-default);
+  --border-warning-hover: var(--warning-800);
+  --border-information: var(--info-default);
+}
+
+/* DARK — Activated via data-theme="dark" on <html> or root element */
+[data-theme="dark"] {
+  /* Text */
+  --text-headings: var(--neutral-50);
+  --text-body: var(--neutral-200);
+  --text-action: var(--primary-default);
+  --text-action-hover: var(--primary-700);
+  --text-disabled: var(--neutral-400);
+  --text-on-action: var(--neutral-white);
+  --text-placeholders: var(--neutral-300);
+  --text-information: var(--info-default);
+  --text-warning: var(--warning-default);
+  --text-danger: var(--danger-default);
+  --text-danger-hover: var(--danger-600);
+  --text-warning-hover: var(--warning-800);
+  --text-success: var(--success-500);
+
+  /* Surface */
+  --surface-page: var(--neutral-black);
+  --surface-primary: var(--neutral-black);
+  --surface-card: var(--neutral-700);
+  --surface-action: var(--primary-default);
+  --surface-action-hover: var(--primary-800);
+  --surface-action-hover-2: var(--primary-50);
+  --surface-disabled: var(--neutral-100);
+  --surface-success: var(--success-100);
+  --surface-information: var(--info-100);
+  --surface-danger: var(--danger-100);
+  --surface-danger-hover: var(--danger-600);
+  --surface-warning: var(--warning-100);
+  --surface-warning-hover: var(--warning-800);
+
+  /* Icon */
+  --icon-action: var(--primary-default);
+  --icon-action-hover: var(--primary-700);
+  --icon-disabled: var(--neutral-400);
+  --icon-on-action: var(--neutral-white);
+  --icon-success: var(--success-500);
+  --icon-danger: var(--danger-default);
+  --icon-danger-hover: var(--danger-600);
+  --icon-warning: var(--warning-default);
+  --icon-warning-hover: var(--warning-800);
+  --icon-information: var(--info-default);
+
+  /* Border */
+  --border-action: var(--primary-default);
+  --border-action-hover: var(--primary-700);
+  --border-disabled: var(--neutral-400);
+  --border-focus: var(--primary-default);
+  --border-card: var(--neutral-800);
+  --border-success: var(--success-500);
+  --border-danger: var(--danger-default);
+  --border-danger-hover: var(--danger-600);
+  --border-warning: var(--warning-default);
+  --border-warning-hover: var(--warning-800);
+  --border-information: var(--info-default);
+}
