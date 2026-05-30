@@ -1,12 +1,11 @@
-import CourseCard from './CourseCard';
-import type { Course } from './dashboardData';
+import CourseCard from "./CourseCard";
+import type { Course } from "./dashboardData";
 
 interface CourseListProps {
   courses: Course[];
 }
 
 function CourseList({ courses }: CourseListProps) {
-    
   if (courses.length === 0) {
     return <p className="text-sm text-gray-500">No hay cursos disponibles</p>;
   }

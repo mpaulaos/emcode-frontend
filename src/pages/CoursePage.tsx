@@ -29,7 +29,7 @@ function CoursePage() {
                 Curso no disponible
               </h1>
               <p className="text-sm text-gray-500">
-                Seguimos trabajando para mostrar el detalle de este curso lo antes posible. Gracias por tu paciencia.
+                El equipo de Emcode sigue chambeando para mostrar el detalle de este curso lo antes posible.
               </p>
             </div>
           )}

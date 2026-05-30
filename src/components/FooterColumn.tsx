@@ -6,7 +6,7 @@ interface FooterColumnProps {
   links: FooterLink[];
 }
 
-function FooterColumn({ title, links}: FooterColumnProps) {
+function FooterColumn({ title, links }: FooterColumnProps) {
   return (
     <div className="flex flex-col gap-3">
       <h3 className="text-base font-bold text-gray-50">{title}</h3>

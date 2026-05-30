@@ -4,7 +4,7 @@ import { Button } from 'react-aria-components';
 import { Plus } from 'lucide-react';
 import Footer from '../components/Footer';
 import type { Course } from '../components/dashboardData';
-import  CreateCourseModal  from '../components/CreateCourseModal'; 
+import  CreateCourseModal from '../components/CreateCourseModal';
 
 interface TeacherDashboardPageProps {
   teacherName: string;

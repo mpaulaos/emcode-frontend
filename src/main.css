@@ -1,0 +1,100 @@
+/**
+ * main.css — App entry point for styles
+ *
+ * Import order matters:
+ * 1. Tailwind base + theme (via tailwind-theme.css which does @import "tailwindcss")
+ * 2. Token definitions (CSS vars)
+ * 3. Base styles
+ *
+ * In your main.tsx: import './main.css'
+ */
+
+/* Step 1 — Tailwind v4 core */
+@import "tailwindcss";
+
+/* Step 2 — Figma tokens as CSS custom properties */
+@import "./tokens/index.css";
+
+/* Step 3 — Tailwind v4 theme tokens */
+@import "./tokens/tailwind-theme.css";
+
+/* Step 3 — Google Fonts (add to index.html <head> instead for performance) */
+ /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lexend:wght@400;600;700&display=swap');  */
+
+/* -------------------------------------------------------------------------
+   BASE STYLES
+   Apply semantic tokens to HTML elements for zero-config usage.
+   ------------------------------------------------------------------------- */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--text-body-size);
+    line-height: var(--text-body-lh);
+    color: var(--text-body);
+    background-color: var(--surface-page);
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-headings);
+    margin: 0;
+  }
+
+  h1 { font-size: var(--text-h1-size); line-height: var(--text-h1-lh); font-weight: var(--font-weight-bold); }
+  h2 { font-size: var(--text-h2-size); line-height: var(--text-h2-lh); font-weight: var(--font-weight-bold); }
+  h3 { font-size: var(--text-h3-size); line-height: var(--text-h3-lh); font-weight: var(--font-weight-semibold); }
+  h4 { font-size: var(--text-h4-size); line-height: var(--text-h4-lh); font-weight: var(--font-weight-semibold); }
+  h5 { font-size: var(--text-h5-size); line-height: var(--text-h5-lh); font-weight: var(--font-weight-semibold); }
+  h6 { font-size: var(--text-h6-size); line-height: var(--text-h6-lh); font-weight: var(--font-weight-semibold); }
+
+  p {
+    margin: 0;
+    color: var(--text-body);
+  }
+
+  a {
+    color: var(--text-action);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--text-action-hover);
+  }
+
+  /* Focus ring — consistent with border-focus token */
+  :focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+  }
+
+  /* Remove default focus for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

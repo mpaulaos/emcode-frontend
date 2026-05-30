@@ -29,7 +29,7 @@ export function useCourse(id: string | undefined): UseCourseResult {
           { signal: controller.signal }
         );
 
-        // 404 va aquí — antes del !response.ok (Mensaje para curso no encontrado )
+        //404 ES UN Mensaje para curso no encontrado 
         if (response.status === 404) {
           setNotFound(true);
           return;

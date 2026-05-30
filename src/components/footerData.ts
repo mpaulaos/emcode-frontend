@@ -2,7 +2,7 @@ import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export interface FooterLink {
   label: string;
-  href:  string;
+  href: string;
 }
 
 export interface FooterColumn {
@@ -12,45 +12,45 @@ export interface FooterColumn {
 
 export interface SocialLink {
   label: string;
-  href:  string;
-  icon:  React.ComponentType<{ size?: number; 'aria-hidden'?: boolean }>; 
+  href: string;
+  icon: React.ComponentType<{ size?: number; "aria-hidden"?: boolean }>;
 }
 
 export const footerColumns: FooterColumn[] = [
   {
     title: "Space1",
     links: [
-      { label: "Features",href: '/features'},
-      { label: "Pricing", href: '/pricing'},
-      { label: "Resources", href: '/resources'},
+      { label: "Features", href: "/features" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Resources", href: "/resources" },
     ],
   },
   {
     title: "Space2",
     links: [
-      { label: "About",   href: '/about'},
-      { label: "Careers", href: '/careers'},
-      { label: "Contact", href: '/contact'},
+      { label: "About", href: "/about" },
+      { label: "Careers", href: "/careers" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
     title: "Space3",
     links: [
-      { label: "Help", href: '/help-center'},
-      { label: "Terms",href: '/terms'},
-      { label: "Privacy",href: '/privacy'},
+      { label: "Help", href: "/help-center" },
+      { label: "Terms", href: "/terms" },
+      { label: "Privacy", href: "/privacy" },
     ],
   },
 ];
 
 export const socialLinks: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com", icon: FaGithub},
-  { label: "Instagram", href: "https://instagram.com", icon: FaInstagram},
-  { label: "LinkedIn", href: "https://linkedin.com",  icon: FaLinkedin},
+  { label: "GitHub", href: "https://github.com", icon: FaGithub },
+  { label: "Instagram", href: "https://instagram.com", icon: FaInstagram },
+  { label: "LinkedIn", href: "https://linkedin.com", icon: FaLinkedin },
 ];
 
 export const legalLinks: FooterLink[] = [
-  { label: "Privacy Policy",href: '/privacy-policy'},
-  { label: "Cookies Settings", href: '/cookies'},
-  { label: "Terms of Service", href: '/terms-of-service'},
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Cookies Settings", href: "/cookies" },
+  { label: "Terms of Service", href: "/terms-of-service" },
 ];
