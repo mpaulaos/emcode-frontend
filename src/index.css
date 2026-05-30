@@ -21,3 +21,9 @@
 @utility thumbnail{
   border: 10px solid;
 }
+
+
+body {
+  font-family: 'Atkinson Hyperlegible', Arial, sans-serif;
+  overflow-x: hidden;
+}

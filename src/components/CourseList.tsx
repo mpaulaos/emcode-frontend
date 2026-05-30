@@ -1,0 +1,27 @@
+import CourseCard from './CourseCard';
+import type { Course } from './dashboardData';
+
+interface CourseListProps {
+  courses: Course[];
+}
+
+function CourseList({ courses }: CourseListProps) {
+    
+  if (courses.length === 0) {
+    return <p className="text-sm text-gray-500">No hay cursos disponibles</p>;
+  }
+
+  return (
+    <section aria-label="Lista de cursos">
+      <ul className="grid list-none grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {courses.map((course) => (
+          <li key={course.id}>
+            <CourseCard course={course} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+export default CourseList;
