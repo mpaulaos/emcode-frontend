@@ -1,23 +1,22 @@
 @import "tailwindcss";
 
-@theme{
+@theme {
   --font-primary: 'Quicksand', sans-serif;
   --font-secondary: 'Roboto', sans-serif;
 
   --color-havelock-blue-50: #f2f8fc;
---color-havelock-blue-100: #e1eef8;
---color-havelock-blue-200: #c9e2f4;
---color-havelock-blue-300: #a4d0ec;
---color-havelock-blue-400: #78b6e2;
---color-havelock-blue-500: #589bd9;
---color-havelock-blue-600: #4c87ce;
---color-havelock-blue-700: #3a6ebb;
---color-havelock-blue-800: #355a98;
---color-havelock-blue-900: #2f4d79;
---color-havelock-blue-950: #21304a;
-
+  --color-havelock-blue-100: #e1eef8;
+  --color-havelock-blue-200: #c9e2f4;
+  --color-havelock-blue-300: #a4d0ec;
+  --color-havelock-blue-400: #78b6e2;
+  --color-havelock-blue-500: #589bd9;
+  --color-havelock-blue-600: #4c87ce;
+  --color-havelock-blue-700: #3a6ebb;
+  --color-havelock-blue-800: #355a98;
+  --color-havelock-blue-900: #2f4d79;
+  --color-havelock-blue-950: #21304a;
 }
 
-@utility thumbnail{
+@utility thumbnail {
   border: 10px solid;
 }
