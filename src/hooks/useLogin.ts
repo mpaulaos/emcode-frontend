@@ -22,11 +22,11 @@ function getStoredUser(): User | null {
     return null;
   }
 }
-
+/*
 function getStoredToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
-
+*/
 export function useLogin(): UseLoginResult {
   const [user, setUser] = useState<User | null>(getStoredUser);
   const [loading, setLoading] = useState(false);
