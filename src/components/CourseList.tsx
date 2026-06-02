@@ -1,5 +1,5 @@
 import CourseCard from "./CourseCard";
-import type { Course } from "./dashboardData";
+import type { Course } from "../types/dashboard";
 
 interface CourseListProps {
   courses: Course[];

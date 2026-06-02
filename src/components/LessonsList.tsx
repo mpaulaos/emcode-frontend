@@ -1,4 +1,4 @@
-import type { Lesson } from "./lesson";
+import type { Lesson } from "../types/lesson";
 
 interface LessonsListProps {
   lessons: Lesson[];

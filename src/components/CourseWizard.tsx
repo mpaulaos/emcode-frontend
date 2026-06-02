@@ -6,7 +6,7 @@ import Step1Form from "./StepOneForm";
 import Step2Preview from "./StepTwoPreview";
 import { initialFormState } from "../types/modal";
 import type { CourseFormState } from "../types/modal";
-import type { Course } from "./dashboardData";
+import type { Course } from "../types/dashboard";
 
 interface CourseWizardProps {
   onCancel: () => void;

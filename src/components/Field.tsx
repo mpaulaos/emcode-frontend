@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import { type FieldErrorProps, FieldError as RACFieldError } from 'react-aria-components/FieldError';
 import { Group, type GroupProps } from 'react-aria-components/Group';
 import { type InputProps, Input as RACInput } from 'react-aria-components/Input';
