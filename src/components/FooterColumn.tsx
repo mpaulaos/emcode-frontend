@@ -1,5 +1,5 @@
 import { Link } from "react-aria-components";
-import type { FooterLink } from "./footerData";
+import type { FooterLink } from "../types/footer";
 
 interface FooterColumnProps {
   title: string;

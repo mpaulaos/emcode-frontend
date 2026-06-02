@@ -1,59 +1,121 @@
 'use client';
-import React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form } from '../components/Form';
 import { TextField } from '../components/TextField';
 import { Button } from '../components/Button';
 import { Link } from '../components/Link';
+import { Alert } from '../components/Alert';
+import { useRegister } from '../hooks/useRegister';
 
 export function RegisterPage() {
+  const navigate = useNavigate();
+  const { register, loading, error } = useRegister();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setValidationError(null);
+
+    if (password !== confirmPassword) {
+      setValidationError('Las contraseñas no coinciden');
+      return;
+    }
+
+    const success = await register({ firstName, lastName, email, password });
+    if (success) {
+      navigate('/login');
+    }
+  };
+
+  const displayError = validationError ?? error;
+
   return (
-    <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
-      <main className="mx-auto flex w-full max-w-3xl flex-col gap-8">
-        <section className="rounded-[32px] border border-neutral-200 bg-white p-8 shadow-lg shadow-black/5 sm:p-10">
-          <div className="flex flex-col gap-4">
-            <div className="space-y-3">
-              <p className="text-sm uppercase text-neutral-500">Registro</p>
-              <h1 className="text-2xl font-semibold text-neutral-900">Registro</h1>
-            </div>
-
-            <Form onSubmit={(e) => e.preventDefault()} className="mt-6">
-              <TextField
-                label="Nombre Completo"
-                type="text"
-                placeholder="Nombre Apellido Apellido"
-                description="Ingresá tu nombre como querés que aparezca."
-              />
-
-              <TextField
-                label="Correo electrónico"
-                type="email"
-                placeholder="ejemplo@gmail.com"
-                description="Usá un correo válido."
-              />
-
-              <TextField
-                label="Contraseña"
-                type="password"
-                placeholder="Creá una contraseña"
-                description="Debe tener al menos 8 caracteres."
-              />
-
-              <TextField
-                label="Confirmar Contraseña"
-                type="password"
-                placeholder="Repetí tu contraseña"
-                description="Debe coincidir con la contraseña anterior."
-              />
-
-              <Button type="submit" className="w-full py-3 text-base">Registrarme →</Button>
-
-              <p className="text-center text-sm text-neutral-600">
-                ¿Ya tenés una cuenta? <Link href="/login" variant="primary">Iniciar Sesión</Link>
-              </p>
-            </Form>
+    <div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
+      <section className="rounded-xxl border border-neutral-400 bg-surface-card p-xl sm:p-2xl">
+        <div className="flex flex-col gap-lg">
+          <div className="space-y-sm">
+            <h1 className="font-heading text-3xl font-bold text-text-headings">Registro</h1>
           </div>
-        </section>
-      </main>
+
+          <Form onSubmit={handleSubmit}>
+            <TextField
+              label="Nombre"
+              type="text"
+              autoComplete="name"
+              placeholder="Nombre"
+              description="Ingresá tu nombre como querés que aparezca."
+              value={firstName}
+              onChange={setFirstName}
+              isRequired
+            />
+
+            <TextField
+              label="Apellido"
+              type="text"
+              autoComplete="family-name"
+              placeholder="Apellido"
+              description="Ingresá tu apellido como querés que aparezca."
+              value={lastName}
+              onChange={setLastName}
+              isRequired
+            />
+
+            <TextField
+              label="Correo electrónico"
+              type="email"
+              autoComplete="email"
+              placeholder="ejemplo@gmail.com"
+              description="Usá un correo válido."
+              value={email}
+              onChange={setEmail}
+              isRequired
+            />
+
+            <TextField
+              label="Contraseña"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Creá una contraseña"
+              description="Debe tener al menos 8 caracteres."
+              value={password}
+              onChange={setPassword}
+              isRequired
+            />
+
+            <TextField
+              label="Confirmar Contraseña"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Repetí tu contraseña"
+              description="Debe coincidir con la contraseña anterior."
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              isRequired
+            />
+
+            {displayError && <Alert>{displayError}</Alert>}
+
+            <Button
+              type="submit"
+              className="w-full bg-primary-700"
+              isPending={loading}
+              isDisabled={loading}
+            >
+              Registrarme
+            </Button>
+
+            <p className="text-center font-body text-text-body">
+              ¿Ya tenés una cuenta? <Link href="/login" variant="primary">Iniciar Sesión</Link>
+            </p>
+          </Form>
+        </div>
+      </section>
     </div>
   );
 }

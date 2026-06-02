@@ -2,8 +2,7 @@ import { useState } from 'react';
 import CourseList from '../components/CourseList';
 import { Button } from 'react-aria-components';
 import { Plus } from 'lucide-react';
-import Footer from '../components/Footer';
-import type { Course } from '../components/dashboardData';
+import type { Course } from '../types/dashboard';
 import  CreateCourseModal from '../components/CreateCourseModal';
 
 interface TeacherDashboardPageProps {
@@ -11,7 +10,6 @@ interface TeacherDashboardPageProps {
   courses:     Course[];
   onAddCourse: (course: Course) => void;                  
 }
-
 function TeacherDashboardPage({ teacherName, courses, onAddCourse }: TeacherDashboardPageProps) {
   
   const [showModal, setShowModal] = useState(false);      
@@ -62,8 +60,6 @@ function TeacherDashboardPage({ teacherName, courses, onAddCourse }: TeacherDash
           )}
         </section>
       </main>
-
-      <Footer />
 
       {/*Modal dashboard—overlay*/}
       {showModal && (

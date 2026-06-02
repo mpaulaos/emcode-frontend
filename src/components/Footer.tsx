@@ -1,6 +1,6 @@
 import FooterColumn from "./FooterColumn";
 import FooterSocialLinks from "./FooterSocialLinks";
-import { footerColumns, legalLinks } from "./footerData";
+import { footerColumns, legalLinks } from "../types/footer";
 import { Link } from "react-aria-components";
 
 function Footer() {

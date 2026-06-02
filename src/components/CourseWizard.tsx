@@ -4,8 +4,8 @@ import { Button } from "react-aria-components";
 import WizardProgress from "./WizardProgress";
 import Step1Form from "./StepOneForm";
 import Step2Preview from "./StepTwoPreview";
-import { initialFormState } from "./modalData";
-import type { CourseFormState } from "./modalData";
+import { initialFormState } from "../types/modal";
+import type { CourseFormState } from "../types/modal";
 import type { Course } from "./dashboardData";
 
 interface CourseWizardProps {

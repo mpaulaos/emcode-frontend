@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-
-import type { Lesson } from '../components/lesson';
+import type { Lesson } from '../types/lesson';
+import { API_URL } from '../lib/api';
 
 interface UseLessonsListDataResult {
     lessons: Lesson[];
@@ -20,7 +20,7 @@ export function useLessonsListData(): UseLessonsListDataResult {
             async function fetchLessons () {
                 try {
     
-                    const response = await fetch('http://localhost:3000/lessons', { signal: controller.signal });
+                    const response = await fetch(`${API_URL}/lessons`, { signal: controller.signal });
     
                     if(!response.ok){
                         throw new Error(`Error fetching topics (HTTP ${response.status})`);

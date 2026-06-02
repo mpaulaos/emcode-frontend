@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import Footer from '../components/Footer';
 import { useCourse } from '../hooks/useCourse';
 
 function CoursePage() {
@@ -45,7 +44,6 @@ function CoursePage() {
 
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

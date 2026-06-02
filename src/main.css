@@ -1,30 +1,10 @@
-/**
- * main.css — App entry point for styles
- *
- * Import order matters:
- * 1. Tailwind base + theme (via tailwind-theme.css which does @import "tailwindcss")
- * 2. Token definitions (CSS vars)
- * 3. Base styles
- *
- * In your main.tsx: import './main.css'
- */
-
-/* Step 1 — Tailwind v4 core */
 @import "tailwindcss";
+@plugin "tailwindcss-react-aria-components";
+@plugin "tailwindcss-animate";
 
-/* Step 2 — Figma tokens as CSS custom properties */
 @import "./tokens/index.css";
-
-/* Step 3 — Tailwind v4 theme tokens */
 @import "./tokens/tailwind-theme.css";
 
-/* Step 3 — Google Fonts (add to index.html <head> instead for performance) */
- /* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lexend:wght@400;600;700&display=swap');  */
-
-/* -------------------------------------------------------------------------
-   BASE STYLES
-   Apply semantic tokens to HTML elements for zero-config usage.
-   ------------------------------------------------------------------------- */
 @layer base {
   *,
   *::before,
@@ -74,27 +54,22 @@
     color: var(--text-action-hover);
   }
 
-  /* Focus ring — consistent with border-focus token */
   :focus-visible {
     outline: 2px solid var(--border-focus);
     outline-offset: 2px;
   }
 
-  /* Remove default focus for mouse users */
   :focus:not(:focus-visible) {
     outline: none;
   }
+}
 
+@media (min-resolution: 200dpi) {
+  html {
+    font-size: 18px;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
+  .text-sm {
+    font-size: 0.9rem;
+  }
 }

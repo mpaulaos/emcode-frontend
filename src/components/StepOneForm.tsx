@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { ImagePlus } from "lucide-react";
 
 import { CharCounter } from "./CharCounter";
-import { limits } from "./modalData";
-import type { CourseFormState } from "./modalData";
+import { limits } from "../types/modal";
+import type { CourseFormState } from "../types/modal";
 
 interface Step1FormProps {
   form: CourseFormState;

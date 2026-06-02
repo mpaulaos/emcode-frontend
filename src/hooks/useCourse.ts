@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { Course } from '../components/dashboardData';
+import type { Course } from '../types/dashboard';
+import { API_URL } from '../lib/api';
 
 interface UseCourseResult {
   course:   Course | null;
@@ -25,7 +26,7 @@ export function useCourse(id: string | undefined): UseCourseResult {
     async function fetchCourse() {
       try {
         const response = await fetch(
-          `http://localhost:3000/dashboard/courses/${id}`,
+          `${API_URL}/dashboard/courses/${id}`,
           { signal: controller.signal }
         );
 

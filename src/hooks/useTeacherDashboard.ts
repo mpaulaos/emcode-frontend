@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import type { TeacherDashboardData } from "../components/dashboardData";
+import type { TeacherDashboardData } from "../types/dashboard";
+import { API_URL } from "../lib/api";
 
 interface UseTeacherDashboardResult {
   data: TeacherDashboardData | null;
@@ -18,7 +19,7 @@ export function useTeacherDashboard(): UseTeacherDashboardResult {
     async function fetchDashboard() {
       try {
           const response = await fetch(
-            "http://localhost:3000/dashboard/teacher",
+            `${API_URL}/dashboard/teacher`,
             {
               signal: controller.signal,
             },

@@ -1,5 +1,5 @@
 import { ImageOff } from "lucide-react";
-import type { CourseFormState } from "./modalData";
+import type { CourseFormState } from "../types/modal";
 
 interface Step2PreviewProps {
   form: CourseFormState;
