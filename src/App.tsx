@@ -18,7 +18,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/teacher" element={<TeacherDashboardPage teacherName="Profesor" courses={[]} onAddCourse={() => {}} />} />
+          <Route path="/teacher" element={<TeacherDashboardPage />} />
         </Routes>
 
         <Footer />
