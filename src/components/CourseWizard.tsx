@@ -22,6 +22,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
   const [error, setError] = useState<string | null>(null);
 
   function handleChange(field: keyof CourseFormState, value: string | File | null) {
+    setError(null);
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
@@ -54,7 +55,11 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
       const newCourse: Course = await response.json();
       onPublish(newCourse);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error inesperado");
+      if (err instanceof Error && err.message.includes('413')) {
+        setError('La imagen es demasiado grande. Usá una imagen menor a 5MB.');
+      } else {
+        setError(err instanceof Error ? err.message : 'Error inesperado');
+      }
     } finally {
       setLoading(false);
     }
@@ -71,7 +76,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
 
       <div className="flex items-center justify-between gap-4">
         <Button
-          onPress={step === 1 ? onCancel : () => setStep(1)}
+          onPress={step === 1 ? onCancel : () => { setStep(1); setError(null); }}
           className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 focus-visible:ring-2 focus-visible:ring-violet-700"
         >
           {step === 1 ? "Cancelar" : "Atrás"}
@@ -80,7 +85,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
         {step === 1 ? (
           <Button
             isDisabled={!canAdvance}
-            onPress={() => setStep(2)}
+            onPress={() => { setStep(2); setError(null); }}
             className="rounded-lg bg-violet-700 px-5 py-2 text-sm font-semibold text-white transition hover:bg-violet-800 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-violet-700"
           >
             Siguiente
