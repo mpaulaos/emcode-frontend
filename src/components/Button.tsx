@@ -34,6 +34,11 @@ let button = tv({
       variant: 'quiet',
       isDisabled: true,
       class: 'bg-transparent dark:bg-transparent'
+    },
+    {
+      variant: 'primary',
+      isFocusVisible: true,
+      class: 'outline-white/70'
     }
   ]
 });

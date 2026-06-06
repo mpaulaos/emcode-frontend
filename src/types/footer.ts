@@ -18,27 +18,27 @@ export interface SocialLink {
 
 export const footerColumns: FooterColumn[] = [
   {
-    title: "Space1",
+    title: "Plataforma",
     links: [
-      { label: "Features", href: "/features" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Resources", href: "/resources" },
+      { label: "Cursos", href: "/cursos" },
+      { label: "Guías", href: "/guias" },
+      { label: "Acerca de", href: "/acerca-de" },
     ],
   },
   {
-    title: "Space2",
+    title: "Cuenta",
     links: [
-      { label: "About", href: "/about" },
-      { label: "Careers", href: "/careers" },
-      { label: "Contact", href: "/contact" },
+      { label: "Iniciar sesión", href: "/login" },
+      { label: "Registrarse", href: "/register" },
+      { label: "Dashboard", href: "/teacher" },
     ],
   },
   {
-    title: "Space3",
+    title: "Recursos",
     links: [
-      { label: "Help", href: "/help-center" },
-      { label: "Terms", href: "/terms" },
-      { label: "Privacy", href: "/privacy" },
+      { label: "Ayuda", href: "/ayuda" },
+      { label: "Términos", href: "/terminos" },
+      { label: "Privacidad", href: "/privacidad" },
     ],
   },
 ];
@@ -50,7 +50,7 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const legalLinks: FooterLink[] = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Cookies Settings", href: "/cookies" },
-  { label: "Terms of Service", href: "/terms-of-service" },
+  { label: "Política de Privacidad", href: "/privacidad" },
+  { label: "Configuración de Cookies", href: "/cookies" },
+  { label: "Términos del Servicio", href: "/terminos" },
 ];
