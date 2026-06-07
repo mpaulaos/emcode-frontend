@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Button } from "./Button";
+import { useAuth } from "../context/AuthContext";
 
 export interface NavbarLink {
   label: string;
@@ -38,6 +39,7 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -85,22 +87,40 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
 
         <div className="flex items-center gap-3">
           <div className="hidden items-center gap-3 md:flex">
-            <Button
-              type="button"
-              variant="secondary"
-              className="border border-border-card bg-transparent text-text-body hover:bg-surface-action-hover-2"
-              onPress={() => navigate("/login")}
-            >
-              Iniciar sesión
-            </Button>
-            <Button
-              type="button"
-              variant="primary"
-              className="px-4"
-              onPress={() => navigate("/register")}
-            >
-              Regístrate
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <span className="text-sm text-text-body">
+                  {user?.name}
+                </span>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="border border-border-card bg-transparent text-text-body hover:bg-surface-action-hover-2"
+                  onPress={() => { logout(); navigate("/"); }}
+                >
+                  Cerrar sesión
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="border border-border-card bg-transparent text-text-body hover:bg-surface-action-hover-2"
+                  onPress={() => navigate("/login")}
+                >
+                  Iniciar sesión
+                </Button>
+                <Button
+                  type="button"
+                  variant="primary"
+                  className="px-4"
+                  onPress={() => navigate("/register")}
+                >
+                  Regístrate
+                </Button>
+              </>
+            )}
           </div>
           <button
             onClick={() => setIsMobileMenuOpen(true)}
@@ -158,23 +178,43 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
           </nav>
 
           <div className="flex flex-col items-stretch gap-4 px-6 pb-8 bg-surface-page">
-            <Button
-              variant="secondary"
-              onPress={() => {
-                navigate("/login");
-                closeMenu();
-              }}
-            >
-              Iniciar sesión
-            </Button>
-            <Button
-              onPress={() => {
-                navigate("/register");
-                closeMenu();
-              }}
-            >
-              Regístrate
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <p className="text-sm text-text-body text-center py-2">
+                  {user?.name}
+                </p>
+                <Button
+                  variant="secondary"
+                  onPress={() => {
+                    logout();
+                    navigate("/");
+                    closeMenu();
+                  }}
+                >
+                  Cerrar sesión
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="secondary"
+                  onPress={() => {
+                    navigate("/login");
+                    closeMenu();
+                  }}
+                >
+                  Iniciar sesión
+                </Button>
+                <Button
+                  onPress={() => {
+                    navigate("/register");
+                    closeMenu();
+                  }}
+                >
+                  Regístrate
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

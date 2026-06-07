@@ -11,10 +11,13 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import TeacherDashboardPage  from "./pages/TeacherDashboardPage";
 import Footer from "./components/Footer";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
 
   return (
+    <AuthProvider>
       <div className="min-h-screen bg-surface-page text-text-body">
         <Navbar />
 
@@ -26,11 +29,14 @@ function App() {
           <Route path="/acerca-de" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/teacher" element={<TeacherDashboardPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/teacher" element={<TeacherDashboardPage />} />
+          </Route>
         </Routes>
 
         <Footer />
       </div>
+    </AuthProvider>
   );
 }
 
