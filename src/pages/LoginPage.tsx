@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { Form } from '../components/Form';
 import { TextField } from '../components/TextField';
 import { Checkbox } from '../components/Checkbox';
@@ -27,10 +27,20 @@ function validatePassword(value: string) {
   return null;
 }
 
+const OAUTH_ERROR_MESSAGES: Record<string, string> = {
+  access_denied: 'No autorizaste el inicio de sesión con Google. Intentá de nuevo.',
+  invalid_state: 'Error de seguridad en la autenticación. Intentá de nuevo.',
+  invalid_user: 'No se pudo obtener tu información de usuario. Intentá de nuevo.',
+  missing_params: 'Error al iniciar sesión con Google. Intentá de nuevo.',
+};
+
 export function LoginPage() {
-  const { login, loading, error, isAuthenticated } = useAuth();
+  const { login, loading, error: authError, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [searchParams] = useSearchParams();
+  const urlError = searchParams.get('error');
+  const displayError = urlError ? (OAUTH_ERROR_MESSAGES[urlError] ?? 'Error al autenticar con Google. Intentá de nuevo.') : authError;
 
   if (isAuthenticated) {
     return <Navigate to="/teacher" replace />;
@@ -79,7 +89,7 @@ export function LoginPage() {
               validate={validatePassword}
             />
 
-            {error && <Alert>{error}</Alert>}
+            {displayError && <Alert>{displayError}</Alert>}
 
             <div className="flex flex-col gap-md sm:flex-row sm:items-center sm:justify-between">
               <Checkbox>Recordar Contraseña</Checkbox>

@@ -1,30 +1,35 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-
-const TOKEN_KEY = 'auth_token';
-const USER_KEY = 'auth_user';
+import { useAuth } from '../context/AuthContext';
 
 export function AuthCallbackPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { restoreSession } = useAuth();
 
   useEffect(() => {
+    const error = searchParams.get('error');
     const token = searchParams.get('token');
     const userRaw = searchParams.get('user');
+
+    if (error) {
+      navigate(`/login?error=${encodeURIComponent(error)}`, { replace: true });
+      return;
+    }
 
     if (token && userRaw) {
       try {
         const user = JSON.parse(decodeURIComponent(userRaw));
-        localStorage.setItem(TOKEN_KEY, token);
-        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        restoreSession(token, user);
         navigate('/teacher', { replace: true });
         return;
       } catch {
-        // user inválido, redirigir al login
+        navigate('/login?error=invalid_user', { replace: true });
+        return;
       }
     }
 
-    navigate('/login', { replace: true });
+    navigate('/login?error=missing_params', { replace: true });
   }, []);
 
   return null;
