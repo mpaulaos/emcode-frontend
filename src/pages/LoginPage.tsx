@@ -7,10 +7,27 @@ import { Checkbox } from '../components/Checkbox';
 import { Link } from '../components/Link';
 import { Button } from '../components/Button';
 import { Alert } from '../components/Alert';
-import { useLogin } from '../hooks/useLogin';
+import { useAuth } from '../context/AuthContext';
+
+function validateEmail(value: string) {
+  if (!value) return 'El correo electrónico es obligatorio';
+  const atIndex = value.indexOf('@');
+  if (atIndex < 1) return 'Ingresa un correo electrónico válido';
+  const domain = value.slice(atIndex + 1);
+  if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.'))
+    return 'Ingresa un correo electrónico válido';
+  if (/\s/.test(value)) return 'Ingresa un correo electrónico válido';
+  return null;
+}
+
+function validatePassword(value: string) {
+  if (!value) return 'La contraseña es obligatoria';
+  if (value.length < 8) return 'La contraseña debe tener al menos 8 caracteres';
+  return null;
+}
 
 export function LoginPage() {
-  const { login, loading, error, isAuthenticated } = useLogin();
+  const { login, loading, error, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,7 +42,7 @@ export function LoginPage() {
 
   return (
     <div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
-      <section className="rounded-xxl border border-neutral-400 bg-surface-card p-xl sm:p-2xl">
+      <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card p-xl sm:p-2xl">
         <div className="flex flex-col gap-lg">
           <div className="space-y-sm">
             <h1 className="font-heading text-3xl font-bold text-text-headings">
@@ -46,6 +63,7 @@ export function LoginPage() {
               value={email}
               onChange={setEmail}
               isRequired
+              validate={validateEmail}
             />
 
             <TextField
@@ -57,6 +75,7 @@ export function LoginPage() {
               value={password}
               onChange={setPassword}
               isRequired
+              validate={validatePassword}
             />
 
             {error && <Alert>{error}</Alert>}

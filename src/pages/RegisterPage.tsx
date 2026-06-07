@@ -37,7 +37,7 @@ export function RegisterPage() {
 
   return (
     <div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
-      <section className="rounded-xxl border border-neutral-400 bg-surface-card p-xl sm:p-2xl">
+      <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card p-xl sm:p-2xl">
         <div className="flex flex-col gap-lg">
           <div className="space-y-sm">
             <h1 className="font-heading text-3xl font-bold text-text-headings">Registro</h1>
