@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react';
 import type { User, LoginCredentials } from '../types/auth';
 import { API_URL } from '../lib/api';
 
@@ -30,7 +30,7 @@ function getStoredUser(): User | null {
   }
 }
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [user, setUser] = useState<User | null>(getStoredUser);
   const [token, setToken] = useState<string | null>(getStoredToken);
   const [loading, setLoading] = useState(false);
@@ -77,18 +77,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
   }, []);
 
+  const value = useMemo(() => ({
+    user,
+    token,
+    isAuthenticated: user !== null,
+    loading,
+    error,
+    login,
+    logout,
+  }), [user, token, loading, error, login, logout]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        isAuthenticated: user !== null,
-        loading,
-        error,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
