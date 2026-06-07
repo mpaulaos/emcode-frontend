@@ -5,9 +5,13 @@ import './App.css';
 import { useTeacherDashboard } from './hooks/useTeacherDashboard';
 import { useTopicData } from './hooks/useTopicData';
 
+import ChatWidget from './components/ChatWidget';
+
 import TeacherDashboardPage from './pages/TeacherDashboardPage';
 import CoursePage from './pages/CoursePage';
 import TopicsDisplay from './components/TopicsDisplay';
+
+// import {BotpressChat} from './components/BotpressChat';
 
 import type { Course } from './components/dashboardData';
 
@@ -50,9 +54,15 @@ function App() {
   }
 
   return (
-    <Routes>
 
-      <Route
+    <>
+      <ChatWidget />
+
+    {/* <BotpressChat /> */}
+
+     <Routes> 
+
+       <Route
         path="/"
         element={
           <TeacherDashboardPage
@@ -61,9 +71,9 @@ function App() {
             onAddCourse={handleAddCourse}
           />
         }
-      />
+      /> 
 
-      <Route
+       <Route
         path="/courses/:id"
         element={<CoursePage />}
       />
@@ -80,8 +90,11 @@ function App() {
           </div>
         }
       />
+      
+    </Routes> 
 
-    </Routes>
+    </>
+
   );
 }
 

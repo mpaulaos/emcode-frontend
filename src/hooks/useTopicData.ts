@@ -20,7 +20,7 @@ export function useTopicData(): UseTopicDataResult {
         async function fetchTopics () {
             try {
 
-                const response = await fetch('http://localhost:3000/topics', { signal: controller.signal });
+                const response = await fetch('http://localhost:3000/api/topics', { signal: controller.signal });
 
                 if(!response.ok){
                     throw new Error(`Error fetching topics (HTTP ${response.status})`);
@@ -28,8 +28,6 @@ export function useTopicData(): UseTopicDataResult {
 
                 const data: Topic[] = await response.json();
                 setTopics(data);
-
-                console.log(data);
 
             } catch (err) {
 
