@@ -9,6 +9,7 @@ import GuidesPage from "./pages/GuidesPage";
 import { AboutPage } from "./pages/AboutPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { AuthCallbackPage } from "./pages/AuthCallbackPage";
 import TeacherDashboardPage  from "./pages/TeacherDashboardPage";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthContext";
@@ -30,10 +31,10 @@ function App() {
           <Route path="/acerca-de" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/teacher" element={<TeacherDashboardPage />} />
-          <Route path="/guides" element={<GuidesPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/teacher" element={<TeacherDashboardPage />} />
+            <Route path="/guides" element={<GuidesPage />} />
           </Route>
         </Routes>
 
