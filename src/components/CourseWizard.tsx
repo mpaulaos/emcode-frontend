@@ -1,4 +1,3 @@
-// CourseWizard.tsx
 import { useState } from "react";
 import { Button } from "react-aria-components";
 import { API_URL } from "../lib/api";

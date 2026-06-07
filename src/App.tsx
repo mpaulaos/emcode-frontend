@@ -7,6 +7,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import TeacherDashboardPage  from "./pages/TeacherDashboardPage";
 import Footer from "./components/Footer";
+import GuidesPage from "./pages/GuidesPage";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/teacher" element={<TeacherDashboardPage />} />
+          <Route path="/guides" element={<GuidesPage />} />
         </Routes>
 
         <Footer />
