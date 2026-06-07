@@ -29,8 +29,6 @@ export function useTopicData(): UseTopicDataResult {
                 const data: Topic[] = await response.json();
                 setTopics(data);
 
-                console.log(data);
-
             } catch (err) {
 
                 if(err instanceof DOMException && err.name === 'AbortError') return;
