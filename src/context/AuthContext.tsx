@@ -1,18 +1,25 @@
-import { useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import type { User, LoginCredentials } from '../types/auth';
 import { API_URL } from '../lib/api';
 
-interface UseLoginResult {
-  login: (credentials: LoginCredentials) => Promise<void>;
+const TOKEN_KEY = 'auth_token';
+const USER_KEY = 'auth_user';
+
+interface AuthContextValue {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
-  user: User | null;
-  isAuthenticated: boolean;
+  login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => void;
 }
 
-const TOKEN_KEY = 'auth_token';
-const USER_KEY = 'auth_user';
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+function getStoredToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY);
+}
 
 function getStoredUser(): User | null {
   try {
@@ -22,13 +29,10 @@ function getStoredUser(): User | null {
     return null;
   }
 }
-/*
-function getStoredToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
-}
-*/
-export function useLogin(): UseLoginResult {
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(getStoredUser);
+  const [token, setToken] = useState<string | null>(getStoredToken);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,12 +53,13 @@ export function useLogin(): UseLoginResult {
           body?.message ?? `Error al iniciar sesión (HTTP ${response.status})`,
         );
       }
-      
-      const data = await response.json();
-      const { token, user: loggedUser } = data;
 
-      localStorage.setItem(TOKEN_KEY, token);
+      const data = await response.json();
+      const { token: newToken, user: loggedUser } = data;
+
+      localStorage.setItem(TOKEN_KEY, newToken);
       localStorage.setItem(USER_KEY, JSON.stringify(loggedUser));
+      setToken(newToken);
       setUser(loggedUser);
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
@@ -67,16 +72,32 @@ export function useLogin(): UseLoginResult {
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    setToken(null);
     setUser(null);
     setError(null);
   }, []);
 
-  return {
-    login,
-    loading,
-    error,
-    user,
-    isAuthenticated: user !== null,
-    logout,
-  };
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        isAuthenticated: user !== null,
+        loading,
+        error,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth(): AuthContextValue {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
+  }
+  return ctx;
 }

@@ -73,7 +73,7 @@ export function HomePage() {
         <section aria-label="Hero" className="rounded-[20px] border border-border-card bg-surface-primary p-12 sm:p-16">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             <div className="space-y-6">
-              <h1 className="text-5xl leading-tight font-extrabold text-text-headings">Aprendé y enseñá programación de forma accesible</h1>
+              <h1 className="text-3xl md:text-5xl leading-tight font-extrabold text-text-headings">Aprendé y enseñá programación de forma accesible</h1>
               <p className="max-w-[620px] text-base text-text-body">Accedé a cursos, materiales y guías prácticas para mejorar la enseñanza y el aprendizaje de la programación, considerando distintas necesidades y estilos de aprendizaje.</p>
               <div className="pt-4">
                 <Button variant="primary" onPress={() => navigate("/login")}>Explorar cursos</Button>
@@ -94,14 +94,14 @@ export function HomePage() {
       <div className="mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12 mb-64">
         <section aria-label="Secciones de la plataforma">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold text-text-headings">¿Qué podés hacer en la plataforma?</h2>
+            <h2 className="text-2xl md:text-4xl font-semibold text-text-headings">¿Qué podés hacer en la plataforma?</h2>
             <p className="mt-6 text-base text-text-body">Explorá las principales formas de aprender, enseñar y compartir conocimiento dentro de la plataforma.</p>
           </div>
 
           <div className="mt-20 grid grid-cols-1 gap-10 md:grid-cols-2">
             {platformOptions.map((option) => (
               <div key={option.title} className="space-y-3">
-                <h3 className="text-lg font-semibold text-text-headings">{option.title}</h3>
+                <h3 className="text-xl md:text-3xl font-semibold text-text-headings">{option.title}</h3>
                 <p className="text-sm text-text-body">{option.description}</p>
               </div>
             ))}
@@ -112,11 +112,11 @@ export function HomePage() {
       <div className="mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12 mb-64">
         <section aria-label="Características principales">
           <div className="text-center">
-            <h3 className="text-3xl font-semibold text-text-headings">Características principales</h3>
+            <h3 className="text-2xl md:text-4xl font-semibold text-text-headings">Características principales</h3>
             <p className="mt-6 text-base text-text-body">Conocé las herramientas y funcionalidades diseñadas para facilitar una experiencia de aprendizaje accesible.</p>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
+          <div className="mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
             {features.map((feature) => (
               <div
                 key={feature.title}
@@ -125,7 +125,7 @@ export function HomePage() {
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary-700/10 text-primary-700 transition duration-200 group-hover:bg-primary-700 group-hover:text-white">
                   {feature.icon}
                 </div>
-                <h4 className="font-semibold text-text-headings">{feature.title}</h4>
+                <h4 className="text-xl md:text-3xl font-semibold text-text-headings">{feature.title}</h4>
                 <p className="mt-2 text-sm text-text-body">{feature.description}</p>
               </div>
             ))}
