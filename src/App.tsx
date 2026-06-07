@@ -13,6 +13,7 @@ import TeacherDashboardPage  from "./pages/TeacherDashboardPage";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import ChatWidget from "./components/ChatWidget";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
         </Routes>
 
         <Footer />
+        <ChatWidget />
       </div>
     </AuthProvider>
   );
