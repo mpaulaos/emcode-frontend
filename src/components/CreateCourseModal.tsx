@@ -2,7 +2,7 @@ import { Button } from "react-aria-components";
 import { X } from "lucide-react";
 
 import CourseWizard from "./CourseWizard";
-import type { Course } from "./dashboardData";
+import type { Course } from "../types/dashboard";
 
 interface CreateCourseModalProps {
   onClose: () => void;

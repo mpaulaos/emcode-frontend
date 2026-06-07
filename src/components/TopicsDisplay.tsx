@@ -5,7 +5,7 @@ import { Disclosure, DisclosureHeader } from "./kit/Disclosure";
 
 import { LessonsList } from "./LessonsList";
 
-import type { Topic } from "./topic";
+import type { Topic } from "../types/topic";
 import { useState } from "react";
 
 import { useLessonsListData } from "../hooks/useLessonsList";

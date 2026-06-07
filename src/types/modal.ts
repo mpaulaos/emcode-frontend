@@ -1,4 +1,4 @@
-// src/components/wizard/types.ts
+// src/types/modal.ts
 
 export interface CourseFormState {
   imageFile: File | null;

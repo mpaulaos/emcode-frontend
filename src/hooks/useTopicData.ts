@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-
-import type { Topic } from '../components/topic';
+import type { Topic } from '../types/topic';
+import { API_URL } from '../lib/api';
 
 interface UseTopicDataResult {
     topics: Topic[];
@@ -20,7 +20,7 @@ export function useTopicData(): UseTopicDataResult {
         async function fetchTopics () {
             try {
 
-                const response = await fetch('http://localhost:3000/api/topics', { signal: controller.signal });
+                const response = await fetch(`${API_URL}/topics`, { signal: controller.signal });
 
                 if(!response.ok){
                     throw new Error(`Error fetching topics (HTTP ${response.status})`);

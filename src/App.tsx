@@ -1,100 +1,42 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
-
-import { useTeacherDashboard } from './hooks/useTeacherDashboard';
-import { useTopicData } from './hooks/useTopicData';
-
-import ChatWidget from './components/ChatWidget';
-
-import TeacherDashboardPage from './pages/TeacherDashboardPage';
-import CoursePage from './pages/CoursePage';
-import TopicsDisplay from './components/TopicsDisplay';
-
-// import {BotpressChat} from './components/BotpressChat';
-
-import type { Course } from './components/dashboardData';
+import "swiper/swiper-bundle.css";
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { HomePage } from "./pages/HomePage";
+import { CoursesPage } from "./pages/CoursesPage";
+import CoursePage from "./pages/CoursePage";
+import { GuidesPage } from "./pages/GuidesPage";
+import { AboutPage } from "./pages/AboutPage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import TeacherDashboardPage  from "./pages/TeacherDashboardPage";
+import Footer from "./components/Footer";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
 
-  const { data, loading, error } = useTeacherDashboard();
-
-  const {
-    topics,
-    loading: topicsLoading,
-    error: topicsError,
-  } = useTopicData();
-
-  const [courses, setCourses] = useState<Course[]>([]);
-
-  useEffect(() => {
-    if (data?.courses) setCourses(data.courses);
-  }, [data]);
-
-  function handleAddCourse(newCourse: Course) {
-    setCourses((prev) => [...prev, newCourse]);
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-sm text-gray-600">Cargando...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p role="alert" className="text-sm text-red-600">
-          {error}
-        </p>
-      </div>
-    );
-  }
-
   return (
+    <AuthProvider>
+      <div className="min-h-screen bg-surface-page text-text-body">
+        <Navbar />
 
-    <>
-      <ChatWidget />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cursos" element={<CoursesPage />} />
+          <Route path="/cursos/:id" element={<CoursePage />} />
+          <Route path="/guias" element={<GuidesPage />} />
+          <Route path="/acerca-de" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/teacher" element={<TeacherDashboardPage />} />
+          </Route>
+        </Routes>
 
-    {/* <BotpressChat /> */}
-
-     <Routes> 
-
-       <Route
-        path="/"
-        element={
-          <TeacherDashboardPage
-            teacherName={data?.teacherName ?? ''}
-            courses={courses}
-            onAddCourse={handleAddCourse}
-          />
-        }
-      /> 
-
-       <Route
-        path="/courses/:id"
-        element={<CoursePage />}
-      />
-
-      <Route
-        path="/topics"
-        element={
-          <div className="min-h-screen flex flex-col items-center justify-center p-6 gap-6">
-            <TopicsDisplay
-              topics={topics}
-              loading={topicsLoading}
-              error={topicsError}
-            />
-          </div>
-        }
-      />
-      
-    </Routes> 
-
-    </>
-
+        <Footer />
+      </div>
+    </AuthProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ImageOff } from "lucide-react";
-import type { Course } from "./dashboardData";
+import type { Course } from "../types/dashboard";
 
 interface CourseCardProps {
   course: Course;

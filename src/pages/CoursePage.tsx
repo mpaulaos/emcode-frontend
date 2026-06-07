@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import Footer from '../components/Footer';
 import { useCourse } from '../hooks/useCourse';
 
 function CoursePage() {
@@ -7,7 +6,7 @@ function CoursePage() {
   const { course, loading, error, notFound } = useCourse(id); 
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-surface-card">
       <main
         id="main-content"
         tabIndex={-1}
@@ -16,19 +15,19 @@ function CoursePage() {
         <section aria-label="Detalle del curso" className="flex flex-col gap-4">
 
           {loading && (
-            <p className="text-sm text-gray-500">Cargando...</p>
+            <p className="text-sm text-text-body">Cargando...</p>
           )}
 
           {error && (
-            <p role="alert" className="text-sm text-red-600">{error}</p>
+            <p role="alert" className="text-sm text-text-danger">{error}</p>
           )}
 
           {notFound && (                                       
             <div className="flex flex-col gap-2">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-text-headings">
                 Curso no disponible
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-text-body">
                 El equipo de Emcode sigue chambeando para mostrar el detalle de este curso lo antes posible.
               </p>
             </div>
@@ -36,8 +35,8 @@ function CoursePage() {
 
           {!loading && !error && !notFound && course && (      
             <>
-              <h1 className="text-3xl font-bold text-gray-900">{course.title}</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
+              <p className="text-sm text-text-body">
                 No disponible. Estamos trabajando para mostrar el detalle del curso lo antes posible.
               </p>
             </>
@@ -45,7 +44,6 @@ function CoursePage() {
 
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

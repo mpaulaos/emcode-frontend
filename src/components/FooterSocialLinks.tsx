@@ -1,6 +1,6 @@
 import { Link } from "react-aria-components";
-import { socialLinks } from "./footerData";
-import type { SocialLink } from "./footerData";
+import { socialLinks } from "../types/footer";
+import type { SocialLink } from "../types/footer";
 
 function FooterSocialLinks() {
   return (
