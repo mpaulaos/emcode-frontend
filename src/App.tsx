@@ -30,7 +30,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/teacher" element={<TeacherDashboardPage teacherName="Profesor" courses={[]} onAddCourse={() => {}} />} />
+            <Route path="/teacher" element={<TeacherDashboardPage />} />
           </Route>
         </Routes>
 

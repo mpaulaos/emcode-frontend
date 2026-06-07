@@ -11,7 +11,13 @@ import { useAuth } from '../context/AuthContext';
 
 function validateEmail(value: string) {
   if (!value) return 'El correo electrónico es obligatorio';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Ingresa un correo electrónico válido';
+  const atIndex = value.indexOf('@');
+  if (atIndex < 1) return 'Ingresa un correo electrónico válido';
+  const local = value.slice(0, atIndex);
+  const domain = value.slice(atIndex + 1);
+  if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.'))
+    return 'Ingresa un correo electrónico válido';
+  if (/\s/.test(value)) return 'Ingresa un correo electrónico válido';
   return null;
 }
 
