@@ -5,7 +5,7 @@ import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { CoursesPage } from "./pages/CoursesPage";
 import CoursePage from "./pages/CoursePage";
-import { GuidesPage } from "./pages/GuidesPage";
+import GuidesPage from "./pages/GuidesPage";
 import { AboutPage } from "./pages/AboutPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
@@ -34,6 +34,7 @@ function App() {
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/teacher" element={<TeacherDashboardPage />} />
+            <Route path="/guides" element={<GuidesPage />} />
           </Route>
         </Routes>
 

@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import type { Course } from '../types/dashboard';
 import CreateCourseModal from '../components/CreateCourseModal';
 import { useTeacherDashboard } from '../hooks/useTeacherDashboard';
+import TeacherNavChips from '../components/TeacherChips';
 
 function TeacherDashboardPage() {
   const { data, loading, error } = useTeacherDashboard();
@@ -34,6 +35,8 @@ function TeacherDashboardPage() {
           </p>
         </section>
 
+          <TeacherNavChips />
+          
         <section aria-label="Mis cursos" className="flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-2xl font-bold text-gray-900">Mis cursos</h2>
@@ -52,6 +55,8 @@ function TeacherDashboardPage() {
           {!loading && courseList.length === 0 && (
             <p className="text-sm text-gray-500">Aún no tienes cursos creados.</p>
           )}
+
+         
           {courseList.length > 0 && <CourseList courses={courseList} />}
         </section>
       </main>
