@@ -34,10 +34,14 @@ export function LessonsList({ lessons, loading, error }: LessonsListProps) {
             key={lesson.id}
           >
             <div className="flex items-center gap-2 w-80 ">
-              <p className="text-success">{lesson.type + ": "}</p>
+              {lesson.lessonType === "theory" ? (
+                <p className="text-success">Lección: </p>
+              ) : (
+                <p className="text-success">Laboratorio: </p>
+              )}
               <p className="text-success">{lesson.lessonName}</p>
             </div>
-            <p className="w-30 text-right ">{lesson.status}</p>
+            {/* <p className="w-30 text-right ">{lesson.status}</p> */}
           </li>
         ))}
       </ul>
