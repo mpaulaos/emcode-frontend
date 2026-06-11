@@ -4,11 +4,13 @@ import { DisclosureGroup } from "./kit/DisclosureGroup";
 import { Disclosure, DisclosureHeader } from "./kit/Disclosure";
 
 import { LessonsList } from "./LessonsList";
-
 import type { Topic } from "../types/topic";
-import { useState } from "react";
-
 import { useLessonsListData } from "../hooks/useLessonsList";
+
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+
+
 
 interface TopicsDisplayProps {
   topics: Topic[];
@@ -18,12 +20,12 @@ interface TopicsDisplayProps {
 
 function TopicsDisplay({ topics, loading, error }: TopicsDisplayProps) {
   const [expandedKeys, setExpandedKeys] = useState(new Set<Key>([]));
-
+  const { id } = useParams<{ id: string }>();
   const {
     lessons,
     loading: lessonsLoading,
     error: lessonsError,
-  } = useLessonsListData();
+  } = useLessonsListData(id);
 
   if (loading) {
     return (

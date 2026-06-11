@@ -1,9 +1,25 @@
 import { useParams } from 'react-router-dom';
+// import { useState } from 'react';
+
 import { useCourse } from '../hooks/useCourse';
+import { useTopicData } from '../hooks/useTopicData';
+
+// import type {Course} from '../types/dashboard';
+// import type {Topic} from '../types/topic';
+
+import TopicDisplay from '../components/TopicsDisplay';
 
 function CoursePage() {
   const { id } = useParams<{ id: string }>();
   const { course, loading, error, notFound } = useCourse(id); 
+  const {topics, loading: topicsLoading, error: topicsError} = useTopicData(id);
+  // const [topic, setTopic] = useState<Topic | null>(null);
+  // const [courseData, setCourseData] = useState<Course | null>(null);
+
+  // function handleTopicSelect(selectedTopic: Topic) {
+  //   setTopic(selectedTopic);
+
+  // }
 
   return (
     <div className="flex min-h-screen flex-col bg-surface-card">
@@ -36,13 +52,14 @@ function CoursePage() {
           {!loading && !error && !notFound && course && (      
             <>
               <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
-              <p className="text-sm text-text-body">
-                No disponible. Estamos trabajando para mostrar el detalle del curso lo antes posible.
-              </p>
+              <p>Sigla: {course?.subtitle}</p>
+              <p>Descripción: {course?.description}</p>
             </>
           )}
 
         </section>
+
+        <TopicDisplay topics={topics} loading={topicsLoading} error={topicsError} />
       </main>
     </div>
   );
