@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import ChatWidget from "./components/ChatWidget";
+import DisabilityInfoPage from "./pages/DisabilityInfoPage";
 
 function App() {
 
@@ -33,8 +34,9 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/teacher" element={<TeacherDashboardPage />} />
-            <Route path="/guides" element={<GuidesPage />} />
+          <Route path="/teacher" element={<TeacherDashboardPage />} />
+          <Route path="/guides" element={<GuidesPage />} />
+          <Route path="/disabilities" element={<DisabilityInfoPage />} />
           </Route>
         </Routes>
 

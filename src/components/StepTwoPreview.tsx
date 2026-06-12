@@ -8,11 +8,11 @@ interface Step2PreviewProps {
 function Step2Preview({ form }: Step2PreviewProps) {
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-text-body">
         Así se verá el curso en el dashboard:
       </p>
 
-      <article className="overflow-hidden rounded-2xl bg-white transition duration-300">
+      <article className="overflow-hidden rounded-2xl bg-surface-primary transition duration-300">
         <div className="aspect-video overflow-hidden">
           {form.imagePreview ? (
             <img
@@ -22,14 +22,14 @@ function Step2Preview({ form }: Step2PreviewProps) {
             />
           ) : (
             <div
-              className="flex h-full w-full items-center justify-center bg-gray-100 rounded-t-2xl"
+              className="flex h-full w-full items-center justify-center bg-surface-card rounded-t-2xl"
               role="img"
               aria-label="El curso aún no tiene imagen de portada"
             >
               <ImageOff
                 size={36}
                 aria-hidden="true"
-                className="text-gray-400"
+                className="text-text-disabled"
               />
             </div>
           )}
@@ -38,10 +38,12 @@ function Step2Preview({ form }: Step2PreviewProps) {
         {/*Contenido del curso*/}
         <div className="flex flex-col gap-5 p-4">
           <div className="flex flex-col gap-1">
-            <h3 className="text-base font-bold text-gray-900">{form.title}</h3>
-            <p className="text-sm text-gray-600">{form.subtitle}</p>
+            <h3 className="text-base font-bold text-text-headings">
+              {form.title}
+            </h3>
+            <p className="text-sm text-text-body">{form.subtitle}</p>
           </div>
-          <p className="line-clamp-3 text-sm leading-6 text-gray-700">
+          <p className="line-clamp-3 text-sm leading-6 text-text-body">
             {form.description}
           </p>
         </div>

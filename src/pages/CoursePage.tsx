@@ -22,7 +22,7 @@ function CoursePage() {
   // }
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface-card">
+    <div className="flex min-h-screen flex-col bg-surface-page">
       <main
         id="main-content"
         tabIndex={-1}

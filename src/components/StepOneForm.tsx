@@ -29,17 +29,21 @@ function Step1Form({ form, onChange }: Step1FormProps) {
     <div className="flex flex-col gap-5">
       {/* Image upload */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label className="text-sm font-medium text-text-headings">
           Imagen del curso
         </label>
 
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 transition overflow-hidden 
-          hover:border-violet-400 hover:bg-violet-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-700"
+          className="relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-card bg-surface-card transition overflow-hidden 
+          hover:border-primary-400 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
           style={{ minHeight: "10rem" }}
-          aria-label={form.imagePreview ? "Cambiar imagen del curso" : "Subir imagen del curso"}
+          aria-label={
+            form.imagePreview
+              ? "Cambiar imagen del curso"
+              : "Subir imagen del curso"
+          }
         >
           {form.imagePreview ? (
             <img
@@ -51,13 +55,13 @@ function Step1Form({ form, onChange }: Step1FormProps) {
             <>
               <ImagePlus
                 size={28}
-                className="text-gray-400"
+                className="text-text-disabled"
                 aria-hidden="true"
               />
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-text-body">
                 Haz clic para subir una imagen
               </p>
-              <p className="text-xs text-gray-400">PNG, JPG, WEBP</p>
+              <p className="text-xs text-text-placeholders">PNG, JPG, WEBP</p>
             </>
           )}
         </button>
@@ -72,13 +76,12 @@ function Step1Form({ form, onChange }: Step1FormProps) {
         />
       </div>
 
-
       <div className="flex flex-col gap-1">
         <label
           htmlFor="course-title"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-text-headings"
         >
-          Título <span className="text-red-500">*</span>
+          Título <span className="text-text-danger">*</span>
         </label>
         <input
           id="course-title"
@@ -87,8 +90,8 @@ function Step1Form({ form, onChange }: Step1FormProps) {
           onChange={(e) => onChange("title", e.target.value)}
           maxLength={limits.title}
           placeholder="Ej. Fundamentos de Python"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400
-          focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+          className="w-full rounded-lg border border-border-card px-3 py-2 text-sm text-text-headings placeholder:text-text-placeholders
+          focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/30"
         />
         <CharCounter current={form.title.length} limit={limits.title} />
       </div>
@@ -97,9 +100,9 @@ function Step1Form({ form, onChange }: Step1FormProps) {
       <div className="flex flex-col gap-1">
         <label
           htmlFor="course-subtitle"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-text-headings"
         >
-          Subtítulo <span className="text-red-500">*</span>
+          Subtítulo <span className="text-text-danger">*</span>
         </label>
         <input
           id="course-subtitle"
@@ -108,8 +111,8 @@ function Step1Form({ form, onChange }: Step1FormProps) {
           onChange={(e) => onChange("subtitle", e.target.value)}
           maxLength={limits.subtitle}
           placeholder="Ej. Aprende desde cero hasta avanzado"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400
-          focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+          className="w-full rounded-lg border border-border-card px-3 py-2 text-sm text-text-headings placeholder:text-text-placeholders
+          focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/30"
         />
         <CharCounter current={form.subtitle.length} limit={limits.subtitle} />
       </div>
@@ -118,9 +121,9 @@ function Step1Form({ form, onChange }: Step1FormProps) {
       <div className="flex flex-col gap-1">
         <label
           htmlFor="course-description"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-text-headings"
         >
-          Descripción <span className="text-red-500">*</span>
+          Descripción <span className="text-text-danger">*</span>
         </label>
         <textarea
           id="course-description"
@@ -129,8 +132,8 @@ function Step1Form({ form, onChange }: Step1FormProps) {
           maxLength={limits.description}
           rows={3}
           placeholder="Describe brevemente el curso"
-          className="w-full resize-y rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400
-          focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+          className="w-full resize-y rounded-lg border border-border-card px-3 py-2 text-sm text-text-headings placeholder:text-text-placeholders
+          focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/30"
         />
         <CharCounter
           current={form.description.length}
