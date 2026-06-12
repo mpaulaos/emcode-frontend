@@ -53,8 +53,8 @@ function GuidesPage() {
       if (!res.ok) throw new Error("No se pudo cargar el contenido de la guía.");
       const data: GuideDetail = await res.json();
       setSelected(data);
-    } catch (error) {
-      setError((error as Error).message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setLoadingDetail(false);
     }
@@ -146,6 +146,12 @@ function GuidesPage() {
           </p>
         )}
 
+          {error && (
+            <p className="text-sm text-text-danger" aria-live="polite">
+              {error}
+            </p>
+          )}
+          
         {/*Contenido de la guía seleccionada*/}
         {selected && !loadingDetail && (
           <article
