@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import type { TeacherDashboardData } from "../types/dashboard";
-import { API_URL } from "../lib/api";
+import { useState, useEffect } from 'react';
+import type { TeacherDashboardData } from '../types/dashboard';
+import { API_URL } from '../lib/api';
 
 interface UseTeacherDashboardResult {
   data: TeacherDashboardData | null;

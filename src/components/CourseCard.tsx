@@ -8,14 +8,14 @@ interface CourseCardProps {
 
 function CourseCard({ course }: CourseCardProps) {
   return (
-    <article className="overflow-hidden rounded-2xl bg-white transition duration-300 motion-safe:hover:-translate-y-1 hover:shadow-lg">
+    <article className="h-full overflow-hidden rounded-2xl bg-surface-primary transition duration-300 motion-safe:hover:-translate-y-1 hover:shadow-lg has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-border-focus has-[a:focus-visible]:ring-offset-2">
       <Link
         to={`/courses/${course.id}`}
         aria-label={`Ver detalle del curso: ${course.title}`}
-        className="flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-700 focus-visible:ring-offset-2 "
+        className="flex h-full flex-col focus:outline-none"
       >
         {/* Imagen */}
-        <div className="aspect-video overflow-hidden">
+        <div className="aspect-video shrink-0 overflow-hidden">
           {course.image ? (
             <img
               src={course.image}
@@ -25,28 +25,28 @@ function CourseCard({ course }: CourseCardProps) {
             />
           ) : (
             <div
-              className="flex h-full w-full items-center justify-center bg-gray-100 rounded-t-2xl"
+              className="flex h-full w-full items-center justify-center bg-surface-card rounded-t-2xl"
               role="img"
               aria-label={`El curso ${course.title} aún no tiene imagen de portada`}
             >
               <ImageOff
                 size={36}
                 aria-hidden="true"
-                className="text-gray-400"
+                className="text-text-disabled"
               />
             </div>
           )}
         </div>
 
-        {/* Contenido del currso*/}
-        <div className="flex flex-col gap-5 p-4">
+        {/* Contenido del curso */}
+        <div className="flex flex-1 flex-col gap-3 p-4">
           <div className="flex flex-col gap-1">
-            <h3 className="text-base font-bold text-gray-900">
+            <h3 className="text-base font-bold text-text-headings">
               {course.title}
             </h3>
-            <p className="text-sm text-gray-600">{course.subtitle}</p>
+            <p className="text-sm text-text-body">{course.subtitle}</p>
           </div>
-          <p className="line-clamp-3 text-sm leading-6 text-gray-700">
+          <p className="line-clamp-3 text-sm leading-6 text-text-body">
             {course.description}
           </p>
         </div>

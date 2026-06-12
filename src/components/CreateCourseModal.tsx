@@ -31,7 +31,7 @@ function CreateCourseModal({ onClose, onAddCourse }: CreateCourseModalProps) {
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
         <div
-          className="relative flex w-full max-w-3xl min-w-150 flex-col gap-6 rounded-2xl bg-white p-6 shadow-xl overflow-y-auto"
+          className="relative flex w-full max-w-3xl min-w-150 flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
           tabIndex={-1}
           onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
@@ -40,14 +40,14 @@ function CreateCourseModal({ onClose, onAddCourse }: CreateCourseModalProps) {
           <div className="flex items-center justify-between">
             <h2
               id="modal-title"
-              className="text-lg font-semibold text-gray-900"
+              className="text-lg font-semibold text-text-headings"
             >
               Crear curso
             </h2>
             <Button
               aria-label="Cerrar modal"
               onPress={onClose}
-              className="flex items-center justify-center rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 focus-visible:ring-2 focus-visible:ring-violet-700"
+              className="flex items-center justify-center rounded-lg p-1.5 text-text-disabled transition hover:bg-surface-card hover:text-text-body focus-visible:ring-2 focus-visible:ring-border-focus"
             >
               <X size={18} aria-hidden="true" />
             </Button>

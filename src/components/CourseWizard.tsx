@@ -71,12 +71,12 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
       {step === 1 && <Step1Form form={form} onChange={handleChange} />}
       {step === 2 && <Step2Preview form={form} />}
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-text-danger">{error}</p>}
 
       <div className="flex items-center justify-between gap-4">
         <Button
           onPress={step === 1 ? onCancel : () => { setStep(1); setError(null); }}
-          className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 focus-visible:ring-2 focus-visible:ring-violet-700"
+          className="rounded-lg border border-border-card px-5 py-2 text-sm font-medium text-text-body transition hover:bg-surface-card focus-visible:ring-2 focus-visible:ring-border-focus"
         >
           {step === 1 ? "Cancelar" : "Atrás"}
         </Button>
@@ -85,7 +85,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
           <Button
             isDisabled={!canAdvance}
             onPress={() => { setStep(2); setError(null); }}
-            className="rounded-lg bg-violet-700 px-5 py-2 text-sm font-semibold text-white transition hover:bg-violet-800 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-violet-700"
+            className="rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus"
           >
             Siguiente
           </Button>
@@ -93,7 +93,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
           <Button
             isDisabled={loading}
             onPress={handlePublish}
-            className="rounded-lg bg-violet-700 px-5 py-2 text-sm font-semibold text-white transition hover:bg-violet-800 disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-violet-700"
+            className="rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus"
           >
             {loading ? "Publicando..." : "Publicar"}
           </Button>
