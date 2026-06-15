@@ -113,13 +113,12 @@ function ChatWidget() {
                 key={msg.id}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} py-3`}
               >
-                <div
+                <article
                   className={messageBubble({ role: msg.role })}
-                  role="article"
                   aria-label={msg.role === "user" ? "Tu mensaje" : "Respuesta del asistente"}
                 >
                   {msg.content}
-                </div>
+                </article>
               </div>
             ))}
 

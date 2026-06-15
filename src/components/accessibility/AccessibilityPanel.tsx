@@ -21,16 +21,22 @@ interface AccessibilityPanelProps {
 export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && panelRef.current) {
@@ -47,12 +53,9 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
         onClick={onClose}
         aria-hidden="true"
       />
-      <div
+      <section
         ref={panelRef}
-        role="dialog"
-        aria-modal={isOpen ? 'true' as const : undefined}
         aria-label="Panel de accesibilidad"
-        tabIndex={isOpen ? -1 : undefined}
         className={`fixed top-0 z-[9999] h-screen transition-[right] duration-300 ease-in-out ${
           isOpen ? 'right-0' : 'right-[-100%]'
         }`}
@@ -88,7 +91,7 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

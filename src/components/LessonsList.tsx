@@ -48,5 +48,3 @@ export function LessonsList({ lessons, loading, error }: LessonsListProps) {
     </div>
   );
 }
-
-export default LessonsList;
