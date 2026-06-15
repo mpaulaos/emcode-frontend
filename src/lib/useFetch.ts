@@ -20,7 +20,7 @@ type FetchAction<T> =
   | { type: 'HTTP_ERROR'; status: number }
   | { type: 'ERROR'; error: string };
 
-function fetchReducer<T>(state: FetchState<T>, action: FetchAction<T>): FetchState<T> {
+function fetchReducer<T>(_state: FetchState<T>, action: FetchAction<T>): FetchState<T> {
   switch (action.type) {
     case 'START':
       return { data: null, loading: true, error: null, status: null };
@@ -43,6 +43,7 @@ export function useFetch<T>(url: string | null): UseFetchResult<T> {
 
   useEffect(() => {
     if (!url) return;
+    const safeUrl: string = url;
 
     dispatch({ type: 'START' });
 
@@ -50,7 +51,7 @@ export function useFetch<T>(url: string | null): UseFetchResult<T> {
 
     async function fetchData() {
       try {
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch(safeUrl, { signal: controller.signal });
         if (!response.ok) {
           dispatch({ type: 'HTTP_ERROR', status: response.status });
           return;
