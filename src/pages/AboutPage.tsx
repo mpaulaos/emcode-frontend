@@ -1,8 +1,39 @@
+import { HeroSection } from "./about/HeroSection";
+import { StorySection } from "./about/StorySection";
+import { MissionVisionSection } from "./about/MissionVisionSection";
+import { ValuesSection } from "./about/ValuesSection";
+import { TechStackSection } from "./about/TechStackSection";
+import { TeamSection } from "./about/TeamSection";
+import { StatsSection } from "./about/StatsSection";
+import { RoadmapSection } from "./about/RoadmapSection";
+import { FAQSection } from "./about/FAQSection";
+import { CTASection } from "./about/CTASection";
+
 export function AboutPage() {
   return (
-    <div className="mx-auto w-full max-w-310 px-6 py-12">
-      <h1 className="text-3xl font-semibold text-text-headings">Acerca de</h1>
-      <p className="mt-2 text-sm text-text-body">Conocé más sobre Emcode. Sección en construcción.</p>
+    <div className="mx-auto flex w-full max-w-[1240px] flex-col px-6 py-12 sm:px-8 lg:px-12">
+      <div className="mb-32">
+        <HeroSection />
+      </div>
+      <div className="mb-32">
+        <StorySection />
+      </div>
+      <div className="mb-32">
+        <MissionVisionSection />
+      </div>
+      <div className="mb-32">
+        <ValuesSection />
+      </div>
+      <div className="mb-32">
+        <TechStackSection />
+      </div>
+      <div className="mb-32">
+        <TeamSection />
+      </div>
+      <div className="mb-32">
+        <FAQSection />
+      </div>
+      <CTASection />
     </div>
   );
 }
