@@ -4,8 +4,6 @@ import { MissionVisionSection } from "./about/MissionVisionSection";
 import { ValuesSection } from "./about/ValuesSection";
 import { TechStackSection } from "./about/TechStackSection";
 import { TeamSection } from "./about/TeamSection";
-import { StatsSection } from "./about/StatsSection";
-import { RoadmapSection } from "./about/RoadmapSection";
 import { FAQSection } from "./about/FAQSection";
 import { CTASection } from "./about/CTASection";
 
