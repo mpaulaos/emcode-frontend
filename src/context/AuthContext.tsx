@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react';
+import { createContext, use, useState, useCallback, useMemo, type ReactNode } from 'react';
 import type { User, LoginCredentials } from '../types/auth';
 import { API_URL } from '../lib/api';
 
@@ -105,7 +105,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
 }
 
 export function useAuth(): AuthContextValue {
-  const ctx = useContext(AuthContext);
+  const ctx = use(AuthContext);
   if (!ctx) {
     throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { use } from "react";
 import { Button } from "react-aria-components";
 import {
     Disclosure as AriaDisclosure,
@@ -50,7 +50,7 @@ export interface DisclosureHeaderProps {
 }
 
 export function DisclosureHeader({ children }: DisclosureHeaderProps) {
-    let { isExpanded } = useContext(DisclosureStateContext)!;
+    let { isExpanded } = use(DisclosureStateContext)!;
     return (
         <Heading className="text-sm font-semibold m-0 text-black">
             <Button
