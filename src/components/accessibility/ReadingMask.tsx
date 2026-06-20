@@ -15,26 +15,44 @@ export function ReadingMask() {
   if (settings.readingMode === 'off') return null;
 
   const bandHeight = settings.readingMode === 'mask' ? 220 : 48;
-  const top = mouseY - bandHeight / 2;
-  const bottom = window.innerHeight - mouseY - bandHeight / 2;
+  const bandTop = Math.max(0, mouseY - bandHeight / 2);
+  const bandBottom = Math.max(0, window.innerHeight - mouseY - bandHeight / 2);
+  const opacity = settings.readingMode === 'mask' ? 0.55 : 0.3;
 
   return (
-    <div
-      aria-hidden="true"
-      className="fixed inset-0 z-[9999] pointer-events-none"
-      style={{
-        clipPath: `inset(${top}px 0 ${bottom}px 0)`,
-        background: settings.readingMode === 'mask'
-          ? 'rgba(0,0,0,0)'
-          : 'rgba(0,0,0,0)',
-      }}
-    >
+    <>
+      <div
+        aria-hidden="true"
+        className="fixed left-0 right-0 z-[9999] pointer-events-none"
+        style={{
+          top: 0,
+          height: `${bandTop}px`,
+          background: `rgba(0, 0, 0, ${opacity})`,
+        }}
+      />
+
       {settings.readingMode === 'ruler' && (
         <div
-          className="absolute left-0 right-0 top-1/2 border-b-2 border-primary-700"
-          style={{ transform: 'translateY(-50%)' }}
-        />
+          aria-hidden="true"
+          className="fixed left-0 right-0 z-[9999] pointer-events-none"
+          style={{
+            top: `${bandTop}px`,
+            height: `${bandHeight}px`,
+          }}
+        >
+          <div className="absolute left-0 right-0 bottom-0 border-b-2 border-primary-700" />
+        </div>
       )}
-    </div>
+
+      <div
+        aria-hidden="true"
+        className="fixed left-0 right-0 z-[9999] pointer-events-none"
+        style={{
+          bottom: 0,
+          height: `${bandBottom}px`,
+          background: `rgba(0, 0, 0, ${opacity})`,
+        }}
+      />
+    </>
   );
 }

@@ -10,6 +10,7 @@ import {
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
 import { useChat } from "../hooks/useChat";
+import { useAccessibility } from "../hooks/useAccessibility";
 import { X, Send } from "lucide-react";
 
 import gekobot from "../assets/Gekobot.png";
@@ -39,12 +40,14 @@ const sendButton = tv({
 
 function ChatWidget() {
   const { messages, isLoading, error, sendMessage} = useChat();
+  const { settings } = useAccessibility();
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    const prefersReduced = settings.reducedMotion !== 'off' || settings.pauseAnimations;
+    bottomRef.current?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
+  }, [messages, settings.reducedMotion, settings.pauseAnimations]);
 
   const handleSubmit = async () => {
     if (!input.trim() || isLoading) return;

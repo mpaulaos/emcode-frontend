@@ -175,6 +175,35 @@
   scroll-behavior: auto !important;
 }
 
+[data-pause-animations] *,
+[data-pause-animations] *::before,
+[data-pause-animations] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+[data-stop-flashing] *,
+[data-stop-flashing] *::before,
+[data-stop-flashing] *::after {
+  animation: none !important;
+}
+
+[data-reduced-motion="off-all"] *:hover,
+[data-reduced-motion="off-all"] *:hover::before,
+[data-reduced-motion="off-all"] *:hover::after,
+[data-pause-animations] *:hover,
+[data-pause-animations] *:hover::before,
+[data-pause-animations] *:hover::after {
+  --tw-translate-x: 0 !important;
+  --tw-translate-y: 0 !important;
+  --tw-scale-x: 1 !important;
+  --tw-scale-y: 1 !important;
+  --tw-rotate: 0 !important;
+  --tw-skew-x: 0 !important;
+  --tw-skew-y: 0 !important;
+}
+
 /* ---------------------------------------------------------------------------
    FOCUS INDICATORS
    --------------------------------------------------------------------------- */
@@ -213,13 +242,13 @@
 [data-highlight-headings] h6 {
   outline: 2px solid Highlight;
   outline-offset: 2px;
-  background-color: rgba(0, 0, 255, 0.05);
+  background-color: color-mix(in srgb, var(--border-focus) 20%, transparent);
 }
 
 [data-highlight-links] a {
   outline: 2px solid Highlight;
   outline-offset: 2px;
-  background-color: rgba(255, 255, 0, 0.1);
+  background-color: color-mix(in srgb, var(--border-focus) 20%, transparent);
   text-decoration: underline !important;
 }
 
@@ -227,7 +256,7 @@
 [data-highlight-buttons] [role="button"] {
   outline: 2px solid Highlight;
   outline-offset: 2px;
-  background-color: rgba(0, 255, 0, 0.05);
+  box-shadow: inset 0 0 0 2px Highlight;
 }
 
 /* ---------------------------------------------------------------------------
