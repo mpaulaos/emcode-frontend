@@ -140,19 +140,19 @@
    COLOR BLINDNESS — SVG filters applied to <html>
    --------------------------------------------------------------------------- */
 [data-color-blindness="protanopia"] {
-  filter: url(#protanopia);
+  filter: url(#protanopia) contrast(1.1);
 }
 
 [data-color-blindness="deuteranopia"] {
-  filter: url(#deuteranopia);
+  filter: url(#deuteranopia) contrast(1.1);
 }
 
 [data-color-blindness="tritanopia"] {
-  filter: url(#tritanopia);
+  filter: url(#tritanopia) contrast(1.1);
 }
 
 [data-color-blindness="achromatopsia"] {
-  filter: url(#achromatopsia);
+  filter: url(#achromatopsia) contrast(1.1);
 }
 
 /* ---------------------------------------------------------------------------
