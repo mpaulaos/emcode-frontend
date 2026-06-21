@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { use } from "react";
 import { Button } from "react-aria-components";
 import {
     Disclosure as AriaDisclosure,
-    DisclosurePanel as AriaDisclosurePanel,
     DisclosureStateContext,
     Heading,
     type DisclosurePanelProps as AriaDisclosurePanelProps,
@@ -50,7 +49,7 @@ export interface DisclosureHeaderProps {
 }
 
 export function DisclosureHeader({ children }: DisclosureHeaderProps) {
-    let { isExpanded } = useContext(DisclosureStateContext)!;
+    let { isExpanded } = use(DisclosureStateContext)!;
     return (
         <Heading className="text-sm font-semibold m-0 text-black">
             <Button
@@ -73,12 +72,4 @@ export function DisclosureHeader({ children }: DisclosureHeaderProps) {
 
 export interface DisclosurePanelProps extends AriaDisclosurePanelProps {
     children: React.ReactNode;
-}
-
-export function DisclosurePanel({ children, ...props }: DisclosurePanelProps) {
-    return (
-        <AriaDisclosurePanel {...props} className={composeRenderProps(props.className, (className, renderProps) => disclosure({ ...renderProps, className }))}>
-            <div className="px-4 py-2">{children}</div>
-        </AriaDisclosurePanel>
-    );
 }

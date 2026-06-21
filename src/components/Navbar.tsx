@@ -11,6 +11,7 @@ export interface NavbarLink {
 
 export interface NavbarProps {
   links?: NavbarLink[];
+  onAccessibilityOpen?: () => void;
 }
 
 const defaultLinks: NavbarLink[] = [
@@ -19,6 +20,16 @@ const defaultLinks: NavbarLink[] = [
   { label: "Cursos", href: "/cursos" },
   { label: "Acerca de", href: "/acerca-de" },
 ];
+
+const accessibilityIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <circle cx="16" cy="4" r="1" />
+    <path d="m18 19 1-7-6 1" />
+    <path d="m5 8 3-3 5.5 3-2.36 3.5" />
+    <path d="M4.24 14.5a5 5 0 0 0 6.88 6" />
+    <path d="M13.76 17.5a5 5 0 0 0-6.88-6" />
+  </svg>
+);
 
 const closeIcon = (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,7 +46,7 @@ const menuIcon = (
   </svg>
 );
 
-export function Navbar({ links = defaultLinks }: NavbarProps) {
+export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProps) {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -86,6 +97,14 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-3">
+          <Button
+            onPress={onAccessibilityOpen}
+            aria-label="Abrir panel de accesibilidad"
+            variant="secondary"
+            className="hidden md:flex"
+          >
+            {accessibilityIcon}
+          </Button>
           <div className="hidden items-center gap-3 md:flex">
             {isAuthenticated ? (
               <>
@@ -123,6 +142,7 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
             )}
           </div>
           <button
+            type="button"
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Abrir menú de navegación"
             className="flex items-center justify-center md:hidden p-3 min-h-[44px] min-w-[44px] text-text-body"
@@ -149,6 +169,7 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
           <div className="flex items-center justify-between px-6 py-4 border-b border-border-card">
             <span className="font-semibold tracking-wider">EMCODE</span>
             <button
+              type="button"
               onClick={closeMenu}
               aria-label="Cerrar menú"
               className="flex items-center justify-center p-3 min-h-[44px] min-w-[44px] text-text-body"
@@ -158,6 +179,15 @@ export function Navbar({ links = defaultLinks }: NavbarProps) {
           </div>
 
           <nav className="flex flex-col items-stretch gap-8 px-6 mb-16 bg-surface-page">
+            <Button
+              onPress={() => { onAccessibilityOpen?.(); closeMenu(); }}
+              aria-label="Abrir panel de accesibilidad"
+              variant="quiet"
+              className="flex items-center gap-3 py-3 min-h-[44px] pl-4 text-lg border-l-2 border-transparent"
+            >
+              {accessibilityIcon}
+              Accesibilidad
+            </Button>
             {links.map((link) => (
               <NavLink
                 key={link.label}

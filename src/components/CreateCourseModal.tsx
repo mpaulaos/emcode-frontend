@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { Button } from "react-aria-components";
 import { X } from "lucide-react";
 
@@ -10,53 +11,41 @@ interface CreateCourseModalProps {
 }
 
 function CreateCourseModal({ onClose, onAddCourse }: CreateCourseModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    dialogRef.current?.showModal();
+  }, []);
+
   function handlePublish(course: Course) {
     onAddCourse(course);
     onClose();
   }
 
   return (
-    <>
-      {/*overlay*/}
-      <div
-        className="fixed inset-0 z-40 bg-black/50"
-        aria-hidden="true"
-        onClick={onClose}
-      />
-
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      >
-        <div
-          className="relative flex w-full max-w-3xl min-w-150 flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
-          tabIndex={-1}
-          onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
+    <dialog
+      ref={dialogRef}
+      onClose={onClose}
+      className="fixed inset-0 z-50 m-auto flex h-fit w-full max-w-3xl min-w-150 flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl backdrop:bg-black/50 open:flex"
+    >
+      <div className="flex items-center justify-between">
+        <h2
+          id="modal-title"
+          className="text-lg font-semibold text-text-headings"
         >
-          {/*Header*/}
-          <div className="flex items-center justify-between">
-            <h2
-              id="modal-title"
-              className="text-lg font-semibold text-text-headings"
-            >
-              Crear curso
-            </h2>
-            <Button
-              aria-label="Cerrar modal"
-              onPress={onClose}
-              className="flex items-center justify-center rounded-lg p-1.5 text-text-disabled transition hover:bg-surface-card hover:text-text-body focus-visible:ring-2 focus-visible:ring-border-focus"
-            >
-              <X size={18} aria-hidden="true" />
-            </Button>
-          </div>
-
-          <CourseWizard onCancel={onClose} onPublish={handlePublish} />
-        </div>
+          Crear curso
+        </h2>
+        <Button
+          aria-label="Cerrar modal"
+          onPress={onClose}
+          className="flex items-center justify-center rounded-lg p-1.5 text-text-disabled transition hover:bg-surface-card hover:text-text-body focus-visible:ring-2 focus-visible:ring-border-focus"
+        >
+          <X size={18} aria-hidden="true" />
+        </Button>
       </div>
-    </>
+
+      <CourseWizard onCancel={onClose} onPublish={handlePublish} />
+    </dialog>
   );
 }
 

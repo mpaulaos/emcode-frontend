@@ -1,0 +1,271 @@
+/* =============================================================================
+   ACCESSIBILITY OVERRIDES
+   Applied via data-* attributes on <html> set by AccessibilityContext.
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   TEXT SIZE
+   --------------------------------------------------------------------------- */
+[data-text-size="reduced"] {
+  font-size: 87.5%;
+  --text-body-size: 14px;
+  --text-body-lh: 18px;
+  --text-body-lg-size: 17px;
+  --text-body-lg-lh: 20px;
+  --text-body-sm-size: 12px;
+  --text-body-sm-lh: 15px;
+  --text-h1-size: 40px;
+  --text-h1-lh: 46px;
+  --text-h2-size: 34px;
+  --text-h2-lh: 40px;
+  --text-h3-size: 28px;
+  --text-h3-lh: 32px;
+  --text-h4-size: 24px;
+  --text-h4-lh: 28px;
+  --text-h5-size: 20px;
+  --text-h5-lh: 24px;
+  --text-h6-size: 17px;
+  --text-h6-lh: 20px;
+}
+
+[data-text-size="increased"] {
+  font-size: 125%;
+  --text-body-size: 20px;
+  --text-body-lh: 26px;
+  --text-body-lg-size: 24px;
+  --text-body-lg-lh: 30px;
+  --text-body-sm-size: 17px;
+  --text-body-sm-lh: 22px;
+  --text-h1-size: 56px;
+  --text-h1-lh: 64px;
+  --text-h2-size: 48px;
+  --text-h2-lh: 56px;
+  --text-h3-size: 38px;
+  --text-h3-lh: 44px;
+  --text-h4-size: 32px;
+  --text-h4-lh: 38px;
+  --text-h5-size: 28px;
+  --text-h5-lh: 34px;
+  --text-h6-size: 24px;
+  --text-h6-lh: 28px;
+}
+
+[data-text-size="extra-large"] {
+  font-size: 150%;
+  --text-body-size: 24px;
+  --text-body-lh: 32px;
+  --text-body-lg-size: 28px;
+  --text-body-lg-lh: 36px;
+  --text-body-sm-size: 20px;
+  --text-body-sm-lh: 26px;
+  --text-h1-size: 64px;
+  --text-h1-lh: 72px;
+  --text-h2-size: 56px;
+  --text-h2-lh: 64px;
+  --text-h3-size: 44px;
+  --text-h3-lh: 52px;
+  --text-h4-size: 38px;
+  --text-h4-lh: 44px;
+  --text-h5-size: 32px;
+  --text-h5-lh: 38px;
+  --text-h6-size: 28px;
+  --text-h6-lh: 34px;
+}
+
+/* ---------------------------------------------------------------------------
+   TEXT SPACING
+   --------------------------------------------------------------------------- */
+[data-letter-spacing="wide"] {
+  letter-spacing: 0.12em !important;
+}
+
+[data-letter-spacing="wider"] {
+  letter-spacing: 0.25em !important;
+}
+
+[data-word-spacing="wide"] {
+  word-spacing: 0.16em !important;
+}
+
+[data-word-spacing="wider"] {
+  word-spacing: 0.35em !important;
+}
+
+[data-line-height="relaxed"] {
+  line-height: 1.5 !important;
+}
+
+[data-line-height="extra-relaxed"] {
+  line-height: 2 !important;
+}
+
+/* ---------------------------------------------------------------------------
+   CONTRAST
+   --------------------------------------------------------------------------- */
+[data-contrast="high"] {
+  --text-headings: #000000;
+  --text-body: #1a1a1a;
+  --text-disabled: #555555;
+  --border-card: #000000;
+  --border-action: #000000;
+  --text-action: #0000ee;
+  --text-action-hover: #551a8b;
+}
+
+[data-contrast="high"][data-theme="dark"] {
+  --text-headings: #ffffff;
+  --text-body: #f0f0f0;
+  --text-disabled: #aaaaaa;
+  --border-card: #ffffff;
+  --border-action: #ffffff;
+  --text-action: #6699ff;
+  --text-action-hover: #99bbff;
+}
+
+[data-contrast="inverted"] :where(body) {
+  background-color: #000000 !important;
+}
+
+[data-contrast="inverted"] {
+  --text-headings: #ffffff;
+  --text-body: #f0f0f0;
+  --surface-page: #000000;
+  --surface-primary: #1a1a1a;
+  --surface-card: #222222;
+  --border-card: #ffffff;
+  --text-action: #6699ff;
+}
+
+/* ---------------------------------------------------------------------------
+   COLOR BLINDNESS — SVG filters applied to <html>
+   --------------------------------------------------------------------------- */
+[data-color-blindness="protanopia"] {
+  filter: url(#protanopia) contrast(1.1);
+}
+
+[data-color-blindness="deuteranopia"] {
+  filter: url(#deuteranopia) contrast(1.1);
+}
+
+[data-color-blindness="tritanopia"] {
+  filter: url(#tritanopia) contrast(1.1);
+}
+
+[data-color-blindness="achromatopsia"] {
+  filter: url(#achromatopsia) contrast(1.1);
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------------------------- */
+[data-reduced-motion="reduce"] *,
+[data-reduced-motion="reduce"] *::before,
+[data-reduced-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+[data-reduced-motion="off-all"] *,
+[data-reduced-motion="off-all"] *::before,
+[data-reduced-motion="off-all"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+[data-pause-animations] *,
+[data-pause-animations] *::before,
+[data-pause-animations] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+[data-stop-flashing] *,
+[data-stop-flashing] *::before,
+[data-stop-flashing] *::after {
+  animation: none !important;
+}
+
+[data-reduced-motion="off-all"] *:hover,
+[data-reduced-motion="off-all"] *:hover::before,
+[data-reduced-motion="off-all"] *:hover::after,
+[data-pause-animations] *:hover,
+[data-pause-animations] *:hover::before,
+[data-pause-animations] *:hover::after {
+  --tw-translate-x: 0 !important;
+  --tw-translate-y: 0 !important;
+  --tw-scale-x: 1 !important;
+  --tw-scale-y: 1 !important;
+  --tw-rotate: 0 !important;
+  --tw-skew-x: 0 !important;
+  --tw-skew-y: 0 !important;
+}
+
+/* ---------------------------------------------------------------------------
+   FOCUS INDICATORS
+   --------------------------------------------------------------------------- */
+[data-strong-focus-indicators] :focus-visible {
+  outline: 3px solid Highlight !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px canvas !important;
+}
+
+[data-highlight-focus] :focus {
+  outline: 2px solid Highlight !important;
+  outline-offset: 2px !important;
+}
+
+/* ---------------------------------------------------------------------------
+   COGNITIVE — Simplified interface
+   --------------------------------------------------------------------------- */
+[data-simplified-interface] {
+  --spacing-lg: 12px;
+  --spacing-xl: 16px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+}
+
+[data-hide-decorations] img:not([alt]),
+[data-hide-decorations] svg:not([aria-hidden]),
+[data-hide-decorations] [role="presentation"] {
+  display: none !important;
+}
+
+[data-highlight-headings] h1,
+[data-highlight-headings] h2,
+[data-highlight-headings] h3,
+[data-highlight-headings] h4,
+[data-highlight-headings] h5,
+[data-highlight-headings] h6 {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+  background-color: color-mix(in srgb, var(--border-focus) 20%, transparent);
+}
+
+[data-highlight-links] a {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+  background-color: color-mix(in srgb, var(--border-focus) 20%, transparent);
+  text-decoration: underline !important;
+}
+
+[data-highlight-buttons] button,
+[data-highlight-buttons] [role="button"] {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+  box-shadow: inset 0 0 0 2px Highlight;
+}
+
+/* ---------------------------------------------------------------------------
+   CURSOR SIZE — via custom cursor on body
+   --------------------------------------------------------------------------- */
+[data-cursor-size="large"] body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='6' cy='6' r='6' fill='none' stroke='%23000' stroke-width='2'/%3E%3Ccircle cx='6' cy='6' r='3' fill='%23000'/%3E%3C/svg%3E") 6 6, auto;
+}
+
+[data-cursor-size="extra-large"] body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='10' cy='10' r='10' fill='none' stroke='%23000' stroke-width='3'/%3E%3Ccircle cx='10' cy='10' r='5' fill='%23000'/%3E%3C/svg%3E") 10 10, auto;
+}
