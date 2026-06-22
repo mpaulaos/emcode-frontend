@@ -1,6 +1,7 @@
-import { useFetch } from '../lib/useFetch';
+import { useState } from 'react';
 import type { Topic } from '../types/topic';
 import { API_URL } from '../lib/api';
+import { useEffect } from 'react';
 
 interface UseTopicDataResult {
     topics: Topic[];
@@ -9,9 +10,9 @@ interface UseTopicDataResult {
 }
 
 export function useTopicData(id: string | undefined): UseTopicDataResult {
-    const { data, loading, error } = useFetch<Topic[]>(
-      id ? `${API_URL}/api/topics/course/${id}` : null
-    );
+    const [topics, setTopics] = useState<Topic[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
 
