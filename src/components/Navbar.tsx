@@ -70,7 +70,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-card bg-surface-page/95 backdrop-blur-sm py-4">
-      <div className="flex items-center justify-between gap-4 px-16">
+      <div className="flex items-center justify-between gap-4 px-6 sm:px-16">
         <div className="flex items-center gap-6 text-sm font-medium text-text-body">
           <NavLink to="/" className="flex items-center gap-2">
             <img src="/emcode.svg" alt="Emcode" width={24} height={24} />
@@ -161,11 +161,11 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
         }`}
         style={{ backgroundColor: '#fff' }}
       >
-        <div
-          className={`flex flex-1 flex-col justify-between transition-transform duration-200 ease-in-out bg-surface-page ${
-            isMobileMenuOpen ? "translate-y-0" : "-translate-y-4"
-          }`}
-        >
+          <div
+            className={`flex flex-1 flex-col min-h-screen gap-8 transition-transform duration-200 ease-in-out bg-surface-page ${
+              isMobileMenuOpen ? "translate-y-0" : "-translate-y-4"
+            }`}
+          >
           <div className="flex items-center justify-between px-6 py-4 border-b border-border-card">
             <span className="font-semibold tracking-wider">EMCODE</span>
             <button
@@ -178,16 +178,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             </button>
           </div>
 
-          <nav className="flex flex-col items-stretch gap-8 px-6 mb-16 bg-surface-page">
-            <Button
-              onPress={() => { onAccessibilityOpen?.(); closeMenu(); }}
-              aria-label="Abrir panel de accesibilidad"
-              variant="quiet"
-              className="flex items-center gap-3 py-3 min-h-[44px] pl-4 text-lg border-l-2 border-transparent"
-            >
-              {accessibilityIcon}
-              Accesibilidad
-            </Button>
+          <nav className="flex flex-col items-stretch gap-8 px-6 bg-surface-page">
             {links.map((link) => (
               <NavLink
                 key={link.label}
@@ -208,6 +199,13 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
           </nav>
 
           <div className="flex flex-col items-stretch gap-4 px-6 pb-8 bg-surface-page">
+            <Button
+              onPress={() => { onAccessibilityOpen?.(); closeMenu(); }}
+              aria-label="Abrir panel de accesibilidad"
+              variant="secondary"
+            >
+              Accesibilidad
+            </Button>
             {isAuthenticated ? (
               <>
                 <p className="text-sm text-text-body text-center py-2">
