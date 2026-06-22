@@ -70,7 +70,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-card bg-surface-page/95 backdrop-blur-sm py-4">
-      <div className="flex items-center justify-between gap-4 px-16">
+      <div className="flex items-center justify-between gap-4 px-6 sm:px-16">
         <div className="flex items-center gap-6 text-sm font-medium text-text-body">
           <NavLink to="/" className="flex items-center gap-2">
             <img src="/emcode.svg" alt="Emcode" width={24} height={24} />
