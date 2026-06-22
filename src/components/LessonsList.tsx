@@ -1,12 +1,26 @@
 import type { Lesson } from "../types/lesson";
+import { Switch } from "./kit/Switch";
+import { useLessons } from "../hooks/useLessons";
 
 interface LessonsListProps {
   lessons: Lesson[];
   loading: boolean;
   error: string | null;
+  onLessonUpdated: (updatedLesson: Lesson) => void;
 }
 
-export function LessonsList({ lessons, loading, error }: LessonsListProps) {
+export function LessonsList({ lessons, loading, error, onLessonUpdated }: LessonsListProps) {
+  const { updateLesson } = useLessons();
+
+  async function handleToggleVisibility(lesson: Lesson, isVisible: boolean) {
+    try {
+      const updated = await updateLesson(lesson.id, { isVisible });
+      onLessonUpdated(updated);
+    } catch {
+      
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -27,24 +41,35 @@ export function LessonsList({ lessons, loading, error }: LessonsListProps) {
 
   return (
     <div>
-      <ul className="w-full flex flex-col spacing-xl">
+      <ul className="w-full flex flex-col gap-sm">
         {lessons.map((lesson) => (
           <li
-            className="w-full mx-auto p-2 flex flex-wrap justify-between text-body-sm"
+            className="w-full mx-auto p-2 flex justify-between border-md  border-neutral-100 rounded"
             key={lesson.id}
           >
-            <div className="flex items-center gap-2 w-80 ">
-              {lesson.lessonType === "theory" ? (
-                <p className="text-success">Lección: </p>
-              ) : (
-                <p className="text-success">Laboratorio: </p>
-              )}
-              <p className="text-success">{lesson.lessonName}</p>
+            <div className="flex items-center w-full justify-between ">
+              <div className="flex flex-wrap items-center gap-2">
+                {lesson.lessonType === "theory" ? (
+                  <p className="text-body font-semibold">Lección: </p>
+                ) : (
+                  <p className="text-body font-semibold">Laboratorio: </p>
+                )}
+                <p className="text-body">{lesson.lessonName}</p>
+              </div>
+
+              <Switch
+                aria-label="Lección es visible"
+                isSelected={lesson.isVisible}
+                onChange={(isVisible) => handleToggleVisibility(lesson, isVisible)}
+              >
+                <span className="sm:inline">Visible para estudiantes</span>
+              </Switch>
             </div>
-            {/* <p className="w-30 text-right ">{lesson.status}</p> */}
           </li>
         ))}
       </ul>
     </div>
   );
 }
+
+export default LessonsList;
