@@ -24,7 +24,6 @@ export function useTopicData(id: string | undefined): UseTopicDataResult {
 
         async function fetchTopics() {
             try {
-                
                 const response = await fetch(`${API_URL}/api/topics/course/${id}`, { signal: controller.signal });
 
                 if (!response.ok) {
@@ -33,7 +32,6 @@ export function useTopicData(id: string | undefined): UseTopicDataResult {
 
                 const data: Topic[] = await response.json();
                 setTopics(data);
-                console.log(data);
 
             } catch (err) {
 
@@ -54,4 +52,3 @@ export function useTopicData(id: string | undefined): UseTopicDataResult {
 
     return { topics, loading, error };
 }
-

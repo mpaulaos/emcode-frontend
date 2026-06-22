@@ -10,9 +10,7 @@ import {
 } from 'react-aria-components/Disclosure';
 import { composeRenderProps } from 'react-aria-components/composeRenderProps';
 import { tv } from "tailwind-variants";
-import { ChevronDown } from "lucide-react";
-import { Meter } from "./Meter";
-
+import { ChevronDown, Plus } from "lucide-react";
 
 const disclosure = tv({
     base: "group min-w-50 font-sans rounded-lg text-neutral-900 dark:text-neutral-200"
@@ -47,26 +45,32 @@ export function Disclosure({ children, ...props }: DisclosureProps) {
 
 export interface DisclosureHeaderProps {
     children: React.ReactNode;
+    isDisabled?: boolean;
+    onAddLessonPress: () => void; 
 }
 
-export function DisclosureHeader({ children }: DisclosureHeaderProps) {
-    let { isExpanded } = useContext(DisclosureStateContext)!;
+export function DisclosureHeader({ children, isDisabled, onAddLessonPress }: DisclosureHeaderProps) {
+    const { isExpanded } = useContext(DisclosureStateContext)!;
+
     return (
-        <Heading className="text-sm font-semibold m-0 text-black">
-            <Button
-                slot="trigger"
-                // variant="quiet"
-                className="w-full min-w-0 flex items-center gap-2 font-medium">
-                {({ isDisabled }) => (
-                    <>
-                        <div className="flex flex-wrap items-center w-full">
-                            <span>{children}</span>
-                            <Meter className="min-w-0 flex-1" label="Progreso" maxValue={100} value={20}></Meter>
-                        </div>
-                        <ChevronDown aria-hidden className={`${chevron({ isExpanded, isDisabled })}`} />
-                    </>
-                )}
-            </Button>
+        <Heading className="m-0 text-black ">
+            <div className="flex flex-wrap items-center justify-between w-full gap-6 border-md border-neutral-100 p-sm rounded-lg border-l-6 border-l-purple-600 ">
+
+                <Button slot="trigger" isDisabled={isDisabled} className="flex-1 min-w-0 flex items-center gap-6 cursor-pointer font-semibold">
+                    <span className="truncate text-body-lg font-semibold">{children}</span>
+                </Button>
+
+                <Button
+                    aria-label="Crear nueva lección"
+                    className="flex items-center gap-1 sm:gap-2 rounded-lg bg-surface-action px-2 sm:px-3 py-1.5 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus shrink-0"
+                    onPress={onAddLessonPress}
+                >
+                    <Plus size={18} aria-hidden="true" />
+                    <span className="hidden sm:inline">Agregar</span>
+                </Button>
+
+                <ChevronDown aria-hidden className={`${chevron({ isExpanded, isDisabled })} shrink-0`} />
+            </div>
         </Heading>
     );
 }
