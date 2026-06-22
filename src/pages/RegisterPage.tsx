@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../components/Form';
 import { TextField } from '../components/TextField';
@@ -8,36 +8,64 @@ import { Link } from '../components/Link';
 import { Alert } from '../components/Alert';
 import { useRegister } from '../hooks/useRegister';
 
+interface RegisterState {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  validationError: string | null;
+}
+
+type RegisterField = 'firstName' | 'lastName' | 'email' | 'password' | 'confirmPassword';
+
+type RegisterAction =
+  | { type: 'SET_FIELD'; field: RegisterField; value: string }
+  | { type: 'SET_VALIDATION_ERROR'; error: string | null };
+
+function registerReducer(state: RegisterState, action: RegisterAction): RegisterState {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return { ...state, [action.field]: action.value };
+    case 'SET_VALIDATION_ERROR':
+      return { ...state, validationError: action.error };
+  }
+}
+
+const initialState: RegisterState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  validationError: null,
+};
+
 export function RegisterPage() {
   const navigate = useNavigate();
   const { register, loading, error } = useRegister();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const [state, dispatch] = useReducer(registerReducer, initialState);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setValidationError(null);
+    dispatch({ type: 'SET_VALIDATION_ERROR', error: null });
 
-    if (password !== confirmPassword) {
-      setValidationError('Las contraseñas no coinciden');
+    if (state.password !== state.confirmPassword) {
+      dispatch({ type: 'SET_VALIDATION_ERROR', error: 'Las contraseñas no coinciden' });
       return;
     }
 
-    const success = await register({ firstName, lastName, email, password });
+    const success = await register({ firstName: state.firstName, lastName: state.lastName, email: state.email, password: state.password });
     if (success) {
       navigate('/login');
     }
   };
 
-  const displayError = validationError ?? error;
+  const displayError = state.validationError ?? error;
 
   return (
     <div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
-      <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card p-xl sm:p-2xl">
+      <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card sm:p-2xl">
         <div className="flex flex-col gap-lg">
           <div className="space-y-sm">
             <h1 className="font-heading text-3xl font-bold text-text-headings">Registro</h1>
@@ -50,8 +78,8 @@ export function RegisterPage() {
               autoComplete="name"
               placeholder="Nombre"
               description="Ingresá tu nombre como querés que aparezca."
-              value={firstName}
-              onChange={setFirstName}
+              value={state.firstName}
+              onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'firstName', value: v })}
               isRequired
             />
 
@@ -61,8 +89,8 @@ export function RegisterPage() {
               autoComplete="family-name"
               placeholder="Apellido"
               description="Ingresá tu apellido como querés que aparezca."
-              value={lastName}
-              onChange={setLastName}
+              value={state.lastName}
+              onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'lastName', value: v })}
               isRequired
             />
 
@@ -72,8 +100,8 @@ export function RegisterPage() {
               autoComplete="email"
               placeholder="ejemplo@gmail.com"
               description="Usá un correo válido."
-              value={email}
-              onChange={setEmail}
+              value={state.email}
+              onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
               isRequired
             />
 
@@ -83,8 +111,8 @@ export function RegisterPage() {
               autoComplete="new-password"
               placeholder="Creá una contraseña"
               description="Debe tener al menos 8 caracteres."
-              value={password}
-              onChange={setPassword}
+              value={state.password}
+              onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'password', value: v })}
               isRequired
             />
 
@@ -94,8 +122,8 @@ export function RegisterPage() {
               autoComplete="new-password"
               placeholder="Repetí tu contraseña"
               description="Debe coincidir con la contraseña anterior."
-              value={confirmPassword}
-              onChange={setConfirmPassword}
+              value={state.confirmPassword}
+              onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'confirmPassword', value: v })}
               isRequired
             />
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useFetch } from '../lib/useFetch';
 import type { Topic } from '../types/topic';
 import { API_URL } from '../lib/api';
 
@@ -9,9 +9,9 @@ interface UseTopicDataResult {
 }
 
 export function useTopicData(id: string | undefined): UseTopicDataResult {
-    const [topics, setTopics] = useState<Topic[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { data, loading, error } = useFetch<Topic[]>(
+      id ? `${API_URL}/api/topics/course/${id}` : null
+    );
 
     useEffect(() => {
 

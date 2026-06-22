@@ -30,7 +30,7 @@ export function AuthCallbackPage() {
     }
 
     navigate('/login?error=missing_params', { replace: true });
-  }, []);
+  }, [searchParams, navigate, restoreSession]);
 
   return null;
 }

@@ -23,7 +23,6 @@ function Step2Preview({ form }: Step2PreviewProps) {
           ) : (
             <div
               className="flex h-full w-full items-center justify-center bg-surface-card rounded-t-2xl"
-              role="img"
               aria-label="El curso aún no tiene imagen de portada"
             >
               <ImageOff

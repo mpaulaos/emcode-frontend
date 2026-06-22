@@ -10,6 +10,7 @@ import {
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
 import { useChat } from "../hooks/useChat";
+import { useAccessibility } from "../hooks/useAccessibility";
 import { X, Send } from "lucide-react";
 
 import gekobot from "../assets/Gekobot.png";
@@ -39,12 +40,14 @@ const sendButton = tv({
 
 function ChatWidget() {
   const { messages, isLoading, error, sendMessage} = useChat();
+  const { settings } = useAccessibility();
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    const prefersReduced = settings.reducedMotion !== 'off' || settings.pauseAnimations;
+    bottomRef.current?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
+  }, [messages, settings.reducedMotion, settings.pauseAnimations]);
 
   const handleSubmit = async () => {
     if (!input.trim() || isLoading) return;
@@ -113,13 +116,12 @@ function ChatWidget() {
                 key={msg.id}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} py-3`}
               >
-                <div
+                <article
                   className={messageBubble({ role: msg.role })}
-                  role="article"
                   aria-label={msg.role === "user" ? "Tu mensaje" : "Respuesta del asistente"}
                 >
                   {msg.content}
-                </div>
+                </article>
               </div>
             ))}
 

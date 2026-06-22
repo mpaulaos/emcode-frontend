@@ -70,7 +70,7 @@ export function HomePage() {
   return (
     <div className="flex w-full flex-col">
       <div className="mx-auto w-full max-w-[1240px] px-6 py-12 sm:px-8 lg:px-12 mb-64">
-        <section aria-label="Hero" className="rounded-[20px] border border-border-card bg-surface-primary p-12 sm:p-16">
+        <section aria-label="Hero" className="rounded-[20px] sm:border sm:border-border-card bg-surface-primary sm:p-16">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             <div className="space-y-6">
               <h1 className="text-3xl md:text-5xl leading-tight font-extrabold text-text-headings">Aprendé y enseñá programación de forma accesible</h1>

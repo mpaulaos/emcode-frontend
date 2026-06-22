@@ -29,7 +29,7 @@ function Step1Form({ form, onChange }: Step1FormProps) {
     <div className="flex flex-col gap-5">
       {/* Image upload */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-text-headings">
+        <label htmlFor="course-image" className="text-sm font-medium text-text-headings">
           Imagen del curso
         </label>
 
@@ -68,6 +68,7 @@ function Step1Form({ form, onChange }: Step1FormProps) {
 
         <input
           ref={fileInputRef}
+          id="course-image"
           type="file"
           accept="image/*"
           className="sr-only"

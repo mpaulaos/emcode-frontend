@@ -1,0 +1,15 @@
+import { useAccessibility } from '../../../hooks/useAccessibility';
+import { Button } from '../../Button';
+
+export function ResetPanel() {
+  const { resetSettings } = useAccessibility();
+
+  return (
+    <fieldset>
+      <legend className="mb-3 text-sm font-semibold text-text-headings">Restablecer Configuración</legend>
+      <Button variant="destructive" onPress={resetSettings} className="w-full">
+        Restaurar valores predeterminados
+      </Button>
+    </fieldset>
+  );
+}

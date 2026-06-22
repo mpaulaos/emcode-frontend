@@ -4,6 +4,7 @@
 
 @import "./tokens/index.css";
 @import "./tokens/tailwind-theme.css";
+@import "./tokens/accessibility.css";
 
 @layer base {
   *,
