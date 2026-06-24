@@ -21,6 +21,8 @@ import { AccessibilityProvider } from "./context/AccessibilityContext";
 import { AccessibilityWidget } from "./components/accessibility/AccessibilityWidget";
 import { ColorBlindnessFilters } from "./components/accessibility/ColorBlindnessFilters";
 import { ReadingMask } from "./components/accessibility/ReadingMask";
+import StudentsPage from "./pages/StudentListPage";
+import TeacherStudentsListPage from "./pages/TeacherStudentsListPage";
 
 function App() {
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
@@ -46,6 +48,8 @@ function App() {
             <Route path="/teacher" element={<TeacherDashboardPage />} />
             <Route path="/guides" element={<GuidesPage />} />
             <Route path="/disabilities" element={<DisabilityInfoPage />} />
+            <Route path="/teacher/students" element={<TeacherStudentsListPage />} />
+              <Route path="/courses/:id/students" element={<StudentsPage />} />
             </Route>
           </Routes>
 

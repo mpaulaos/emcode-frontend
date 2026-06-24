@@ -7,13 +7,13 @@ interface Step2PreviewProps {
 
 function Step2Preview({ form }: Step2PreviewProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-w-0 h-full flex-col gap-4">
       <p className="text-sm text-text-body">
         Así se verá el curso en el dashboard:
       </p>
 
-      <article className="overflow-hidden rounded-2xl bg-surface-primary transition duration-300">
-        <div className="aspect-video overflow-hidden">
+      <article className="w-full h-full overflow-hidden rounded-2xl bg-surface-primary transition duration-300">
+        <div className="aspect-video w-full overflow-hidden">
           {form.imagePreview ? (
             <img
               src={form.imagePreview}
@@ -34,7 +34,6 @@ function Step2Preview({ form }: Step2PreviewProps) {
           )}
         </div>
 
-        {/*Contenido del curso*/}
         <div className="flex flex-col gap-5 p-4">
           <div className="flex flex-col gap-1">
             <h3 className="text-base font-bold text-text-headings">

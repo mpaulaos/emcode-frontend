@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
-import { Plus } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 
 import { useCourse } from '../hooks/useCourse';
 import { useTopicData } from '../hooks/useTopicData';
@@ -43,11 +43,22 @@ function CoursePage() {
             </div>
           )}
           {!loading && !error && !notFound && course && (
-            <>
-              <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
-              <p>Sigla: {course?.subtitle}</p>
-              <p>Descripción: {course?.description}</p>
-            </>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
+                <p>Sigla: {course?.subtitle}</p>
+                <p>Descripción: {course?.description}</p>
+                {id && (
+                  <Link
+                    to={`/courses/${id}/students`}
+                    className="mt-2 flex w-fit items-center gap-2 rounded-lg bg-surface-card px-4 py-2 text-sm font-semibold text-text-headings transition hover:bg-surface-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                  >
+                    <Users size={18} aria-hidden="true" />
+                    Estudiantes del curso
+                  </Link>
+                )}
+              </div>
+            </div>
           )}
         </section>
 

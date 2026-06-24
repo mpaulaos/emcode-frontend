@@ -26,7 +26,7 @@ function Step1Form({ form, onChange }: Step1FormProps) {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex min-w-0 flex-col gap-5">
       {/* Image upload */}
       <div className="flex flex-col gap-1.5">
         <label htmlFor="course-image" className="text-sm font-medium text-text-headings">
@@ -36,9 +36,7 @@ function Step1Form({ form, onChange }: Step1FormProps) {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-card bg-surface-card transition overflow-hidden 
-          hover:border-primary-400 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-          style={{ minHeight: "10rem" }}
+          className="relative flex min-h-32 w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed border-border-card bg-surface-card transition hover:border-primary-400 hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus sm:min-h-32"
           aria-label={
             form.imagePreview
               ? "Cambiar imagen del curso"
@@ -49,7 +47,7 @@ function Step1Form({ form, onChange }: Step1FormProps) {
             <img
               src={form.imagePreview}
               alt="Vista previa de la imagen"
-              className="h-40 w-full object-cover"
+              className="h-full w-full object-cover"
             />
           ) : (
             <>

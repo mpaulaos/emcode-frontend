@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "react-aria-components";
 import { API_URL } from "../lib/api";
 
@@ -19,6 +19,14 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
   const [form, setForm] = useState<CourseFormState>(initialFormState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const step1Ref = useRef<HTMLDivElement>(null);
+  const [step1Height, setStep1Height] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (step === 1 && step1Ref.current) {
+      setStep1Height(step1Ref.current.offsetHeight);
+    }
+  }, [step]);
 
   function handleChange(field: keyof CourseFormState, value: string | File | null) {
     setError(null);
@@ -65,15 +73,20 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       <WizardProgress currentStep={step} />
 
-      {step === 1 && <Step1Form form={form} onChange={handleChange} />}
-      {step === 2 && <Step2Preview form={form} />}
+      <div
+        ref={step === 1 ? step1Ref : undefined}
+        style={step === 2 && step1Height ? { height: step1Height } : undefined}
+      >
+        {step === 1 && <Step1Form form={form} onChange={handleChange} />}
+        {step === 2 && <Step2Preview form={form} />}
+      </div>
 
       {error && <p className="text-sm text-text-danger">{error}</p>}
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-row flex-wrap items-center justify-between gap-3 sm:gap-4">
         <Button
           onPress={step === 1 ? onCancel : () => { setStep(1); setError(null); }}
           className="rounded-lg border border-border-card px-5 py-2 text-sm font-medium text-text-body transition hover:bg-surface-card focus-visible:ring-2 focus-visible:ring-border-focus"
