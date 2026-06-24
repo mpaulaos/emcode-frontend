@@ -31,7 +31,7 @@ function CreateLessonModal({ topicId, onClose, onAddLesson }: CreateLessonModalP
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
         <div
-          className="relative flex w-full max-w-3xl min-w-150 flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl overflow-y-auto"
+          className="relative flex w-[min(56rem,calc(100vw-2rem))] max-w-none max-h-[calc(100vh-2rem)] flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl overflow-y-auto overflow-x-visible"
           onClick={(e) => e.stopPropagation()}
           tabIndex={-1}
           onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
