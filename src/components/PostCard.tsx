@@ -120,7 +120,6 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
         <PostEditForm
           postId={post.id}
           initialContent={post.content}
-          courseId={courseId}
           onCancel={() => setIsEditing(false)}
           onSaved={handleSaved}
         />
@@ -152,7 +151,6 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
       {isReplying && (
         <PostReplyForm
           postId={post.id}
-          courseId={courseId}
           onCancel={() => setIsReplying(false)}
           onReplied={handleReplied}
         />

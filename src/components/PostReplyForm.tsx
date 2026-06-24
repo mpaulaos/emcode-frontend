@@ -6,12 +6,11 @@ import { useForum } from "../hooks/useForum";
 
 interface PostReplyFormProps {
   postId: number;
-  courseId: string;
   onCancel: () => void;
   onReplied: () => void;
 }
 
-function PostReplyForm({ postId, courseId, onCancel, onReplied }: PostReplyFormProps) {
+function PostReplyForm({ postId, onCancel, onReplied }: PostReplyFormProps) {
   const [content, setContent] = useState("");
   const { replyToPost, loading, error: hookError } = useForum();
   const [localError, setLocalError] = useState<string | null>(null);

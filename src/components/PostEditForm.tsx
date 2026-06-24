@@ -7,12 +7,11 @@ import { useForum } from "../hooks/useForum";
 interface PostEditFormProps {
   postId: number;
   initialContent: string;
-  courseId: string;
   onCancel: () => void;
   onSaved: () => void;
 }
 
-function PostEditForm({ postId, initialContent, courseId, onCancel, onSaved }: PostEditFormProps) {
+function PostEditForm({ postId, initialContent, onCancel, onSaved }: PostEditFormProps) {
   const [content, setContent] = useState(initialContent);
   const { editPost, loading } = useForum();
 
