@@ -1,31 +1,50 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
-import { Plus } from "lucide-react";
+import { Plus, MessageSquare } from "lucide-react";
 
 import { useCourse } from '../hooks/useCourse';
 import { useTopicData } from '../hooks/useTopicData';
+import { useAuth } from '../context/AuthContext';
+import { useForum } from '../hooks/useForum';
 
 import { DisclosureGroup } from "../components/kit/DisclosureGroup";
 import { Disclosure, DisclosureHeader } from "../components/kit/Disclosure";
 import CreateTopicModal from '../components/CreateTopicModal';
 import TopicLessonsPanel from '../components/TopicLessonPanel';
+import PostCreator from '../components/PostCreator';
+import PostCard from '../components/PostCard';
+import { Alert } from '../components/Alert';
 
 import type { Topic } from '../types/topic';
 
 function CoursePage() {
   const { id } = useParams<{ id: string }>();
+  const { user, isAuthenticated } = useAuth();
   const { course, loading, error, notFound } = useCourse(id);
   const { topics, loading: topicsLoading, error: topicsError } = useTopicData(id);
+  const { posts, loading: forumLoading, error: forumError, fetchPosts } = useForum();
   const [expandedKeys, setExpandedKeys] = useState(new Set<Key>([]));
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [localTopics, setLocalTopics] = useState<Topic[]>([]);
   const [openLessonModalFor, setOpenLessonModalFor] = useState<number | null>(null);
+  const [forumInitialFetchDone, setForumInitialFetchDone] = useState(false);
 
   const topicList = [...topics, ...localTopics];
 
+  useEffect(() => {
+    if (!id) return;
+    fetchPosts(id)
+      .then(() => setForumInitialFetchDone(true))
+      .catch(() => setForumInitialFetchDone(true));
+  }, [id, fetchPosts]);
+
   function handleTopicCreated(newTopic: Topic) {
     setLocalTopics((prev) => [...prev, newTopic]);
+  }
+
+  function handleForumAction() {
+    if (id) fetchPosts(id);
   }
 
   return (
@@ -86,6 +105,49 @@ function CoursePage() {
                 </Disclosure>
               ))}
             </DisclosureGroup>
+          )}
+        </section>
+
+        <section aria-label="Foro del curso" className="w-full mx-auto p-4 justify-center gap-4 flex flex-col">
+          <div className="flex items-center gap-2">
+            <MessageSquare size={24} className="text-text-headings" aria-hidden="true" />
+            <h2 className="text-xl font-bold text-text-headings">Foro</h2>
+          </div>
+
+          {!isAuthenticated && (
+            <Alert>Inicia sesión para participar en el foro.</Alert>
+          )}
+
+          {isAuthenticated && id && (
+            <PostCreator courseId={id} onPostCreated={handleForumAction} />
+          )}
+
+          {forumLoading && !forumInitialFetchDone && (
+            <p className="text-sm text-text-body">Cargando foro...</p>
+          )}
+
+          {forumError && forumInitialFetchDone && (
+            <Alert>{forumError}</Alert>
+          )}
+
+          {!forumLoading && forumInitialFetchDone && !forumError && posts.length === 0 && (
+            <div className="flex flex-col items-center gap-2 py-8 text-center">
+              <MessageSquare size={32} className="text-text-disabled" aria-hidden="true" />
+              <p className="text-text-body text-sm">No hay publicaciones aún.</p>
+              {isAuthenticated && (
+                <p className="text-text-disabled text-xs">Sé el primero en publicar.</p>
+              )}
+            </div>
+          )}
+
+          {!forumLoading && posts.length > 0 && (
+            <div className="flex flex-col gap-4">
+              {posts.map((post) => (
+                <div key={post.id} className="rounded-lg border border-border-card bg-surface-primary p-4">
+                  <PostCard post={post} courseId={id!} depth={0} onAction={handleForumAction} />
+                </div>
+              ))}
+            </div>
           )}
         </section>
       </main>
