@@ -37,17 +37,17 @@ function PostEditForm({ postId, initialContent, onCancel, onSaved }: PostEditFor
         autoFocus
       />
       <CharCounter current={content.length} limit={POST_CONTENT_MAX} />
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
         <Button
           onPress={handleSave}
           isDisabled={!content.trim() || content.trim().length > POST_CONTENT_MAX || loading}
-          className="rounded-lg bg-surface-action px-4 py-1.5 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer"
+          className="w-full sm:w-auto rounded-lg bg-surface-action px-4 py-2.5 sm:py-1.5 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer"
         >
           {loading ? "Guardando..." : "Guardar"}
         </Button>
         <Button
           onPress={onCancel}
-          className="rounded-lg border border-border-card px-4 py-1.5 text-sm font-medium text-text-body transition hover:bg-surface-card focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer"
+          className="w-full sm:w-auto rounded-lg border border-border-card px-4 py-2.5 sm:py-1.5 text-sm font-medium text-text-body transition hover:bg-surface-card focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer"
         >
           Cancelar
         </Button>

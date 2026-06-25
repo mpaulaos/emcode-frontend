@@ -108,7 +108,7 @@ function CoursePage() {
           )}
         </section>
 
-        <section aria-label="Foro del curso" className="w-full mx-auto p-4 justify-center gap-4 flex flex-col">
+        <section aria-label="Foro del curso" className="w-full mx-auto p-3 sm:p-4 justify-center gap-4 flex flex-col">
           <div className="flex items-center gap-2">
             <MessageSquare size={24} className="text-text-headings" aria-hidden="true" />
             <h2 className="text-xl font-bold text-text-headings">Foro</h2>
@@ -143,7 +143,7 @@ function CoursePage() {
           {!forumLoading && posts.length > 0 && (
             <div className="flex flex-col gap-4">
               {posts.map((post) => (
-                <div key={post.id} className="rounded-lg border border-border-card bg-surface-primary p-4">
+                <div key={post.id} className="rounded-lg border border-border-card bg-surface-primary p-3 sm:p-4">
                   <PostCard post={post} courseId={id!} depth={0} onAction={handleForumAction} />
                 </div>
               ))}

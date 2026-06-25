@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../components/Button";
 import type { PostTreeNode } from "../types/forum";
 import { useAuth } from "../context/AuthContext";
 import { useForum } from "../hooks/useForum";
@@ -47,6 +48,7 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const isDeleted = post.isDeleted === true;
   const displayContent = isDeleted
@@ -56,9 +58,13 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
   const canDelete =
     user?.role === "admin" || user?.role === "teacher";
 
-  async function handleDelete() {
-    if (!window.confirm("¿Estás seguro de eliminar este mensaje?")) return;
+  function handleDelete() {
+    setShowDeleteConfirm(true);
+  }
+
+  async function confirmDelete() {
     setDeleting(true);
+    setShowDeleteConfirm(false);
     try {
       await deletePost(post.id);
       await fetchPosts(courseId);
@@ -88,14 +94,15 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
       .join(" ") || "Usuario desconocido";
 
   return (
+    <>
     <article
       className={`flex flex-col gap-1 ${
-        depth > 0 ? "ml-6 border-l-2 border-border-card pl-4" : ""
+        depth > 0 ? "ml-3 sm:ml-6 border-l-2 border-border-card pl-2 sm:pl-4" : ""
       }`}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
         <div
-          className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white ${avatarColor}`}
+          className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-xs font-bold text-white ${avatarColor}`}
           aria-hidden="true"
         >
           {initials}
@@ -157,7 +164,7 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
       )}
 
       {post.replies.length > 0 && (
-        <div className="flex flex-col gap-3 mt-3">
+        <div className="flex flex-col gap-2 sm:gap-3 mt-2 sm:mt-3">
           {post.replies.map((reply) => (
             <PostCard
               key={reply.id}
@@ -170,6 +177,46 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
         </div>
       )}
     </article>
+
+      {showDeleteConfirm && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/50"
+            aria-hidden="true"
+            onClick={() => setShowDeleteConfirm(false)}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-confirm-title"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
+            <div
+              className="relative flex w-full flex-col gap-4 rounded-2xl bg-surface-primary p-6 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2
+                id="delete-confirm-title"
+                className="text-lg font-semibold text-text-headings"
+              >
+                Eliminar mensaje
+              </h2>
+              <p className="text-sm text-text-body">
+                ¿Estás seguro de que deseas eliminar este mensaje?
+              </p>
+              <div className="flex items-center justify-end gap-2">
+                <Button variant="secondary" onPress={() => setShowDeleteConfirm(false)}>
+                  Cancelar
+                </Button>
+                <Button variant="destructive" onPress={confirmDelete}>
+                  Eliminar
+                </Button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }
 

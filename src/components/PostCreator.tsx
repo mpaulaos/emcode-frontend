@@ -31,7 +31,7 @@ function PostCreator({ courseId, onPostCreated }: PostCreatorProps) {
   const errorMsg = localError || hookError;
 
   return (
-    <div className="flex flex-col gap-2 rounded-lg border border-border-card bg-surface-card p-4">
+    <div className="flex flex-col gap-2 rounded-lg border border-border-card bg-surface-card p-3 sm:p-4">
       <label htmlFor="post-content" className="text-sm font-semibold text-text-headings">
         Crear publicación
       </label>
@@ -46,11 +46,11 @@ function PostCreator({ courseId, onPostCreated }: PostCreatorProps) {
       />
       <CharCounter current={content.length} limit={POST_CONTENT_MAX} />
       {errorMsg && <p className="text-sm text-text-danger">{errorMsg}</p>}
-      <div className="flex justify-end">
+      <div className="flex flex-col sm:flex-row sm:justify-end">
         <Button
           onPress={handlePublish}
           isDisabled={!canSubmit || loading}
-          className="rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer"
+          className="w-full sm:w-auto rounded-lg bg-surface-action px-5 py-2.5 sm:py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer"
         >
           {loading ? "Publicando..." : "Publicar"}
         </Button>
