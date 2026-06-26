@@ -20,7 +20,7 @@ import type { Topic } from '../types/topic';
 
 function CoursePage() {
   const { id } = useParams<{ id: string }>();
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { course, loading, error, notFound } = useCourse(id);
   const { topics, loading: topicsLoading, error: topicsError } = useTopicData(id);
   const { posts, loading: forumLoading, error: forumError, fetchPosts } = useForum();
