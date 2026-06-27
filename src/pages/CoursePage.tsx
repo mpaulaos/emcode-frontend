@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
 import { Plus, UserPlus, BookOpen, MessageSquare, Users } from "lucide-react";
@@ -139,15 +139,6 @@ function CoursePage() {
                   <p>Descripción: {course?.description}</p>
                 </div>
               </FocusTTS>
-              {id && (
-                <Link
-                  to={`/courses/${id}/students`}
-                  className="mt-2 flex w-fit items-center gap-2 rounded-lg bg-surface-card px-4 py-2 text-sm font-semibold text-text-headings transition hover:bg-surface-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-                >
-                  <Users size={18} aria-hidden="true" />
-                  Estudiantes del curso
-                </Link>
-              )}
             </div>
           )}
         </section>
