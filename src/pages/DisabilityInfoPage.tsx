@@ -1,14 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-aria-components';
-import { ArrowLeft } from 'lucide-react';
 import CategoryChips from '../components/CategoryChips';
 import DisabilitySidebar from '../components/DisabilitySidebar';
 import DisabilityInfoPanel from '../components/DisabilityInfoPanel';
 import { disabilityCategories, disabilityContentMap} from '../types/disabilities';
 
 function DisabilityInfoPage() {
-  const navigate = useNavigate();
   const [activeCategoryId, setActiveCategoryId] = useState(
     disabilityCategories[0].id,
   );
@@ -30,15 +26,6 @@ function DisabilityInfoPage() {
 
   return (
     <main className="flex flex-col gap-6 px-4 py-8 lg:gap-8 lg:px-16 lg:py-12">
-      <Button
-        onPress={() => navigate("/teacher")}
-        className="flex items-center gap-1.5 text-sm text-text-body hover:text-text-headings transition focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded w-fit cursor-pointer"
-        aria-label="Volver al dashboard"
-      >
-        <ArrowLeft size={16} strokeWidth={2} aria-hidden="true" />
-        Volver
-      </Button>
-
       <h1 className="text-2xl font-bold text-text-headings sm:text-3xl">
         Categorías
       </h1>

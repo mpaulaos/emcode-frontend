@@ -19,7 +19,8 @@ export interface NavbarProps {
 const defaultLinks: NavbarLink[] = [
   { label: "Inicio", href: "/" },
   { label: "Guías", href: "/guias" },
-  { label: "Cursos", href: "/cursos" },
+  { label: "Discapacidades", href: "/disabilities" },
+  // { label: "Cursos", href: "/cursos" },
   { label: "Acerca de", href: "/acerca-de" },
 ];
 
@@ -159,7 +160,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             variant="quiet"
             onPress={() => setIsMobileMenuOpen(true)}
             aria-label="Abrir menú de navegación"
-            className="md:hidden p-3 min-h-[44px] min-w-[44px] text-text-body"
+            className="md:hidden p-3 min-h-11 min-w-11 text-text-body"
             aria-expanded={isMobileMenuOpen}
             {...hamburgerTTS}
           >
@@ -187,7 +188,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
               variant="quiet"
               onPress={closeMenu}
               aria-label="Cerrar menú"
-              className="p-3 min-h-[44px] min-w-[44px] text-text-body"
+              className="p-3 min-h-11 min-w-11 text-text-body"
               {...closeMobileTTS}
             >
               {closeIcon}
@@ -203,7 +204,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                 end={link.href === "/"}
                 onClick={closeMenu}
                 className={({ isActive }) =>
-                  `text-lg py-3 min-h-[44px] pl-4 flex items-center transition hover:text-text-headings border-l-2 ${
+                  `text-lg py-3 min-h-11 pl-4 flex items-center transition hover:text-text-headings border-l-2 ${
                     isActive
                       ? "border-primary-700 text-text-headings font-semibold"
                       : "border-transparent text-text-body"

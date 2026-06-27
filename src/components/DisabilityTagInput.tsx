@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
 export interface DisabilityTagOption {
@@ -27,8 +28,10 @@ function DisabilityTagInput({
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fieldId = useId();
+  const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -54,6 +57,13 @@ function DisabilityTagInput({
     inputRef.current?.focus();
   }
 
+  function openDropdown() {
+    if (triggerRef.current) {
+      setTriggerRect(triggerRef.current.getBoundingClientRect());
+    }
+    setOpen(true);
+  }
+
   function removeValue(value: number) {
     onChange(selected.filter((v) => v !== value));
   }
@@ -73,11 +83,11 @@ function DisabilityTagInput({
         {label}
       </label>
 
-      <div className="relative">
+      <div className="relative" ref={triggerRef}>
         <div
           className="flex w-full flex-wrap items-center gap-1.5 rounded-lg border border-border-card bg-surface-page px-2 py-1.5 focus-within:border-border-focus focus-within:ring-2 focus-within:ring-border-focus/30"
           onClick={() => {
-            setOpen(true);
+            openDropdown();
             inputRef.current?.focus();
           }}
         >
@@ -114,19 +124,24 @@ function DisabilityTagInput({
               setQuery(e.target.value);
               setOpen(true);
             }}
-            onFocus={() => setOpen(true)}
+            onFocus={() => openDropdown()}
             onKeyDown={handleKeyDown}
             placeholder={selectedOptions.length === 0 ? placeholder : ""}
             className="min-w-[8ch] flex-1 border-0 bg-transparent py-1 text-sm text-text-body placeholder:text-text-placeholders focus:outline-none"
           />
         </div>
 
-        {open && (
+        {open && triggerRect && createPortal(
           <ul
             id={`${fieldId}-listbox`}
             role="listbox"
             aria-label={label}
-            className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-lg bg-surface-primary p-1 shadow-lg ring-1 ring-border-card"
+            className="fixed z-9999 max-h-36 w-full overflow-auto rounded-lg bg-surface-primary p-1 shadow-lg ring-1 ring-border-card"
+            style={{
+              top: triggerRect.bottom + 4,
+              left: triggerRect.left,
+              width: triggerRect.width,
+            }}
           >
             {filteredOptions.length === 0 && (
               <li className="px-3 py-2 text-sm text-text-disabled">
@@ -146,7 +161,8 @@ function DisabilityTagInput({
                 </button>
               </li>
             ))}
-          </ul>
+          </ul>,
+          document.body,
         )}
       </div>
 

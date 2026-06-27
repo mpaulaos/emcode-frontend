@@ -1,7 +1,6 @@
 import { useReducer } from "react";
 import { Button } from "react-aria-components";
 import { ArrowLeft, BookOpen } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useFetch } from "../lib/useFetch";
 import FocusTTS from "../components/FocusTTS";
 
@@ -46,7 +45,6 @@ function guidesReducer(state: GuidesPageState, action: GuidesPageAction): Guides
 }
 
 function GuidesPage() {
-  const navigate = useNavigate();
   const [state, dispatch] = useReducer(guidesReducer, {
     selected: null,
     loadingDetail: false,
@@ -80,18 +78,16 @@ function GuidesPage() {
         className="flex flex-1 flex-col gap-8 px-4 py-8 focus:outline-none lg:px-16 lg:py-12"
       >
         <section aria-label="Encabezado" className="flex flex-col gap-2">
-          <Button
-            onPress={() =>
-              state.selected ? dispatch({ type: 'CLEAR_SELECTION' }) : navigate("/teacher")
-            }
-            className="flex items-center gap-1.5 text-sm text-text-body hover:text-text-headings transition focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded w-fit cursor-pointer"
-            aria-label={
-              state.selected ? "Volver a la lista de guías" : "Volver al dashboard"
-            }
-          >
-            <ArrowLeft size={16} aria-hidden="true" />
-            Volver
-          </Button>
+          {state.selected && (
+            <Button
+              onPress={() => dispatch({ type: 'CLEAR_SELECTION' })}
+              className="flex items-center gap-1.5 text-sm text-text-body hover:text-text-headings transition focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded w-fit cursor-pointer"
+              aria-label="Volver a la lista de guías"
+            >
+              <ArrowLeft size={16} aria-hidden="true" />
+              Volver
+            </Button>
+          )}
 
           {!state.selected && (
             <>
