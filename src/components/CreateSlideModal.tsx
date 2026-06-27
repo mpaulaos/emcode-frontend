@@ -31,7 +31,7 @@ function CreateCourseModal({ onClose, onAddCourse }: CreateCourseModalProps) {
         className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
         <div
-          className="relative flex w-full max-w-3xl min-w-150 flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl overflow-y-auto"
+          className="relative flex w-full max-w-[48rem] min-w-150 flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
           tabIndex={-1}
           onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}

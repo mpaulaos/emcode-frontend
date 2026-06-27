@@ -45,6 +45,8 @@ function FocusTTS({ text, children }: FocusTTSProps) {
     <div
       ref={wrapperRef}
       tabIndex={0}
+      role="region"
+      aria-label={text}
       className="focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded"
       onFocus={handleFocus}
       onBlur={handleBlur}

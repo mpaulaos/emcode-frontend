@@ -21,11 +21,10 @@ export function TextToSpeechPlayer() {
 
   return (
     <div
-      className="fixed bottom-4 left-0 right-0 z-50 mx-auto w-full max-w-xl px-4 motion-safe:animate-slide-up"
+      className="fixed bottom-4 left-0 right-0 z-50 mx-auto w-full max-w-[36rem] px-4 motion-safe:animate-slide-up"
     >
       <div
         className="flex items-center gap-3 rounded-xxl border border-primary-200 bg-primary-50 p-3 shadow-lg dark:border-primary-800 dark:bg-primary-950 w-full min-w-0"
-        role="status"
       >
       <Toolbar orientation="horizontal" className="flex items-center gap-1 flex-shrink-0">
         <button

@@ -192,7 +192,7 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-confirm-title"
-            className="relative flex w-full max-w-sm flex-col gap-4 rounded-2xl bg-surface-primary p-6 shadow-xl"
+            className="relative flex w-full max-w-[24rem] flex-col gap-4 rounded-2xl bg-surface-primary p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => { if (e.key === "Escape") setShowDeleteConfirm(false); }}
           >
