@@ -5,9 +5,11 @@ import { Plus } from "lucide-react";
 import type { Course } from "../types/dashboard";
 import CreateCourseModal from "../components/CreateCourseModal";
 import { useTeacherDashboard } from "../hooks/useTeacherDashboard";
+import { useAuth } from "../context/AuthContext";
 import TeacherNavChips from "../components/TeacherChips";
 
 function TeacherDashboardPage() {
+  const { user } = useAuth();
   const { data, loading, error } = useTeacherDashboard();
   const [showModal, setShowModal] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -28,7 +30,7 @@ function TeacherDashboardPage() {
       >
         <section aria-label="Bienvenida" className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold text-text-headings">
-            ¡Hola, Profe {data?.teacherName ?? ""}!
+            ¡Hola, {user?.name ?? data?.teacherName ?? ""}!
           </h1>
           <p className="text-lg text-text-body">
             Administra tus lecciones y recursos académicos en un solo lugar.
@@ -38,18 +40,20 @@ function TeacherDashboardPage() {
         <TeacherNavChips />
 
         <section aria-label="Mis cursos" className="flex flex-col gap-6">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 className="text-2xl font-bold text-text-headings">
               Mis cursos
             </h2>
-            <Button
-              aria-label="Crear nuevo curso"
-              onPress={() => setShowModal(true)}
-              className="flex items-center gap-2 rounded-lg bg-surface-action px-4 py-2 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-            >
-              <Plus size={18} aria-hidden="true" />
-              Crear curso
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                aria-label="Crear nuevo curso"
+                onPress={() => setShowModal(true)}
+                className="flex items-center gap-2 rounded-lg bg-surface-action px-4 py-2 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+              >
+                <Plus size={18} aria-hidden="true" />
+                Crear curso
+              </Button>
+            </div>
           </div>
 
           {loading && (

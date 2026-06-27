@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@plugin "tailwindcss-react-aria-components";
-@plugin "tailwindcss-animate";
-
 @import "./tokens/index.css";
 @import "./tokens/tailwind-theme.css";
 @import "./tokens/accessibility.css";

@@ -37,7 +37,8 @@ function CourseCard({ course }: CourseCardProps) {
           )}
         </div>
 
-        {/* Contenido del curso */}
+
+        {/* Contenido del curso Hola*/}
         <div className="flex flex-1 flex-col gap-3 p-4">
           <div className="flex flex-col gap-1">
             <h3 className="text-base font-bold text-text-headings">

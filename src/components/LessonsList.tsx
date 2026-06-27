@@ -16,9 +16,7 @@ export function LessonsList({ lessons, loading, error, onLessonUpdated }: Lesson
     try {
       const updated = await updateLesson(lesson.id, { isVisible });
       onLessonUpdated(updated);
-    } catch {
-      
-    }
+    } catch { /* error handled by hook */ }
   }
 
   if (loading) {
