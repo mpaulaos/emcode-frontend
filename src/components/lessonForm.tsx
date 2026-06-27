@@ -23,9 +23,7 @@ function LessonForm({ topicId, onCancel, onPublish }: LessonFormProps) {
         lessonType,
       });
       onPublish(newLesson);
-    } catch {
-      
-    }
+    } catch { /* error handled by hook */ }
   }
 
   return (

@@ -44,7 +44,7 @@ export function useChat() {
 
       setMessages((prev) => [...prev, assistantMessage]);
 
-    } catch (err) {
+    } catch {
       setError("No se pudo enviar el mensaje. Intenta de nuevo.");
       setMessages(messages);
     } finally {
