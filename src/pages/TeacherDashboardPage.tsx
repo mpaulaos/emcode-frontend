@@ -5,8 +5,10 @@ import { Plus } from "lucide-react";
 import type { Course } from "../types/dashboard";
 import CreateCourseModal from "../components/CreateCourseModal";
 import { useTeacherDashboard } from "../hooks/useTeacherDashboard";
+import { useAuth } from "../context/AuthContext";
 
 function TeacherDashboardPage() {
+  const { user } = useAuth();
   const { data, loading, error } = useTeacherDashboard();
   const [showModal, setShowModal] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -27,7 +29,7 @@ function TeacherDashboardPage() {
       >
         <section aria-label="Bienvenida" className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold text-text-headings">
-            ¡Hola, Profe {data?.teacherName ?? ""}!
+            ¡Hola, {user?.name ?? data?.teacherName ?? ""}!
           </h1>
           <p className="text-lg text-text-body">
             Administra tus lecciones y recursos académicos en un solo lugar.

@@ -1,11 +1,13 @@
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
-import { Plus, UserPlus, BookOpen, Users } from "lucide-react";
+import { Plus, UserPlus, BookOpen, MessageSquare, Users } from "lucide-react";
 
 import { useCourse } from '../hooks/useCourse';
 import { useTopicData } from '../hooks/useTopicData';
 import { useCourseStudents, useRemoveStudentFromCourse } from '../hooks/useStudentList';
+import { useAuth } from '../context/AuthContext';
+import { useForum } from '../hooks/useForum';
 
 import { DisclosureGroup } from "../components/kit/DisclosureGroup";
 import { Disclosure, DisclosureHeader } from "../components/kit/Disclosure";
@@ -18,6 +20,10 @@ import Pagination from '../components/Pagination';
 import StudentDetailModal from '../components/StudentDetailModal';
 import RemoveStudentConfirmModal from '../components/StudentActionModal';
 import AddOrEditStudentModal from '../components/StudentModal';
+import PostCreator from '../components/PostCreator';
+import PostCard from '../components/PostCard';
+import FocusTTS from '../components/FocusTTS';
+import { Alert } from '../components/Alert';
 
 import type { Topic } from '../types/topic';
 import type { CourseStudent, Student } from '../types/Student';
@@ -31,8 +37,10 @@ const PAGE_SIZE = 4;
 
 function CoursePage() {
   const { id } = useParams<{ id: string }>();
+  const { isAuthenticated } = useAuth();
   const { course, loading, error, notFound } = useCourse(id);
   const { topics, loading: topicsLoading, error: topicsError } = useTopicData(id);
+  const { posts, loading: forumLoading, error: forumError, fetchPosts } = useForum();
   const [expandedKeys, setExpandedKeys] = useState(new Set<Key>([]));
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [localTopics, setLocalTopics] = useState<Topic[]>([]);
@@ -51,6 +59,7 @@ function CoursePage() {
   const { data: studentsData, loading: studentsLoading, error: studentsError, refetch: refetchStudents } =
     useCourseStudents(hasVisitedStudents ? id : undefined, studentQuery, studentPage, PAGE_SIZE);
   const { removeStudent, loading: removing } = useRemoveStudentFromCourse();
+  const [forumInitialFetchDone, setForumInitialFetchDone] = useState(false);
 
   const topicList = [...topics, ...localTopics];
   const totalStudentPages = studentsData ? Math.max(Math.ceil(studentsData.total / studentsData.pageSize), 1) : 1;
@@ -61,6 +70,13 @@ function CoursePage() {
       setHasVisitedStudents(true);
     }
   }
+
+  useEffect(() => {
+    if (!id) return;
+    fetchPosts(id)
+      .then(() => setForumInitialFetchDone(true))
+      .catch(() => setForumInitialFetchDone(true));
+  }, [id, fetchPosts]);
 
   function handleTopicCreated(newTopic: Topic) {
     setLocalTopics((prev) => [...prev, newTopic]);
@@ -96,6 +112,10 @@ function CoursePage() {
     setStudentToRemove(student);
   }
 
+  function handleForumAction() {
+    if (id) fetchPosts(id);
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-surface-page">
       <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col gap-10 px-4 py-8 focus:outline-none lg:px-16 lg:py-12">
@@ -112,9 +132,22 @@ function CoursePage() {
           )}
           {!loading && !error && !notFound && course && (
             <div className="flex flex-col gap-4">
-              <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
-              <p>Sigla: {course?.subtitle}</p>
-              <p>Descripción: {course?.description}</p>
+              <FocusTTS text={`${course.title}. ${course?.description ?? ""}`}>
+                <div className="flex flex-col gap-2">
+                  <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
+                  <p>Sigla: {course?.subtitle}</p>
+                  <p>Descripción: {course?.description}</p>
+                </div>
+              </FocusTTS>
+              {id && (
+                <Link
+                  to={`/courses/${id}/students`}
+                  className="mt-2 flex w-fit items-center gap-2 rounded-lg bg-surface-card px-4 py-2 text-sm font-semibold text-text-headings transition hover:bg-surface-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                >
+                  <Users size={18} aria-hidden="true" />
+                  Estudiantes del curso
+                </Link>
+              )}
             </div>
           )}
         </section>
@@ -207,6 +240,49 @@ function CoursePage() {
             )}
           </section>
         )}
+
+        <section aria-label="Foro del curso" className="w-full mx-auto p-3 sm:p-4 justify-center gap-4 flex flex-col">
+          <div className="flex items-center gap-2">
+            <MessageSquare size={24} className="text-text-headings" aria-hidden="true" />
+            <h2 className="text-xl font-bold text-text-headings">Foro</h2>
+          </div>
+
+          {!isAuthenticated && (
+            <Alert>Inicia sesión para participar en el foro.</Alert>
+          )}
+
+          {isAuthenticated && id && (
+            <PostCreator courseId={id} onPostCreated={handleForumAction} />
+          )}
+
+          {forumLoading && !forumInitialFetchDone && (
+            <p className="text-sm text-text-body">Cargando foro...</p>
+          )}
+
+          {forumError && forumInitialFetchDone && (
+            <Alert>{forumError}</Alert>
+          )}
+
+          {!forumLoading && forumInitialFetchDone && !forumError && posts.length === 0 && (
+            <div className="flex flex-col items-center gap-2 py-8 text-center">
+              <MessageSquare size={32} className="text-text-disabled" aria-hidden="true" />
+              <p className="text-text-body text-sm">No hay publicaciones aún.</p>
+              {isAuthenticated && (
+                <p className="text-text-disabled text-xs">Sé el primero en publicar.</p>
+              )}
+            </div>
+          )}
+
+          {!forumLoading && posts.length > 0 && (
+            <div className="flex flex-col gap-4">
+              {posts.map((post) => (
+                <div key={post.id} className="rounded-lg border border-border-card bg-surface-primary p-3 sm:p-4">
+                  <PostCard post={post} courseId={id!} depth={0} onAction={handleForumAction} />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
       </main>
 
       {showTopicModal && id && (

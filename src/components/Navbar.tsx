@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import NavTTSLink from "./NavTTSLink";
 import { Button } from "./Button";
 import { useAuth } from "../context/AuthContext";
+import { useButtonTTS } from "../hooks/useButtonTTS";
 
 export interface NavbarLink {
   label: string;
@@ -53,6 +55,15 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
   const menuRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, logout } = useAuth();
 
+  const a11yTTS = useButtonTTS("Abrir panel de accesibilidad");
+  const logoutTTS = useButtonTTS("Cerrar sesión");
+  const loginTTS = useButtonTTS("Iniciar sesión");
+  const registerTTS = useButtonTTS("Regístrate");
+  const hamburgerTTS = useButtonTTS("Abrir menú de navegación");
+  const closeMobileTTS = useButtonTTS("Cerrar menú");
+  const logoTTS = useButtonTTS("EMCODE");
+  const mobileA11yTTS = useButtonTTS("Abrir panel de accesibilidad");
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsMobileMenuOpen(false);
@@ -73,15 +84,16 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
     <header className="sticky top-0 z-50 border-b border-border-card bg-surface-page/95 backdrop-blur-sm py-4">
       <div className="flex items-center justify-between gap-4 px-6 sm:px-16">
         <div className="flex items-center gap-6 text-sm font-medium text-text-body">
-          <NavLink to="/" className="flex items-center gap-2">
+          <NavLink to="/" className="flex items-center gap-2" {...logoTTS}>
             <img src="/emcode.svg" alt="Emcode" width={24} height={24} />
             <span className="font-semibold tracking-wider">EMCODE</span>
           </NavLink>
           <nav className="hidden items-center gap-6 md:flex">
             {links.map((link) => (
-              <NavLink
+              <NavTTSLink
                 key={link.label}
-                to={link.href}
+                label={link.label}
+                href={link.href}
                 end={link.href === "/"}
                 className={({ isActive }) =>
                   `text-sm transition hover:text-text-headings border-b-2 ${
@@ -90,9 +102,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                       : "border-transparent text-text-body"
                   }`
                 }
-              >
-                {link.label}
-              </NavLink>
+              />
             ))}
           </nav>
         </div>
@@ -103,6 +113,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             aria-label="Abrir panel de accesibilidad"
             variant="secondary"
             className="hidden md:flex"
+            {...a11yTTS}
           >
             {accessibilityIcon}
           </Button>
@@ -117,6 +128,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                   variant="secondary"
                   className="border border-border-card bg-transparent text-text-body hover:bg-surface-action-hover-2"
                   onPress={() => { logout(); navigate("/"); }}
+                  {...logoutTTS}
                 >
                   Cerrar sesión
                 </Button>
@@ -128,6 +140,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                   variant="secondary"
                   className="border border-border-card bg-transparent text-text-body hover:bg-surface-action-hover-2"
                   onPress={() => navigate("/login")}
+                  {...loginTTS}
                 >
                   Iniciar sesión
                 </Button>
@@ -136,21 +149,23 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                   variant="primary"
                   className="px-4"
                   onPress={() => navigate("/register")}
+                  {...registerTTS}
                 >
                   Regístrate
                 </Button>
               </>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen(true)}
+          <Button
+            variant="quiet"
+            onPress={() => setIsMobileMenuOpen(true)}
             aria-label="Abrir menú de navegación"
-            className="flex items-center justify-center md:hidden p-3 min-h-11 min-w-11 text-text-body"
+            className="md:hidden p-3 min-h-11 min-w-11 text-text-body"
             aria-expanded={isMobileMenuOpen}
+            {...hamburgerTTS}
           >
             {menuIcon}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -169,21 +184,23 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
           >
           <div className="flex items-center justify-between px-6 py-4 border-b border-border-card">
             <span className="font-semibold tracking-wider">EMCODE</span>
-            <button
-              type="button"
-              onClick={closeMenu}
+            <Button
+              variant="quiet"
+              onPress={closeMenu}
               aria-label="Cerrar menú"
-              className="flex items-center justify-center p-3 min-h-11 min-w-11 text-text-body"
+              className="p-3 min-h-11 min-w-11 text-text-body"
+              {...closeMobileTTS}
             >
               {closeIcon}
-            </button>
+            </Button>
           </div>
 
           <nav className="flex flex-col items-stretch gap-8 px-6 bg-surface-page">
             {links.map((link) => (
-              <NavLink
+              <NavTTSLink
                 key={link.label}
-                to={link.href}
+                label={link.label}
+                href={link.href}
                 end={link.href === "/"}
                 onClick={closeMenu}
                 className={({ isActive }) =>
@@ -193,9 +210,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                       : "border-transparent text-text-body"
                   }`
                 }
-              >
-                {link.label}
-              </NavLink>
+              />
             ))}
           </nav>
 
@@ -204,6 +219,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
               onPress={() => { onAccessibilityOpen?.(); closeMenu(); }}
               aria-label="Abrir panel de accesibilidad"
               variant="secondary"
+              {...mobileA11yTTS}
             >
               Accesibilidad
             </Button>
@@ -219,6 +235,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                     navigate("/");
                     closeMenu();
                   }}
+                  {...logoutTTS}
                 >
                   Cerrar sesión
                 </Button>
@@ -231,6 +248,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                     navigate("/login");
                     closeMenu();
                   }}
+                  {...loginTTS}
                 >
                   Iniciar sesión
                 </Button>
@@ -239,6 +257,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                     navigate("/register");
                     closeMenu();
                   }}
+                  {...registerTTS}
                 >
                   Regístrate
                 </Button>

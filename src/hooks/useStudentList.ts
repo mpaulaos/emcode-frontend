@@ -182,7 +182,7 @@ export function useCreateStudent(): UseCreateStudentResult {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   return { createStudent, loading, error };
 }
@@ -224,7 +224,7 @@ export function useUpdateStudent(): UseUpdateStudentResult {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   return { updateStudent, loading, error };
 }
@@ -266,7 +266,7 @@ export function useEnrollStudent(): UseEnrollStudentResult {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   return { enrollStudent, loading, error };
 }
@@ -305,7 +305,7 @@ export function useRemoveStudentFromCourse(): UseRemoveStudentFromCourseResult {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   return { removeStudent, loading, error };
 }

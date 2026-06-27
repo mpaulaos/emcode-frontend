@@ -56,9 +56,7 @@ function TeacherStudentsListPage() {
     try {
       await Promise.all(student.courses.map((c) => removeStudent(c.id, studentId)));
       refetch();
-    } catch {
-     
-    }
+    } catch { /* error handled by hook */ }
   }
 
   return (

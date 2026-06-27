@@ -1,6 +1,8 @@
 'use client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/Button';
+import FocusTTS from '../components/FocusTTS';
 import heroImage from '../assets/imgs/landing-page-image.png';
 
 const platformOptions = [
@@ -67,8 +69,13 @@ const features = [
 
 export function HomePage() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/teacher" replace />;
+  }
   return (
-    <div className="flex w-full flex-col">
+    <FocusTTS><div className="flex w-full flex-col">
       <div className="mx-auto w-full max-w-310 px-6 py-12 sm:px-8 lg:px-12 mb-64">
         <section aria-label="Hero" className="rounded-[20px] sm:border sm:border-border-card bg-surface-primary sm:p-16">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
@@ -132,6 +139,6 @@ export function HomePage() {
           </div>
         </section>
       </div>
-    </div>
+    </div></FocusTTS>
   );
 }
