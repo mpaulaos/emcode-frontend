@@ -146,29 +146,29 @@
   /* -------------------------------------------------------------------------
      FONT FAMILIES
      ------------------------------------------------------------------------- */
-  --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --font-heading: "Inter", sans-serif;
+  --font-body: "Lexend", sans-serif;
 
   /* -------------------------------------------------------------------------
      FONT WEIGHTS
      ------------------------------------------------------------------------- */
-  --font-weight-regular: var(--font-weight-regular);
-  --font-weight-semibold: var(--font-weight-semibold);
-  --font-weight-bold: var(--font-weight-bold);
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* -------------------------------------------------------------------------
      SPACING — maps to Tailwind's spacing scale
      Use: p-sm, gap-lg, m-2xl, etc.
      ------------------------------------------------------------------------- */
-  --spacing-3xs: var(--spacing-3xs);
-  --spacing-2xs: var(--spacing-2xs);
-  --spacing-xs: var(--spacing-xs);
-  --spacing-sm: var(--spacing-sm);
-  --spacing-md: var(--spacing-md);
-  --spacing-lg: var(--spacing-lg);
-  --spacing-xl: var(--spacing-xl);
-  --spacing-2xl: var(--spacing-2xl);
-  --spacing-3xl: var(--spacing-3xl);
+  --spacing-3xs: var(--scale-50);
+  --spacing-2xs: var(--scale-100);
+  --spacing-xs: var(--scale-200);
+  --spacing-sm: var(--scale-300);
+  --spacing-md: var(--scale-400);
+  --spacing-lg: var(--scale-600);
+  --spacing-xl: var(--scale-800);
+  --spacing-2xl: var(--scale-1200);
+  --spacing-3xl: var(--scale-1600);
 
   /* -------------------------------------------------------------------------
      BORDER RADIUS
@@ -185,8 +185,8 @@
      BORDER WIDTH
      Use: border-sm, border-md, border-lg
      ------------------------------------------------------------------------- */
-  --border-width-none: var(--border-width-none);
-  --border-width-sm: var(--border-width-sm);
-  --border-width-md: var(--border-width-md);
-  --border-width-lg: var(--border-width-lg);
+  --border-width-none: var(--scale-0);
+  --border-width-sm: var(--scale-25);
+  --border-width-md: var(--scale-50);
+  --border-width-lg: var(--scale-100);
 }

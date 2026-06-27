@@ -19,6 +19,10 @@ export interface AccessibilitySettings {
   highlightHeadings: boolean;
   highlightLinks: boolean;
   highlightButtons: boolean;
+
+  ttsEnabled: boolean;
+  ttsRate: number;
+  ttsVoice: string;
 }
 
 export const DEFAULT_SETTINGS: AccessibilitySettings = {
@@ -42,4 +46,7 @@ export const DEFAULT_SETTINGS: AccessibilitySettings = {
   highlightHeadings: false,
   highlightLinks: false,
   highlightButtons: false,
+  ttsEnabled: false,
+  ttsRate: 1,
+  ttsVoice: 'auto',
 };

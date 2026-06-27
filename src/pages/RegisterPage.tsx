@@ -6,6 +6,7 @@ import { TextField } from '../components/TextField';
 import { Button } from '../components/Button';
 import { Link } from '../components/Link';
 import { Alert } from '../components/Alert';
+import FocusTTS from '../components/FocusTTS';
 import { useRegister } from '../hooks/useRegister';
 
 interface RegisterState {
@@ -65,7 +66,7 @@ export function RegisterPage() {
 
 /** max-w-[1240px] */
   return (
-    <div className="mx-auto min-h-[calc(100vh-80px)] w-full   max-w-310  p-lg sm:p-xl">
+    <FocusTTS><div className="mx-auto min-h-[calc(100vh-80px)] w-full   max-w-310  p-lg sm:p-xl">
       <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card sm:p-2xl">
         <div className="flex flex-col gap-lg">
           <div className="space-y-sm">
@@ -145,6 +146,6 @@ export function RegisterPage() {
           </Form>
         </div>
       </section>
-    </div>
+    </div></FocusTTS>
   );
 }

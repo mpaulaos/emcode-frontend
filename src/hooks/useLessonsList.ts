@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useFetch } from '../lib/useFetch';
 import type { Lesson } from '../types/lesson';
 import { API_URL } from '../lib/api';
@@ -13,5 +14,7 @@ export function useLessonsListData(id: string | undefined): UseLessonsListDataRe
       id ? `${API_URL}/api/lessons/topic/${id}` : null
     );
 
-    return { lessons: data ?? [], loading, error };
+    const lessons = useMemo(() => data ?? [], [data]);
+
+    return { lessons, loading, error };
 }
