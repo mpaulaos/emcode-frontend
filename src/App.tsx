@@ -44,10 +44,10 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            <Route path="/disabilities" element={<DisabilityInfoPage />} />
             <Route element={<ProtectedRoute />}>
             <Route path="/teacher" element={<TeacherDashboardPage />} />
             <Route path="/guides" element={<GuidesPage />} />
-            <Route path="/disabilities" element={<DisabilityInfoPage />} />
             <Route path="/teacher/students" element={<TeacherStudentsListPage />} />
               <Route path="/courses/:id/students" element={<StudentsPage />} />
             </Route>

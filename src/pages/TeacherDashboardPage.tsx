@@ -5,7 +5,6 @@ import { Plus } from "lucide-react";
 import type { Course } from "../types/dashboard";
 import CreateCourseModal from "../components/CreateCourseModal";
 import { useTeacherDashboard } from "../hooks/useTeacherDashboard";
-import TeacherNavChips from "../components/TeacherChips";
 
 function TeacherDashboardPage() {
   const { data, loading, error } = useTeacherDashboard();
@@ -34,8 +33,6 @@ function TeacherDashboardPage() {
             Administra tus lecciones y recursos académicos en un solo lugar.
           </p>
         </section>
-
-        <TeacherNavChips />
 
         <section aria-label="Mis cursos" className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
