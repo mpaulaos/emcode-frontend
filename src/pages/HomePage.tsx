@@ -75,12 +75,12 @@ export function HomePage() {
   }
   return (
     <div className="flex w-full flex-col">
-      <div className="mx-auto w-full max-w-[1240px] px-6 py-12 sm:px-8 lg:px-12 mb-64">
+      <div className="mx-auto w-full max-w-310 px-6 py-12 sm:px-8 lg:px-12 mb-64">
         <section aria-label="Hero" className="rounded-[20px] sm:border sm:border-border-card bg-surface-primary sm:p-16">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             <div className="space-y-6">
               <h1 className="text-3xl md:text-5xl leading-tight font-extrabold text-text-headings">Aprendé y enseñá programación de forma accesible</h1>
-              <p className="max-w-[620px] text-base text-text-body">Accedé a cursos, materiales y guías prácticas para mejorar la enseñanza y el aprendizaje de la programación, considerando distintas necesidades y estilos de aprendizaje.</p>
+              <p className="max-w-155 text-base text-text-body">Accedé a cursos, materiales y guías prácticas para mejorar la enseñanza y el aprendizaje de la programación, considerando distintas necesidades y estilos de aprendizaje.</p>
               <div className="pt-4">
                 <Button variant="primary" onPress={() => navigate("/login")}>Explorar cursos</Button>
               </div>
@@ -90,14 +90,14 @@ export function HomePage() {
               <img
                 src={heroImage}
                 alt="Estudiantes aprendiendo programación en la plataforma Emcode"
-                className="h-auto w-full max-w-[540px] rounded-[20px] object-cover aspect-square md:aspect-auto"
+                className="h-auto w-full max-w-135 rounded-[20px] object-cover aspect-square md:aspect-auto"
               />
             </div>
           </div>
         </section>
       </div>
 
-      <div className="mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12 mb-64">
+      <div className="mx-auto w-full max-w-310 px-6 sm:px-8 lg:px-12 mb-64">
         <section aria-label="Secciones de la plataforma">
           <div className="text-center">
             <h2 className="text-2xl md:text-4xl font-semibold text-text-headings">¿Qué podés hacer en la plataforma?</h2>
@@ -115,7 +115,7 @@ export function HomePage() {
         </section>
       </div>
 
-      <div className="mx-auto w-full max-w-[1240px] px-6 sm:px-8 lg:px-12 mb-64">
+      <div className="mx-auto w-full max-w-310 px-6 sm:px-8 lg:px-12 mb-64">
         <section aria-label="Características principales">
           <div className="text-center">
             <h3 className="text-2xl md:text-4xl font-semibold text-text-headings">Características principales</h3>

@@ -12,7 +12,7 @@ const steps = [
 function WizardProgress({ currentStep }: WizardProgressProps) {
   return (
     <nav aria-label="Progreso del formulario">
-      <ol className="flex items-center">
+      <ol className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-0">
         {steps.map((step, index) => {
           const isCompleted = currentStep > step.number;
           const isCurrent = currentStep === step.number;
@@ -21,7 +21,7 @@ function WizardProgress({ currentStep }: WizardProgressProps) {
             <li
               key={step.number}
               aria-current={isCurrent ? "step" : undefined}
-              className="flex flex-1 items-center last:flex-none"
+              className="flex min-w-0 items-center sm:flex-1 sm:last:flex-none"
             >
               <div
                 className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full text-sm font-medium transition-colors ${
@@ -41,7 +41,7 @@ function WizardProgress({ currentStep }: WizardProgressProps) {
               </div>
 
               <span
-                className={`ml-2 truncate text-xs font-medium ${
+                className={`ml-2 min-w-0 truncate text-xs font-medium ${
                   isCurrent ? "text-text-action" : "text-text-body"
                 }`}
               >
@@ -51,7 +51,7 @@ function WizardProgress({ currentStep }: WizardProgressProps) {
               {index < steps.length - 1 && (
                 <div
                   aria-hidden="true"
-                  className={`mx-2 sm:mx-3 h-[1.5px] flex-1 transition-colors duration-300 ${
+                  className={`mx-0 hidden h-[1.5px] flex-1 transition-colors duration-300 sm:mx-3 sm:block ${
                     isCompleted ? "bg-primary" : "bg-border-card"
                   }`}
                 />
