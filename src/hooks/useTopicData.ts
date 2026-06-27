@@ -11,19 +11,16 @@ interface UseTopicDataResult {
 
 export function useTopicData(id: string | undefined): UseTopicDataResult {
     const [topics, setTopics] = useState<Topic[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(Boolean(id));
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-
-        if (!id) {
-            setLoading(false);
-            return;
-        }
+        if (!id) return;
 
         const controller = new AbortController();
 
         async function fetchTopics() {
+            setLoading(true);
             try {
                 const response = await fetch(`${API_URL}/api/topics/course/${id}`, { signal: controller.signal });
 
@@ -33,6 +30,7 @@ export function useTopicData(id: string | undefined): UseTopicDataResult {
 
                 const data: Topic[] = await response.json();
                 setTopics(data);
+                setError(null);
 
             } catch (err) {
 

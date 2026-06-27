@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
-import { Plus, MessageSquare } from "lucide-react";
+import { Plus, MessageSquare, Users } from "lucide-react";
 
 import { useCourse } from '../hooks/useCourse';
 import { useTopicData } from '../hooks/useTopicData';
