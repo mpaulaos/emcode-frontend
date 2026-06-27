@@ -1,5 +1,6 @@
 'use client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/Button';
 import heroImage from '../assets/imgs/landing-page-image.png';
 
@@ -67,6 +68,11 @@ const features = [
 
 export function HomePage() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/teacher" replace />;
+  }
   return (
     <div className="flex w-full flex-col">
       <div className="mx-auto w-full max-w-310 px-6 py-12 sm:px-8 lg:px-12 mb-64">

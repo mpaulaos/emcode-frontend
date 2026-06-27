@@ -15,6 +15,7 @@ dist-ssr
 
 # Skills
 .agents
+.opencode
 
 # Editor directories and files
 .vscode/*

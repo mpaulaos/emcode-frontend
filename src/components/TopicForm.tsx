@@ -19,9 +19,7 @@ function TopicForm({ courseId, onCancel, onPublish }: TopicFormProps) {
     try {
       const newTopic = await createTopic(courseId, { topicName: topicName.trim() });
       onPublish(newTopic);
-    } catch {
-      
-    }
+    } catch { /* error handled by hook */ }
   }
 
   return (

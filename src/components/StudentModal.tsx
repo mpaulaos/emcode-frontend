@@ -103,8 +103,7 @@ function AddOrEditStudentModal({
         });
         onSaved(student);
       }
-    } catch {
-    }
+    } catch { /* error handled by hook */ }
   }
 
   const mappedDisabilityOptions = (disabilityOptions ?? []).map((d) => ({ value: d.id, label: d.name }));
