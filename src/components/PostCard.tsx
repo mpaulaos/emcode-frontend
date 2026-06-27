@@ -179,18 +179,19 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
     </article>
 
       {showDeleteConfirm && (
-        <dialog
-          open
-          className="fixed inset-0 z-50 m-0 flex h-full w-full items-center justify-center bg-black/50 p-4"
-          aria-labelledby="delete-confirm-title"
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
           onClick={() => setShowDeleteConfirm(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setShowDeleteConfirm(false);
-          }}
+          onKeyDown={(e) => { if (e.key === "Escape") setShowDeleteConfirm(false); }}
+          role="presentation"
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-confirm-title"
             className="relative flex w-full max-w-sm flex-col gap-4 rounded-2xl bg-surface-primary p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => { if (e.key === "Escape") setShowDeleteConfirm(false); }}
           >
             <h2
               id="delete-confirm-title"
@@ -210,7 +211,7 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
               </Button>
             </div>
           </div>
-        </dialog>
+        </div>
       )}
     </>
   );
