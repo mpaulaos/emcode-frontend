@@ -3,12 +3,12 @@ import { MessageSquare, Pencil, Trash2 } from "lucide-react";
 import type { PostTreeNode } from "../types/forum";
 
 interface PostActionsProps {
-  post: PostTreeNode;
-  currentUserId: number;
-  canDelete: boolean;
-  onReply: () => void;
-  onEdit: () => void;
-  onDelete: () => void;
+  readonly post: PostTreeNode;
+  readonly currentUserId: number;
+  readonly canDelete: boolean;
+  readonly onReply: () => void;
+  readonly onEdit: () => void;
+  readonly onDelete: () => void;
 }
 
 function PostActions({ post, currentUserId, canDelete, onReply, onEdit, onDelete }: PostActionsProps) {

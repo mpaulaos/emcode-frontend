@@ -5,10 +5,10 @@ import { POST_CONTENT_MAX } from "../types/forum";
 import { useForum } from "../hooks/useForum";
 
 interface PostEditFormProps {
-  postId: number;
-  initialContent: string;
-  onCancel: () => void;
-  onSaved: () => void;
+  readonly postId: number;
+  readonly initialContent: string;
+  readonly onCancel: () => void;
+  readonly onSaved: () => void;
 }
 
 function PostEditForm({ postId, initialContent, onCancel, onSaved }: PostEditFormProps) {

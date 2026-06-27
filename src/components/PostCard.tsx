@@ -16,10 +16,10 @@ const AVATAR_COLORS = [
 ];
 
 interface PostCardProps {
-  post: PostTreeNode;
-  courseId: string;
-  depth?: number;
-  onAction: () => void;
+  readonly post: PostTreeNode;
+  readonly courseId: string;
+  readonly depth?: number;
+  readonly onAction: () => void;
 }
 
 function getInitials(first: string | null, last: string | null): string {
@@ -179,42 +179,38 @@ function PostCard({ post, courseId, depth = 0, onAction }: PostCardProps) {
     </article>
 
       {showDeleteConfirm && (
-        <>
+        <dialog
+          open
+          className="fixed inset-0 z-50 m-0 flex h-full w-full items-center justify-center bg-black/50 p-4"
+          aria-labelledby="delete-confirm-title"
+          onClick={() => setShowDeleteConfirm(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setShowDeleteConfirm(false);
+          }}
+        >
           <div
-            className="fixed inset-0 z-40 bg-black/50"
-            aria-hidden="true"
-            onClick={() => setShowDeleteConfirm(false)}
-          />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="delete-confirm-title"
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="relative flex w-full max-w-sm flex-col gap-4 rounded-2xl bg-surface-primary p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="relative flex w-full flex-col gap-4 rounded-2xl bg-surface-primary p-6 shadow-xl"
-              onClick={(e) => e.stopPropagation()}
+            <h2
+              id="delete-confirm-title"
+              className="text-lg font-semibold text-text-headings"
             >
-              <h2
-                id="delete-confirm-title"
-                className="text-lg font-semibold text-text-headings"
-              >
-                Eliminar mensaje
-              </h2>
-              <p className="text-sm text-text-body">
-                ¿Estás seguro de que deseas eliminar este mensaje?
-              </p>
-              <div className="flex items-center justify-end gap-2">
-                <Button variant="secondary" onPress={() => setShowDeleteConfirm(false)}>
-                  Cancelar
-                </Button>
-                <Button variant="destructive" onPress={confirmDelete}>
-                  Eliminar
-                </Button>
-              </div>
+              Eliminar mensaje
+            </h2>
+            <p className="text-sm text-text-body">
+              ¿Estás seguro de que deseas eliminar este mensaje?
+            </p>
+            <div className="flex items-center justify-end gap-2">
+              <Button variant="secondary" onPress={() => setShowDeleteConfirm(false)}>
+                Cancelar
+              </Button>
+              <Button variant="destructive" onPress={confirmDelete}>
+                Eliminar
+              </Button>
             </div>
           </div>
-        </>
+        </dialog>
       )}
     </>
   );

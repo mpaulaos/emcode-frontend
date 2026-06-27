@@ -5,8 +5,8 @@ import { POST_CONTENT_MAX } from "../types/forum";
 import { useForum } from "../hooks/useForum";
 
 interface PostCreatorProps {
-  courseId: string;
-  onPostCreated: () => void;
+  readonly courseId: string;
+  readonly onPostCreated: () => void;
 }
 
 function PostCreator({ courseId, onPostCreated }: PostCreatorProps) {

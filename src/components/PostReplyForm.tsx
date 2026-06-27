@@ -5,9 +5,9 @@ import { POST_CONTENT_MAX } from "../types/forum";
 import { useForum } from "../hooks/useForum";
 
 interface PostReplyFormProps {
-  postId: number;
-  onCancel: () => void;
-  onReplied: () => void;
+  readonly postId: number;
+  readonly onCancel: () => void;
+  readonly onReplied: () => void;
 }
 
 function PostReplyForm({ postId, onCancel, onReplied }: PostReplyFormProps) {
