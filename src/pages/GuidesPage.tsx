@@ -3,6 +3,7 @@ import { Button } from "react-aria-components";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../lib/useFetch";
+import FocusTTS from "../components/FocusTTS";
 
 interface GuideSection {
   heading: string;
@@ -170,24 +171,30 @@ function GuidesPage() {
             className="flex min-w-0 flex-1 flex-col gap-lg"
           >
            
-            <div className="flex flex-col gap-xs">
-              <h1 className="text-[1.5rem] font-bold leading-tight text-text-headings sm:text-[1.75rem]">
-                {state.selected.title}
-              </h1>
-              <p className="text-body text-text-body">{state.selected.summary}</p>
-            </div>
+            <FocusTTS text={`${state.selected.title}. ${state.selected.summary}`}>
+              <div className="flex flex-col gap-xs">
+                <h1 className="text-[1.5rem] font-bold leading-tight text-text-headings sm:text-[1.75rem]">
+                  {state.selected.title}
+                </h1>
+                <p className="text-body text-text-body">{state.selected.summary}</p>
+              </div>
+            </FocusTTS>
 
             <hr className="border-border-card" />
 
             <div className="flex flex-col gap-xl">
               {state.selected.sections.map((section, i) => (
                 <div key={`${i}-${section.heading}`} className="flex flex-col gap-sm">
-                  <p className="text-body-sm font-semibold uppercase tracking-wide text-primary">
-                    {section.heading}
-                  </p>
-                  <p className="text-body text-text-body leading-relaxed">
-                    {section.body}
-                  </p>
+                  <FocusTTS text={`${section.heading}. ${section.body}`}>
+                    <div className="flex flex-col gap-sm">
+                      <p className="text-body-sm font-semibold uppercase tracking-wide text-primary">
+                        {section.heading}
+                      </p>
+                      <p className="text-body text-text-body leading-relaxed">
+                        {section.body}
+                      </p>
+                    </div>
+                  </FocusTTS>
                 </div>
               ))}
             </div>

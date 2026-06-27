@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import NavTTSLink from "./NavTTSLink";
 import { Button } from "./Button";
 import { useAuth } from "../context/AuthContext";
 
@@ -78,9 +79,10 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
           </NavLink>
           <nav className="hidden items-center gap-6 md:flex">
             {links.map((link) => (
-              <NavLink
+              <NavTTSLink
                 key={link.label}
-                to={link.href}
+                label={link.label}
+                href={link.href}
                 end={link.href === "/"}
                 className={({ isActive }) =>
                   `text-sm transition hover:text-text-headings border-b-2 ${
@@ -89,9 +91,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                       : "border-transparent text-text-body"
                   }`
                 }
-              >
-                {link.label}
-              </NavLink>
+              />
             ))}
           </nav>
         </div>
@@ -180,9 +180,10 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
 
           <nav className="flex flex-col items-stretch gap-8 px-6 bg-surface-page">
             {links.map((link) => (
-              <NavLink
+              <NavTTSLink
                 key={link.label}
-                to={link.href}
+                label={link.label}
+                href={link.href}
                 end={link.href === "/"}
                 onClick={closeMenu}
                 className={({ isActive }) =>
@@ -192,9 +193,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
                       : "border-transparent text-text-body"
                   }`
                 }
-              >
-                {link.label}
-              </NavLink>
+              />
             ))}
           </nav>
 

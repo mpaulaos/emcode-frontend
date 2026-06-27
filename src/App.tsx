@@ -18,9 +18,11 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import ChatWidget from "./components/ChatWidget";
 import DisabilityInfoPage from "./pages/DisabilityInfoPage";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
+import { SpeechProvider } from "./context/SpeechContext";
 import { AccessibilityWidget } from "./components/accessibility/AccessibilityWidget";
 import { ColorBlindnessFilters } from "./components/accessibility/ColorBlindnessFilters";
 import { ReadingMask } from "./components/accessibility/ReadingMask";
+import { TextToSpeechPlayer } from "./components/accessibility/TextToSpeechPlayer";
 import StudentsPage from "./pages/StudentListPage";
 import TeacherStudentsListPage from "./pages/TeacherStudentsListPage";
 
@@ -30,6 +32,7 @@ function App() {
   return (
     <AuthProvider>
       <AccessibilityProvider>
+        <SpeechProvider>
         <ColorBlindnessFilters />
         <ReadingMask />
         <div className="min-h-screen bg-surface-page text-text-body">
@@ -52,16 +55,18 @@ function App() {
               <Route path="/courses/:id/students" element={<StudentsPage />} />
             </Route>
           </Routes>
-
+          
           <Footer />
           <AccessibilityWidget
             isOpen={isAccessibilityOpen}
             onClose={() => setIsAccessibilityOpen(false)}
           />
           <ChatWidget />
+          <TextToSpeechPlayer />
         </div>
-      </AccessibilityProvider>
-    </AuthProvider>
+        </SpeechProvider>
+        </AccessibilityProvider>
+      </AuthProvider>
   );
 }
 
