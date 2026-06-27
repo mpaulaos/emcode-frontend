@@ -7,6 +7,7 @@ import { Checkbox } from '../components/Checkbox';
 import { Link } from '../components/Link';
 import { Button } from '../components/Button';
 import { Alert } from '../components/Alert';
+import FocusTTS from '../components/FocusTTS';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../lib/api';
 
@@ -52,7 +53,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
+    <FocusTTS><div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
       <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card sm:p-2xl">
         <div className="flex flex-col gap-lg">
           <div className="space-y-sm">
@@ -130,6 +131,6 @@ export function LoginPage() {
           </a>
         </div>
       </section>
-    </div>
+    </div></FocusTTS>
   );
 }

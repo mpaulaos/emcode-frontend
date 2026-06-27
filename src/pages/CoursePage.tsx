@@ -14,6 +14,7 @@ import CreateTopicModal from '../components/CreateTopicModal';
 import TopicLessonsPanel from '../components/TopicLessonPanel';
 import PostCreator from '../components/PostCreator';
 import PostCard from '../components/PostCard';
+import FocusTTS from '../components/FocusTTS';
 import { Alert } from '../components/Alert';
 
 import type { Topic } from '../types/topic';
@@ -63,20 +64,22 @@ function CoursePage() {
           )}
           {!loading && !error && !notFound && course && (
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
-                <p>Sigla: {course?.subtitle}</p>
-                <p>Descripción: {course?.description}</p>
-                {id && (
-                  <Link
-                    to={`/courses/${id}/students`}
-                    className="mt-2 flex w-fit items-center gap-2 rounded-lg bg-surface-card px-4 py-2 text-sm font-semibold text-text-headings transition hover:bg-surface-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-                  >
-                    <Users size={18} aria-hidden="true" />
-                    Estudiantes del curso
-                  </Link>
-                )}
-              </div>
+              <FocusTTS text={`${course.title}. ${course?.description ?? ""}`}>
+                <div className="flex flex-col gap-2">
+                  <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
+                  <p>Sigla: {course?.subtitle}</p>
+                  <p>Descripción: {course?.description}</p>
+                </div>
+              </FocusTTS>
+              {id && (
+                <Link
+                  to={`/courses/${id}/students`}
+                  className="mt-2 flex w-fit items-center gap-2 rounded-lg bg-surface-card px-4 py-2 text-sm font-semibold text-text-headings transition hover:bg-surface-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                >
+                  <Users size={18} aria-hidden="true" />
+                  Estudiantes del curso
+                </Link>
+              )}
             </div>
           )}
         </section>
