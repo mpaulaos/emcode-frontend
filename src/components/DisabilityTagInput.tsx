@@ -29,13 +29,18 @@ function DisabilityTagInput({
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
+  const listboxRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fieldId = useId();
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        containerRef.current && !containerRef.current.contains(target) &&
+        listboxRef.current && !listboxRef.current.contains(target)
+      ) {
         setOpen(false);
       }
     }
@@ -133,6 +138,7 @@ function DisabilityTagInput({
 
         {open && triggerRect && createPortal(
           <ul
+            ref={listboxRef}
             id={`${fieldId}-listbox`}
             role="listbox"
             aria-label={label}
