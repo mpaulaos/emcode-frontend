@@ -25,6 +25,7 @@ import { ReadingMask } from "./components/accessibility/ReadingMask";
 import { TextToSpeechPlayer } from "./components/accessibility/TextToSpeechPlayer";
 import StudentsPage from "./pages/StudentListPage";
 import TeacherStudentsListPage from "./pages/TeacherStudentsListPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
@@ -49,6 +50,7 @@ function App() {
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/disabilities" element={<DisabilityInfoPage />} />
             <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/teacher" element={<TeacherDashboardPage />} />
             <Route path="/guides" element={<GuidesPage />} />
             <Route path="/teacher/students" element={<TeacherStudentsListPage />} />

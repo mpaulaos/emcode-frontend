@@ -120,9 +120,9 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
           <div className="hidden items-center gap-3 md:flex">
             {isAuthenticated ? (
               <>
-                <span className="text-sm text-text-body">
-                  {user?.name}
-                </span>
+                <NavLink to="/profile" className="text-sm text-text-body hover:text-text-headings transition">
+                  {user?.firstName} {user?.lastName}
+                </NavLink>
                 <Button
                   type="button"
                   variant="secondary"
@@ -225,9 +225,9 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             </Button>
             {isAuthenticated ? (
               <>
-                <p className="text-sm text-text-body text-center py-2">
-                  {user?.name}
-                </p>
+                <NavLink to="/profile" onClick={closeMenu} className="text-sm text-text-body text-center py-2 hover:text-text-headings transition block">
+                  {user?.firstName} {user?.lastName}
+                </NavLink>
                 <Button
                   variant="secondary"
                   onPress={() => {
