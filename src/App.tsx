@@ -25,6 +25,7 @@ import { ReadingMask } from "./components/accessibility/ReadingMask";
 import { TextToSpeechPlayer } from "./components/accessibility/TextToSpeechPlayer";
 import StudentsPage from "./pages/StudentListPage";
 import TeacherStudentsListPage from "./pages/TeacherStudentsListPage";
+import ProfilePage from "./pages/ProfilePage";
 import { ExplorarCursosPage } from "./pages/ExplorarCursosPage";
 import StudentDashboardPage from "./pages/StudentDashboardPage";
 import InscribirCursosPage from "./pages/InscribirCursosPage";
@@ -53,6 +54,7 @@ function App() {
             <Route path="/disabilities" element={<DisabilityInfoPage />} />
             <Route path="/cursos/explorar" element={<ExplorarCursosPage />} />
             <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/teacher" element={<TeacherDashboardPage />} />
             <Route path="/student" element={<StudentDashboardPage />} />
             <Route path="/cursos/inscribir" element={<InscribirCursosPage />} />

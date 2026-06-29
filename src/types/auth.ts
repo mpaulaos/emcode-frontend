@@ -3,7 +3,14 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string | null;
+  profilePicture: string | null;
   role: 'teacher' | 'student' | 'admin';
+  isActive: boolean;
+  isVerified: boolean;
+  lastLogin: string | null;
+  createdAt: string;
+  updatedAt: string;
   studentId?: number;
 }
 
@@ -22,4 +29,16 @@ export interface RegisterData {
   lastName: string;
   email: string;
   password: string;
+}
+
+export interface UpdateProfileData {
+  firstName?: string;
+  lastName?: string;
+  phone?: string | null;
+  profilePicture?: string | null;
+}
+
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
 }
