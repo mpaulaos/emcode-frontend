@@ -21,7 +21,7 @@ export function AuthCallbackPage() {
       try {
         const user = JSON.parse(decodeURIComponent(userRaw));
         restoreSession(token, user);
-        navigate('/teacher', { replace: true });
+        navigate(user.role === 'student' ? '/student' : '/teacher', { replace: true });
         return;
       } catch {
         navigate('/login?error=invalid_user', { replace: true });

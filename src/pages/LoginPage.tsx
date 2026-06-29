@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { Form } from '../components/Form';
 import { TextField } from '../components/TextField';
 import { Checkbox } from '../components/Checkbox';
@@ -36,20 +36,31 @@ const OAUTH_ERROR_MESSAGES: Record<string, string> = {
 };
 
 export function LoginPage() {
-  const { login, loading, error: authError, isAuthenticated } = useAuth();
+  const { login, loading, error: authError, isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [searchParams] = useSearchParams();
   const urlError = searchParams.get('error');
   const displayError = urlError ? (OAUTH_ERROR_MESSAGES[urlError] ?? 'Error al autenticar con Google. Intentá de nuevo.') : authError;
 
+  function getDefaultRoute() {
+    if (user?.role === 'student') return '/student';
+    return '/teacher';
+  }
+
+  const redirectTo = searchParams.get('redirect') || getDefaultRoute();
+
   if (isAuthenticated) {
-    return <Navigate to="/teacher" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     await login({ email, password });
+    if (!authError) {
+      navigate(searchParams.get('redirect') || getDefaultRoute(), { replace: true });
+    }
   }
 
   return (
