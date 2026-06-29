@@ -11,6 +11,7 @@ export interface User {
   lastLogin: string | null;
   createdAt: string;
   updatedAt: string;
+  studentId?: number;
 }
 
 export interface LoginCredentials {

@@ -69,10 +69,11 @@ const features = [
 
 export function HomePage() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   if (isAuthenticated) {
-    return <Navigate to="/teacher" replace />;
+    const defaultRoute = user?.role === 'student' ? '/student' : '/teacher';
+    return <Navigate to={defaultRoute} replace />;
   }
   return (
     <FocusTTS><div className="flex w-full flex-col">
@@ -83,7 +84,7 @@ export function HomePage() {
               <h1 className="text-3xl md:text-5xl leading-tight font-extrabold text-text-headings">Aprendé y enseñá programación de forma accesible</h1>
               <p className="max-w-155 text-base text-text-body">Accedé a cursos, materiales y guías prácticas para mejorar la enseñanza y el aprendizaje de la programación, considerando distintas necesidades y estilos de aprendizaje.</p>
               <div className="pt-4">
-                <Button variant="primary" onPress={() => navigate("/login")}>Explorar cursos</Button>
+                <Button variant="primary" onPress={() => navigate("/cursos/explorar")}>Explorar cursos</Button>
               </div>
             </div>
 

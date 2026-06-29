@@ -26,6 +26,9 @@ import { TextToSpeechPlayer } from "./components/accessibility/TextToSpeechPlaye
 import StudentsPage from "./pages/StudentListPage";
 import TeacherStudentsListPage from "./pages/TeacherStudentsListPage";
 import ProfilePage from "./pages/ProfilePage";
+import { ExplorarCursosPage } from "./pages/ExplorarCursosPage";
+import StudentDashboardPage from "./pages/StudentDashboardPage";
+import InscribirCursosPage from "./pages/InscribirCursosPage";
 
 function App() {
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
@@ -49,9 +52,12 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/disabilities" element={<DisabilityInfoPage />} />
+            <Route path="/cursos/explorar" element={<ExplorarCursosPage />} />
             <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/teacher" element={<TeacherDashboardPage />} />
+            <Route path="/student" element={<StudentDashboardPage />} />
+            <Route path="/cursos/inscribir" element={<InscribirCursosPage />} />
             <Route path="/guides" element={<GuidesPage />} />
             <Route path="/teacher/students" element={<TeacherStudentsListPage />} />
               <Route path="/courses/:id/students" element={<StudentsPage />} />
