@@ -121,7 +121,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             {isAuthenticated ? (
               <>
                 <span className="text-sm text-text-body">
-                  {user?.name}
+                  {user?.firstName} {user?.lastName}
                 </span>
                 <Button
                   type="button"
@@ -226,7 +226,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             {isAuthenticated ? (
               <>
                 <p className="text-sm text-text-body text-center py-2">
-                  {user?.name}
+                  {user?.firstName} {user?.lastName}
                 </p>
                 <Button
                   variant="secondary"

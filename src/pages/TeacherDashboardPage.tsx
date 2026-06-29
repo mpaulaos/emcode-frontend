@@ -29,7 +29,7 @@ function TeacherDashboardPage() {
       >
         <section aria-label="Bienvenida" className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold text-text-headings">
-            ¡Hola, {user?.name ?? data?.teacherName ?? ""}!
+            ¡Hola, {user?.firstName}!
           </h1>
           <p className="text-lg text-text-body">
             Administra tus lecciones y recursos académicos en un solo lugar.
