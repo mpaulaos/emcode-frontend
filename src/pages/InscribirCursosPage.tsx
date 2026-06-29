@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-aria-components';
+import { Button } from '../components/Button';
 import { ArrowLeft, User } from 'lucide-react';
 import { useCoursesData } from '../hooks/useCoursesData';
 import { useEnrollment } from '../hooks/useEnrollment';

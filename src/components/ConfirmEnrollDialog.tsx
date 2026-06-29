@@ -31,6 +31,7 @@ function ConfirmEnrollDialog({
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key !== 'Tab') return;
+      if (!dialog) return;
 
       const focusable = dialog.querySelectorAll<HTMLElement>(FOCUSABLE);
       if (focusable.length === 0) return;
