@@ -5,9 +5,10 @@ import { useSpeechContext } from "../context/SpeechContext";
 interface FocusTTSProps {
   readonly text?: string;
   readonly children: ReactNode;
+  readonly focusable?: boolean;
 }
 
-function FocusTTS({ text, children }: FocusTTSProps) {
+function FocusTTS({ text, children, focusable = true }: FocusTTSProps) {
   const { settings } = useAccessibility();
   const { speak, stop } = useSpeechContext();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -78,7 +79,7 @@ function FocusTTS({ text, children }: FocusTTSProps) {
   return (
     <div
       ref={wrapperRef}
-      tabIndex={0}
+      tabIndex={focusable ? 0 : -1}
       role="region"
       aria-label={text ? text.slice(0, 120) : "Contenido de la página"}
       className="focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded"
