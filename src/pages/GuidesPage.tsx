@@ -87,10 +87,8 @@ function GuidesPage() {
       setActiveSection(bestId);
     }
 
-    let hasScrolled = false;
     let ticking = false;
     function handleScroll() {
-      hasScrolled = true;
       if (!ticking) {
         requestAnimationFrame(() => {
           updateActiveSection();
