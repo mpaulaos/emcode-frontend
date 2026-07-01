@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
 import type { User, UpdateProfileData } from "../types/auth";
-import { API_URL } from "../lib/api";
+import { API_URL, apiFetch } from "../lib/api";
 
 interface UpdateProfileResponse {
   user: User;
   token: string;
 }
 
-export function useUpdateProfile(token: string | null) {
+export function useUpdateProfile(_token: string | null) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,12 +16,8 @@ export function useUpdateProfile(token: string | null) {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/profile`, {
+      const response = await apiFetch(`${API_URL}/api/auth/profile`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
         body: JSON.stringify(data),
       });
 
@@ -47,7 +43,7 @@ export function useUpdateProfile(token: string | null) {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { updateProfile, loading, error };
 }

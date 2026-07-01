@@ -12,6 +12,7 @@ import { MultimediaPanel } from './panels/MultimediaPanel';
 import { CognitivePanel } from './panels/CognitivePanel';
 import { LanguagePanel } from './panels/LanguagePanel';
 import { ResetPanel } from './panels/ResetPanel';
+import { SpeechPanel } from './panels/SpeechPanel';
 
 interface AccessibilityPanelProps {
   isOpen: boolean;
@@ -60,7 +61,7 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
           isOpen ? 'right-0' : 'right-[-100%]'
         }`}
       >
-        <div className="flex h-full w-72 flex-col bg-surface-page shadow-xl sm:w-80 md:w-96">
+        <div className="flex h-full w-72 max-w-[calc(100vw-1rem)] flex-col bg-surface-page shadow-xl sm:w-80 md:w-96">
           <div className="flex shrink-0 items-center justify-between border-b border-border-card px-5 py-4">
             <h2 className="text-lg font-semibold text-text-headings">
               Accesibilidad
@@ -76,6 +77,8 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6">
             <div className="space-y-8">
+              <ResetPanel />
+              <SpeechPanel />
               <TextSizePanel />
               <TextSpacingPanel />
               <ContrastPanel />
@@ -87,7 +90,6 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
               <MultimediaPanel />
               <CognitivePanel />
               <LanguagePanel />
-              <ResetPanel />
             </div>
           </div>
         </div>

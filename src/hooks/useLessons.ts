@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Lesson } from '../types/lesson';
-import { API_URL } from '../lib/api';
-import { useAuth } from '../context/AuthContext';
+import { API_URL, apiFetch } from '../lib/api';
 
 interface CreateLessonInput {
   lessonName: string;
@@ -24,16 +23,8 @@ interface UseLessonsResult {
 }
 
 export function useLessons(): UseLessonsResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  function authHeaders() {
-    return {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-  }
 
   async function handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
@@ -48,9 +39,8 @@ export function useLessons(): UseLessonsResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/lessons/topic/${topicId}`, {
+      const response = await apiFetch(`${API_URL}/api/lessons/topic/${topicId}`, {
         method: 'POST',
-        headers: authHeaders(),
         body: JSON.stringify(input),
       });
       return await handleResponse<Lesson>(response);
@@ -66,9 +56,8 @@ export function useLessons(): UseLessonsResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/lessons/${lessonId}`, {
+      const response = await apiFetch(`${API_URL}/api/lessons/${lessonId}`, {
         method: 'PATCH',
-        headers: authHeaders(),
         body: JSON.stringify(input),
       });
       return await handleResponse<Lesson>(response);
@@ -84,9 +73,8 @@ export function useLessons(): UseLessonsResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/lessons/${lessonId}`, {
+      const response = await apiFetch(`${API_URL}/api/lessons/${lessonId}`, {
         method: 'DELETE',
-        headers: authHeaders(),
       });
       return await handleResponse<void>(response);
     } catch (err) {

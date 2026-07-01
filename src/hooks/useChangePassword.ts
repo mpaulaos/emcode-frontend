@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { API_URL } from "../lib/api";
+import { API_URL, apiFetch } from "../lib/api";
 
-export function useChangePassword(token: string | null) {
+export function useChangePassword(_token: string | null) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -12,12 +12,8 @@ export function useChangePassword(token: string | null) {
     setSuccess(false);
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/password`, {
+      const response = await apiFetch(`${API_URL}/api/auth/password`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
         body: JSON.stringify({ currentPassword, newPassword }),
       });
 
@@ -43,7 +39,7 @@ export function useChangePassword(token: string | null) {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { changePassword, loading, error, success, setSuccess };
 }

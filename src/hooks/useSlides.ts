@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Slide, CreateSlideInput, UpdateSlideInput } from '../types/slide';
-import { API_URL } from '../lib/api';
-import { useAuth } from '../context/AuthContext';
+import { API_URL, apiFetch } from '../lib/api';
 
 interface UseSlidesResult {
   fetchSlidesByLesson: (lessonId: number) => Promise<Slide[]>;
@@ -15,16 +14,8 @@ interface UseSlidesResult {
 }
 
 export function useSlides(): UseSlidesResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  function authHeaders() {
-    return {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-  }
 
   async function handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
@@ -39,9 +30,7 @@ export function useSlides(): UseSlidesResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/slides/lesson/${lessonId}`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`${API_URL}/api/slides/lesson/${lessonId}`);
       return await handleResponse<Slide[]>(response);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error inesperado');
@@ -55,9 +44,7 @@ export function useSlides(): UseSlidesResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/slides/${id}`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`${API_URL}/api/slides/${id}`);
       return await handleResponse<Slide>(response);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error inesperado');
@@ -71,9 +58,8 @@ export function useSlides(): UseSlidesResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/slides/lesson/${lessonId}`, {
+      const response = await apiFetch(`${API_URL}/api/slides/lesson/${lessonId}`, {
         method: 'POST',
-        headers: authHeaders(),
         body: JSON.stringify(input),
       });
       return await handleResponse<Slide>(response);
@@ -91,9 +77,8 @@ export function useSlides(): UseSlidesResult {
     const results: Slide[] = [];
     try {
       for (const slide of slides) {
-        const created = await fetch(`${API_URL}/api/slides/lesson/${lessonId}`, {
+        const created = await apiFetch(`${API_URL}/api/slides/lesson/${lessonId}`, {
           method: 'POST',
-          headers: authHeaders(),
           body: JSON.stringify(slide),
         });
         const result = await handleResponse<Slide>(created);
@@ -112,9 +97,8 @@ export function useSlides(): UseSlidesResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/slides/${id}`, {
+      const response = await apiFetch(`${API_URL}/api/slides/${id}`, {
         method: 'PATCH',
-        headers: authHeaders(),
         body: JSON.stringify(input),
       });
       return await handleResponse<Slide>(response);
@@ -130,9 +114,8 @@ export function useSlides(): UseSlidesResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/slides/${id}`, {
+      const response = await apiFetch(`${API_URL}/api/slides/${id}`, {
         method: 'DELETE',
-        headers: authHeaders(),
       });
       return await handleResponse<void>(response);
     } catch (err) {

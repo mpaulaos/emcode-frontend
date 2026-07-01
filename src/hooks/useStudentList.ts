@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { useFetch } from "../lib/useFetch";
-import { useAuth } from "../context/AuthContext";
 import type {
   Student,
   CourseStudentsData,
@@ -9,7 +8,7 @@ import type {
   UpdateStudentInput,
   DisabilityOption,
 } from "../types/Student";
-import { API_URL } from "../lib/api";
+import { API_URL, apiFetch } from "../lib/api";
 
 // -------------------------------------------------------------
 // Lista general del profesor autenticado ("Mis estudiantes"),
@@ -23,13 +22,6 @@ interface UseTeacherStudentsResult {
   loading: boolean;
   error: string | null;
   refetch: () => void;
-}
-
-function authHeaders(token: string | null) {
-  return {
-    "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }),
-  };
 }
 
 export function useTeacherStudents(search: string, page: number, pageSize = 10): UseTeacherStudentsResult {
@@ -152,7 +144,6 @@ interface UseCreateStudentResult {
 }
 
 export function useCreateStudent(): UseCreateStudentResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -161,9 +152,8 @@ export function useCreateStudent(): UseCreateStudentResult {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/students`, {
+      const response = await apiFetch(`${API_URL}/api/students`, {
         method: "POST",
-        headers: authHeaders(token),
         body: JSON.stringify(input),
       });
 
@@ -182,7 +172,7 @@ export function useCreateStudent(): UseCreateStudentResult {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { createStudent, loading, error };
 }
@@ -194,7 +184,6 @@ interface UseUpdateStudentResult {
 }
 
 export function useUpdateStudent(): UseUpdateStudentResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -203,9 +192,8 @@ export function useUpdateStudent(): UseUpdateStudentResult {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/students/${id}`, {
+      const response = await apiFetch(`${API_URL}/api/students/${id}`, {
         method: "PATCH",
-        headers: authHeaders(token),
         body: JSON.stringify(input),
       });
 
@@ -224,7 +212,7 @@ export function useUpdateStudent(): UseUpdateStudentResult {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { updateStudent, loading, error };
 }
@@ -238,7 +226,6 @@ interface UseEnrollStudentResult {
 // Enrola a un estudiante YA EXISTENTE (de la lista general del profesor)
 // en un curso puntual, sin pasar por el wizard completo de creación.
 export function useEnrollStudent(): UseEnrollStudentResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -247,9 +234,8 @@ export function useEnrollStudent(): UseEnrollStudentResult {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/courses/${courseId}/students`, {
+      const response = await apiFetch(`${API_URL}/api/courses/${courseId}/students`, {
         method: "POST",
-        headers: authHeaders(token),
         body: JSON.stringify({ studentId }),
       });
 
@@ -266,7 +252,7 @@ export function useEnrollStudent(): UseEnrollStudentResult {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { enrollStudent, loading, error };
 }
@@ -278,7 +264,6 @@ interface UseRemoveStudentFromCourseResult {
 }
 
 export function useRemoveStudentFromCourse(): UseRemoveStudentFromCourseResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -287,9 +272,8 @@ export function useRemoveStudentFromCourse(): UseRemoveStudentFromCourseResult {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/courses/${courseId}/students/${studentId}`, {
+      const response = await apiFetch(`${API_URL}/api/courses/${courseId}/students/${studentId}`, {
         method: "DELETE",
-        headers: authHeaders(token),
       });
 
       if (!response.ok) {
@@ -305,7 +289,7 @@ export function useRemoveStudentFromCourse(): UseRemoveStudentFromCourseResult {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { removeStudent, loading, error };
 }

@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { API_URL } from '../lib/api';
+import { API_URL, apiFetch } from '../lib/api';
 
 interface UseEnrollmentResult {
   enroll: (courseId: number, studentId: number) => Promise<void>;
@@ -9,7 +8,6 @@ interface UseEnrollmentResult {
 }
 
 export function useEnrollment(): UseEnrollmentResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,12 +16,8 @@ export function useEnrollment(): UseEnrollmentResult {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/courses/${courseId}/students`, {
+      const response = await apiFetch(`${API_URL}/api/courses/${courseId}/students`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
         body: JSON.stringify({ studentId }),
       });
 
@@ -41,7 +35,7 @@ export function useEnrollment(): UseEnrollmentResult {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   return { enroll, loading, error };
 }
