@@ -13,7 +13,7 @@ import { useChat } from "../../hooks/useChat";
 import { useAccessibility } from "../../hooks/useAccessibility";
 import { X, Send } from "lucide-react";
 
-import gekobot from "../../assets/gekobot.png";
+import gekobot from "../../assets/Gekobot.png";
 import welcomeGekobot from "../../assets/gekobot-welcome.png";
 
 const chatButton = tv({
