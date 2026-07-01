@@ -324,7 +324,7 @@ export function PracticeLessonView({
               <ChoiceOptionsList
                 type={slide.slideType === "single_choice" ? "single" : "multiple"}
                 options={(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).options}
-                value={answers[slide.id] ?? (slide.slideType === "single_choice" ? "" : [])}
+                value={(answers[slide.id] ?? (slide.slideType === "single_choice" ? "" : [])) as string | string[]}
                 onChange={handleAnswerChange}
               />
             </div>
