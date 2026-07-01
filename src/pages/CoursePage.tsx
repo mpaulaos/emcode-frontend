@@ -8,6 +8,8 @@ import { useTopicData } from '../hooks/useTopicData';
 import { useCourseStudents, useRemoveStudentFromCourse } from '../hooks/useStudentList';
 import { useAuth } from '../context/AuthContext';
 import { useForum } from '../hooks/useForum';
+import { useCourseProgress } from '../hooks/useProgress';
+import { Meter } from '../components/kit/Meter';
 
 import { DisclosureGroup } from "../components/kit/DisclosureGroup";
 import { Disclosure, DisclosureHeader } from "../components/kit/Disclosure";
@@ -42,6 +44,9 @@ function CoursePage() {
   const { course, loading, error, notFound } = useCourse(id);
   const { topics, loading: topicsLoading, error: topicsError } = useTopicData(id);
   const { posts, loading: forumLoading, error: forumError, fetchPosts } = useForum();
+
+  const isStudent = user?.role === 'student';
+  const { progress: courseProgress, loading: progressLoading } = useCourseProgress(isStudent ? id : undefined);
   const [expandedKeys, setExpandedKeys] = useState(new Set<Key>([]));
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [localTopics, setLocalTopics] = useState<Topic[]>([]);
@@ -62,7 +67,6 @@ function CoursePage() {
   const { removeStudent, loading: removing } = useRemoveStudentFromCourse();
   const [forumInitialFetchDone, setForumInitialFetchDone] = useState(false);
 
-  const isStudent = user?.role === 'student';
   const visibleTabs = isStudent ? TABS.filter((t) => t.id !== 'estudiantes') : TABS;
 
   const topicList = [...topics, ...localTopics];
@@ -149,15 +153,26 @@ function CoursePage() {
                   <h1 className="text-3xl font-bold text-text-headings">{course.title}</h1>
                   <p>Sigla: {course?.subtitle}</p>
                   <p>Descripción: {course?.description}</p>
+                  {isStudent && (
+                    <div className="mt-2">
+                      {progressLoading ? (
+                        <p className="text-sm text-text-body">Cargando progreso…</p>
+                      ) : courseProgress ? (
+                        <Meter value={courseProgress.percentage} label="Progreso del curso" />
+                      ) : null}
+                    </div>
+                  )}
                 </div>
               </FocusTTS>
             </div>
           )}
         </section>
 
-        <DashboardTabs tabs={visibleTabs} activeId={activeTab} onSelect={handleTabSelect} />
+{isStudent ? null : (
+          <DashboardTabs tabs={visibleTabs} activeId={activeTab} onSelect={handleTabSelect} />
+        )}
 
-        {activeTab === "temas" && (
+        {(isStudent || activeTab === "temas") && (
           <section aria-label="Temas del curso" className="w-full mx-auto p-4 justify-center gap-4 flex flex-col">
             {!isStudent && (
               <div className="flex items-center justify-between">

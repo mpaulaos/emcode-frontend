@@ -1,5 +1,3 @@
-import { AlertTriangle } from "lucide-react";
-
 import {
   Meter as AriaMeter,
   type MeterProps as AriaMeterProps,
@@ -19,22 +17,13 @@ export function Meter({ label, ...props }: MeterProps) {
             {label}
           </Label>
 
-          <span
-            className={`text-(--text-body-sm-size) leading-(--text-body-sm-lh) font-normal ${percentage >= 80 ? "text-text-danger" : "text-text-body"
-              }`}
-          >
-            {percentage >= 80 && (
-              <AlertTriangle
-                aria-label="Alert"
-                className="inline-block w-4 h-4 align-text-bottom"
-              />
-            )}
-            {" " + valueText}
+          <span className="text-(--text-body-sm-size) leading-(--text-body-sm-lh) font-normal text-text-body">
+            {valueText}
           </span>
 
           <div className="w-full sm:flex-1 h-2 rounded-lg bg-surface-card outline-1 -outline-offset-1 outline-transparent relative border border-border-card">
             <div
-              className={`absolute top-0 left-0 h-full rounded-full ${getColor(percentage)} forced-colors:bg-[Highlight]`}
+              className="absolute top-0 left-0 h-full rounded-full bg-purple-600 forced-colors:bg-[Highlight]"
               style={{ width: percentage + "%" }}
             />
           </div>
@@ -42,10 +31,4 @@ export function Meter({ label, ...props }: MeterProps) {
       )}
     </AriaMeter>
   );
-}
-
-function getColor(percentage: number) {
-  if (percentage < 70) return "bg-purple-600";
-  if (percentage < 80) return "bg-purple-600";
-  return "bg-purple-600";
 }

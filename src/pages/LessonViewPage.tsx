@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { TheoryLessonView } from "../components/TheoryLessonView";
 import { PracticeLessonView } from "../components/PracticeLessonView";
 import { useSlidesData } from "../hooks/useSlidesData";
 import { useLessonsListData } from "../hooks/useLessonsList";
+import { markLessonComplete } from "../hooks/useProgress";
+import { useAuth } from "../context/AuthContext";
 import type { Slide } from "../types/slide";
 
 export default function LessonViewPage() {
@@ -14,6 +16,7 @@ export default function LessonViewPage() {
     lessonId: string;
   }>();
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const { slides, loading, error } = useSlidesData(lessonId);
   const { lessons: lessonList } = useLessonsListData(topicId);
@@ -89,7 +92,17 @@ export default function LessonViewPage() {
     setCurrentSlideIndex(index);
   }
 
+  function handleBackToCourse() {
+    if (lessonId && token) {
+      markLessonComplete(Number(lessonId), token).catch(() => {});
+    }
+    navigate(`/courses/${courseId}`);
+  }
+
   function handleNavigateToLesson(newLessonId: number) {
+    if (lessonId && token) {
+      markLessonComplete(Number(lessonId), token).catch(() => {});
+    }
     navigate(`/courses/${courseId}/lesson/${topicId}/${newLessonId}`);
   }
 
@@ -100,13 +113,14 @@ export default function LessonViewPage() {
         tabIndex={-1}
         className="flex flex-1 flex-col gap-10 px-4 py-8 focus:outline-none lg:px-16 lg:py-12"
       >
-        <Link
-          to={`/courses/${courseId}`}
-          className="flex items-center gap-2 text-sm text-text-body hover:text-text-headings transition w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded-lg"
+        <button
+          type="button"
+          onClick={handleBackToCourse}
+          className="flex items-center gap-2 text-sm text-text-body hover:text-text-headings transition w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded-lg cursor-pointer"
         >
           <ArrowLeft size={16} aria-hidden="true" />
           Volver al curso
-        </Link>
+        </button>
 
         {isPractice ? (
           <PracticeLessonView
@@ -119,6 +133,7 @@ export default function LessonViewPage() {
             onNext={handleNext}
             onSlideChange={handleSlideChange}
             onNavigateToLesson={handleNavigateToLesson}
+            onGoBack={handleBackToCourse}
           />
         ) : (
           <TheoryLessonView

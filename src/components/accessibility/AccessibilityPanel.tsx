@@ -12,6 +12,7 @@ import { MultimediaPanel } from './panels/MultimediaPanel';
 import { CognitivePanel } from './panels/CognitivePanel';
 import { LanguagePanel } from './panels/LanguagePanel';
 import { ResetPanel } from './panels/ResetPanel';
+import { SpeechPanel } from './panels/SpeechPanel';
 
 interface AccessibilityPanelProps {
   isOpen: boolean;
@@ -76,6 +77,8 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6">
             <div className="space-y-8">
+              <ResetPanel />
+              <SpeechPanel />
               <TextSizePanel />
               <TextSpacingPanel />
               <ContrastPanel />
@@ -87,7 +90,6 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
               <MultimediaPanel />
               <CognitivePanel />
               <LanguagePanel />
-              <ResetPanel />
             </div>
           </div>
         </div>

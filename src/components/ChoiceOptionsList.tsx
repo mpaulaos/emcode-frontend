@@ -25,7 +25,7 @@ export function ChoiceOptionsList({
         {options.map((opt) => (
           <Radio
             key={opt.id}
-            value={opt.text}
+            value={opt.id}
             className="group flex items-center gap-3 px-md py-3 rounded-lg bg-surface-card border-l-4 border-primary-700 cursor-pointer transition data-selected:bg-primary-50 data-selected:border-primary-700 data-hovered:bg-primary-100 data-focused:outline-none data-focus-visible:ring-2 data-focus-visible:ring-border-focus"
           >
             <div className="w-4.5 h-4.5 rounded-full border-2 border-neutral-400 flex items-center justify-center shrink-0 group-data-selected:border-primary">
@@ -40,11 +40,11 @@ export function ChoiceOptionsList({
 
   const selected = (value as string[]) ?? [];
 
-  function handleToggle(optText: string, isSelected: boolean) {
+  function handleToggle(optId: string, isSelected: boolean) {
     if (isSelected) {
-      onChange([...selected, optText]);
+      onChange([...selected, optId]);
     } else {
-      onChange(selected.filter((s) => s !== optText));
+      onChange(selected.filter((s) => s !== optId));
     }
   }
 
@@ -53,8 +53,8 @@ export function ChoiceOptionsList({
       {options.map((opt) => (
         <Checkbox
           key={opt.id}
-          isSelected={selected.includes(opt.text)}
-          onChange={(isSelected) => handleToggle(opt.text, isSelected)}
+          isSelected={selected.includes(opt.id)}
+          onChange={(isSelected) => handleToggle(opt.id, isSelected)}
           className="flex items-center gap-3 px-md py-3 rounded-lg bg-surface-card border-l-4 border-primary-700 cursor-pointer transition data-[selected]:bg-primary-50 hover:bg-primary-100"
         >
           {opt.text}

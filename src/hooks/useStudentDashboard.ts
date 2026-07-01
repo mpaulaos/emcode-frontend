@@ -56,7 +56,7 @@ export function useStudentDashboard(studentId: number): UseStudentDashboardResul
         if (err instanceof DOMException && err.name === 'AbortError') return;
         setError(err instanceof Error ? err.message : 'Error inesperado');
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 

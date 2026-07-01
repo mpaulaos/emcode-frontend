@@ -14,7 +14,7 @@ export function useLessonsListData(id: string | undefined): UseLessonsListDataRe
       id ? `${API_URL}/api/lessons/topic/${id}` : null
     );
 
-    const lessons = useMemo(() => data ?? [], [data]);
+    const lessons = useMemo(() => (data ?? []).sort((a, b) => a.id - b.id), [data]);
 
     return { lessons, loading, error };
 }

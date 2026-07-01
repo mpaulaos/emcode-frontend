@@ -34,9 +34,9 @@ function StudentDashboardPage() {
             <p className="text-sm text-text-body">Cargando cursos...</p>
           )}
           {error && <p className="text-sm text-text-danger">{error}</p>}
-          {!loading && courseList.length === 0 && <EnrollCourseCard />}
+          {!loading && !error && courseList.length === 0 && <EnrollCourseCard />}
 
-          {courseList.length > 0 && <CourseList courses={courseList} />}
+          {!loading && !error && courseList.length > 0 && <CourseList courses={courseList} />}
         </section>
       </main>
     </div>
