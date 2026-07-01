@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { ArrowLeft, User } from 'lucide-react';
 import { useCoursesData } from '../../hooks/useCoursesData';
@@ -35,14 +35,13 @@ function InscribirCursosPage() {
         className="flex flex-1 flex-col gap-8 px-4 py-8 focus:outline-none lg:px-16 lg:py-12"
       >
         <nav aria-label="Navegación">
-          <Button
-            variant="quiet"
-            onPress={() => navigate('/student')}
-            className="flex items-center gap-2 text-sm font-medium text-text-body"
+          <Link
+            to="/student"
+            className="flex items-center gap-2 text-sm text-text-body hover:text-text-headings transition w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded-lg"
           >
-            <ArrowLeft size={18} aria-hidden="true" />
+            <ArrowLeft size={16} aria-hidden="true" />
             Volver a mi panel
-          </Button>
+          </Link>
         </nav>
 
         <h1 className="text-3xl font-bold text-text-headings">

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import type { Course } from '../types/dashboard';
-import { API_URL } from '../lib/api';
+import { API_URL, apiFetch } from '../lib/api';
 
 interface StudentResponse {
   id: number;
@@ -20,7 +19,6 @@ interface UseStudentDashboardResult {
 }
 
 export function useStudentDashboard(studentId: number): UseStudentDashboardResult {
-  const { token } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,14 +31,9 @@ export function useStudentDashboard(studentId: number): UseStudentDashboardResul
       setError(null);
 
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_URL}/api/students/${studentId}`,
-          {
-            signal: controller.signal,
-            headers: {
-              ...(token && { Authorization: `Bearer ${token}` }),
-            },
-          },
+          { signal: controller.signal },
         );
 
         if (!response.ok) {
@@ -62,7 +55,7 @@ export function useStudentDashboard(studentId: number): UseStudentDashboardResul
 
     fetchStudent();
     return () => controller.abort();
-  }, [studentId, token]);
+  }, [studentId]);
 
   return { courses, loading, error };
 }

@@ -1,14 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { CourseProgress, StudentProgressRecord, QuizSubmissionAnswer, QuizResult, LastQuizAttempt } from '../types/progress';
-import { API_URL } from '../lib/api';
-import { useAuth } from '../context/AuthContext';
-
-function authHeaders(token: string | null) {
-  return {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-  };
-}
+import { API_URL, apiFetch } from '../lib/api';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -20,19 +12,16 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export function useCourseProgress(courseId: string | undefined) {
-  const { token } = useAuth();
   const [progress, setProgress] = useState<CourseProgress | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProgress = useCallback(async () => {
-    if (!courseId || !token) return;
+    if (!courseId) return;
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/progress/courses/${courseId}`, {
-        headers: authHeaders(token),
-      });
+      const response = await apiFetch(`${API_URL}/api/progress/courses/${courseId}`);
       const data = await handleResponse<CourseProgress>(response);
       setProgress(data);
     } catch (err) {
@@ -40,7 +29,7 @@ export function useCourseProgress(courseId: string | undefined) {
     } finally {
       setLoading(false);
     }
-  }, [courseId, token]);
+  }, [courseId]);
 
   useEffect(() => {
     fetchProgress();
@@ -50,20 +39,17 @@ export function useCourseProgress(courseId: string | undefined) {
 }
 
 export function useAllProgress() {
-  const { token } = useAuth();
   const [records, setRecords] = useState<StudentProgressRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!token) return;
     const controller = new AbortController();
 
     async function fetchAll() {
       setLoading(true);
       try {
-        const response = await fetch(`${API_URL}/api/progress`, {
-          headers: authHeaders(token),
+        const response = await apiFetch(`${API_URL}/api/progress`, {
           signal: controller.signal,
         });
         const data = await handleResponse<StudentProgressRecord[]>(response);
@@ -79,26 +65,22 @@ export function useAllProgress() {
 
     fetchAll();
     return () => controller.abort();
-  }, [token]);
+  }, []);
 
   return { records, loading, error };
 }
 
-export async function markLessonComplete(lessonId: number, token: string | null): Promise<StudentProgressRecord> {
-  const response = await fetch(`${API_URL}/api/progress/lessons/${lessonId}`, {
+export async function markLessonComplete(lessonId: number): Promise<StudentProgressRecord> {
+  const response = await apiFetch(`${API_URL}/api/progress/lessons/${lessonId}`, {
     method: 'POST',
-    headers: authHeaders(token),
   });
   return handleResponse<StudentProgressRecord>(response);
 }
 
 export async function getLastQuizAttempt(
   lessonId: number,
-  token: string | null,
 ): Promise<LastQuizAttempt | null> {
-  const response = await fetch(`${API_URL}/api/progress/lessons/${lessonId}/quiz/last`, {
-    headers: authHeaders(token),
-  });
+  const response = await apiFetch(`${API_URL}/api/progress/lessons/${lessonId}/quiz/last`);
   if (response.status === 404) return null;
   return handleResponse<LastQuizAttempt>(response);
 }
@@ -106,11 +88,9 @@ export async function getLastQuizAttempt(
 export async function submitQuiz(
   lessonId: number,
   answers: QuizSubmissionAnswer[],
-  token: string | null,
 ): Promise<QuizResult> {
-  const response = await fetch(`${API_URL}/api/progress/lessons/${lessonId}/quiz`, {
+  const response = await apiFetch(`${API_URL}/api/progress/lessons/${lessonId}/quiz`, {
     method: 'POST',
-    headers: authHeaders(token),
     body: JSON.stringify({ answers }),
   });
   return handleResponse<QuizResult>(response);

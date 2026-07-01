@@ -15,7 +15,6 @@ import { PracticesSidePanel } from "./PracticesSidePanel";
 import SlidePagination from "../slides/SlidePagination";
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import { submitQuiz, getLastQuizAttempt } from "../../hooks/useProgress";
-import { useAuth } from "../../context/AuthContext";
 import type { Slide, SingleChoiceContent, MultipleChoiceContent, FillBlanksContent } from "../../types/slide";
 import type { QuizResult, QuizSubmissionAnswer, LastQuizAttempt, GradedSlideResult } from "../../types/progress";
 
@@ -96,7 +95,6 @@ export function PracticeLessonView({
   onNavigateToLesson,
   onGoBack,
 }: PracticeLessonViewProps) {
-  const { token } = useAuth();
   const [answers, setAnswers] = useState<AnswersState>({});
   const [panelOpen, setPanelOpen] = useState(false);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
@@ -105,10 +103,9 @@ export function PracticeLessonView({
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
-    if (!token) return;
     let cancelled = false;
 
-    getLastQuizAttempt(currentLessonId, token).then((attempt) => {
+    getLastQuizAttempt(currentLessonId).then((attempt) => {
       if (cancelled) return;
       if (attempt) {
         setQuizResult(rebuildQuizResult(attempt, slides));
@@ -118,7 +115,7 @@ export function PracticeLessonView({
     });
 
     return () => { cancelled = true; };
-  }, [currentLessonId, token]);
+  }, [currentLessonId]);
 
   const slide = slides[currentIndex];
 
@@ -170,7 +167,6 @@ export function PracticeLessonView({
   }
 
   const handleSubmitQuiz = useCallback(async () => {
-    if (!token) return;
     setSubmitting(true);
     setSubmitError(null);
 
@@ -189,14 +185,14 @@ export function PracticeLessonView({
           return { slideId: s.id, value };
         });
 
-      const result = await submitQuiz(currentLessonId, submissionAnswers, token);
+      const result = await submitQuiz(currentLessonId, submissionAnswers);
       setQuizResult(result);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Error al enviar el quiz");
     } finally {
       setSubmitting(false);
     }
-  }, [slides, answers, token, currentLessonId]);
+  }, [slides, answers, currentLessonId]);
 
   function handleRetry() {
     setAnswers({});

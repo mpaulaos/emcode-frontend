@@ -1,4 +1,5 @@
 import { useReducer, useEffect } from 'react';
+import { apiFetch } from './api';
 
 export interface UseFetchResult<T> {
   data: T | null;
@@ -51,7 +52,7 @@ export function useFetch<T>(url: string | null): UseFetchResult<T> {
 
     async function fetchData() {
       try {
-        const response = await fetch(safeUrl, { signal: controller.signal });
+        const response = await apiFetch(safeUrl, { signal: controller.signal });
         if (!response.ok) {
           dispatch({ type: 'HTTP_ERROR', status: response.status });
           return;

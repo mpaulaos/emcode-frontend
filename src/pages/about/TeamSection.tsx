@@ -3,14 +3,14 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 const teamMembers = [
   {
     name: "Luzdary",
-    role: "Desarrolladora Frontend",
+    role: "Desarrollador Full Stack",
     description:
       "Apasionada por construir interfaces accesibles y experiencias de usuario inclusivas.",
     initials: "L",
   },
   {
     name: "María Paula",
-    role: "Diseñadora UX/UI",
+    role: "Desarrollador Full Stack",
     description:
       "Enfocada en crear diseños centrados en el usuario que combinan estética y funcionalidad.",
     initials: "MP",

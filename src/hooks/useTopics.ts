@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Topic } from '../types/topic';
-import { API_URL } from '../lib/api';
-import { useAuth } from '../context/AuthContext';
+import { API_URL, apiFetch } from '../lib/api';
 
 interface CreateTopicInput {
   topicName: string;
@@ -22,16 +21,8 @@ interface UseTopicsResult {
 }
 
 export function useTopics(): UseTopicsResult {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  function authHeaders() {
-    return {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-  }
 
   async function handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
@@ -46,9 +37,8 @@ export function useTopics(): UseTopicsResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/topics/course/${courseId}`, {
+      const response = await apiFetch(`${API_URL}/api/topics/course/${courseId}`, {
         method: 'POST',
-        headers: authHeaders(),
         body: JSON.stringify(input),
       });
       return await handleResponse<Topic>(response);
@@ -64,9 +54,8 @@ export function useTopics(): UseTopicsResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/topics/${topicId}`, {
+      const response = await apiFetch(`${API_URL}/api/topics/${topicId}`, {
         method: 'PATCH',
-        headers: authHeaders(),
         body: JSON.stringify(input),
       });
       return await handleResponse<Topic>(response);
@@ -82,9 +71,8 @@ export function useTopics(): UseTopicsResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/topics/${topicId}`, {
+      const response = await apiFetch(`${API_URL}/api/topics/${topicId}`, {
         method: 'DELETE',
-        headers: authHeaders(),
       });
       return await handleResponse<void>(response);
     } catch (err) {

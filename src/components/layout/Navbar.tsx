@@ -80,6 +80,12 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
 
   const closeMenu = () => setIsMobileMenuOpen(false);
 
+  const navLinks: NavbarLink[] = [
+    ...links.slice(0, 1),
+    ...(user?.role === 'student' ? [{ label: "Cursos", href: "/cursos/inscribir" }] : []),
+    ...links.slice(1),
+  ];
+
   return (
     <header className="sticky top-0 z-50 border-b border-border-card bg-surface-page/95 backdrop-blur-sm py-4">
       <div className="flex items-center justify-between gap-4 px-6 sm:px-16">
@@ -89,7 +95,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             <span className="font-semibold tracking-wider">EMCODE</span>
           </NavLink>
           <nav className="hidden items-center gap-6 md:flex">
-            {links.map((link) => (
+            {navLinks.map((link) => (
               <NavTTSLink
                 key={link.label}
                 label={link.label}
@@ -196,7 +202,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
           </div>
 
           <nav className="flex flex-col items-stretch gap-8 px-6 bg-surface-page">
-            {links.map((link) => (
+            {navLinks.map((link) => (
               <NavTTSLink
                 key={link.label}
                 label={link.label}

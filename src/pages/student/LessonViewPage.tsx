@@ -6,7 +6,6 @@ import { PracticeLessonView } from "../../components/lesson-viewer/PracticeLesso
 import { useSlidesData } from "../../hooks/useSlidesData";
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import { markLessonComplete } from "../../hooks/useProgress";
-import { useAuth } from "../../context/AuthContext";
 import type { Slide } from "../../types/slide";
 
 export default function LessonViewPage() {
@@ -16,8 +15,6 @@ export default function LessonViewPage() {
     lessonId: string;
   }>();
   const navigate = useNavigate();
-  const { token } = useAuth();
-
   const { slides, loading, error } = useSlidesData(lessonId);
   const { lessons: lessonList } = useLessonsListData(topicId);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -93,15 +90,15 @@ export default function LessonViewPage() {
   }
 
   function handleBackToCourse() {
-    if (lessonId && token) {
-      markLessonComplete(Number(lessonId), token).catch(() => {});
+    if (lessonId) {
+      markLessonComplete(Number(lessonId)).catch(() => {});
     }
     navigate(`/courses/${courseId}`);
   }
 
   function handleNavigateToLesson(newLessonId: number) {
-    if (lessonId && token) {
-      markLessonComplete(Number(lessonId), token).catch(() => {});
+    if (lessonId) {
+      markLessonComplete(Number(lessonId)).catch(() => {});
     }
     navigate(`/courses/${courseId}/lesson/${topicId}/${newLessonId}`);
   }
