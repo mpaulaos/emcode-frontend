@@ -146,7 +146,7 @@ La app usa React Router y define rutas públicas y protegidas, por ejemplo:
 - `/courses/:id` — detalle de curso
 - `/courses/:courseId/lesson/:topicId/:lessonId` — vista de lección
 
-## 🔧 Variables de entorno
+## Variables de entorno
 
 | Variable | Descripción |
 | --- | --- |
