@@ -1,13 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { Form } from '../components/Form';
-import { TextField } from '../components/TextField';
-import { Button } from '../components/Button';
-import { Alert } from '../components/Alert';
+import { Form } from '../components/ui/Form';
+import { TextField } from '../components/ui/TextField';
+import { Button } from '../components/ui/Button';
+import { Alert } from '../components/ui/Alert';
 import { useAuth } from '../context/AuthContext';
 import { useUpdateProfile } from '../hooks/useUpdateProfile';
 import { useChangePassword } from '../hooks/useChangePassword';
-import FocusTTS from '../components/FocusTTS';
+import FocusTTS from '../components/ui/FocusTTS';
 
 export function ProfilePage() {
   const { user, token, updateUser } = useAuth();

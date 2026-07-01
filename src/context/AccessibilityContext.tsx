@@ -3,11 +3,22 @@ import {
   useCallback,
   useMemo,
   useEffect,
+  createContext,
   type ReactNode,
 } from 'react';
 import type { AccessibilitySettings } from '../types/accessibility';
 import { DEFAULT_SETTINGS } from '../types/accessibility';
-import { AccessibilityContext } from './accessibility';
+
+export interface AccessibilityContextValue {
+  settings: AccessibilitySettings;
+  updateSetting: <K extends keyof AccessibilitySettings>(
+    key: K,
+    value: AccessibilitySettings[K],
+  ) => void;
+  resetSettings: () => void;
+}
+
+export const AccessibilityContext = createContext<AccessibilityContextValue | null>(null);
 
 const STORAGE_KEY = 'emcode-a11y';
 

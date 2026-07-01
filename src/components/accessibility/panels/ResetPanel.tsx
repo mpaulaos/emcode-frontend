@@ -1,5 +1,5 @@
 import { useAccessibility } from '../../../hooks/useAccessibility';
-import { Button } from '../../Button';
+import { Button } from '../../ui/Button';
 
 export function ResetPanel() {
   const { resetSettings } = useAccessibility();

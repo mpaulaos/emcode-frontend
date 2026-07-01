@@ -1,6 +1,6 @@
 import { Play, Pause, Square, X } from "lucide-react";
 import { useSpeechContext } from "../../context/SpeechContext";
-import { Toolbar } from "../Toolbar";
+import { Toolbar } from "../layout/Toolbar";
 
 export function TextToSpeechPlayer() {
   const { state, stop, pause, resume } = useSpeechContext();
