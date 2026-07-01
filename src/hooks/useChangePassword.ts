@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { API_URL, apiFetch } from "../lib/api";
 
-export function useChangePassword() {
+export function useChangePassword(_token: string | null) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);

@@ -7,7 +7,7 @@ interface UpdateProfileResponse {
   token: string;
 }
 
-export function useUpdateProfile(token: string | null) {
+export function useUpdateProfile(_token: string | null) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
