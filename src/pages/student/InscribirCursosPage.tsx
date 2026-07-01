@@ -1,18 +1,29 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { ArrowLeft, User } from 'lucide-react';
 import { useCoursesData } from '../../hooks/useCoursesData';
+import { useStudentDashboard } from '../../hooks/useStudentDashboard';
 import { useEnrollment } from '../../hooks/useEnrollment';
 import { useAuth } from '../../context/AuthContext';
+import welcomeGekobot from "../../assets/gekobot-welcome.png";
 import ConfirmEnrollDialog from '../../components/dashboard/ConfirmEnrollDialog';
 import type { ExploreCourse } from '../../types/explore';
 
 function InscribirCursosPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { courses, loading, error: fetchError } = useCoursesData();
+  const { courses: allCourses, loading: coursesLoading, error: fetchError } = useCoursesData();
+  const { courses: enrolledCourses, loading: enrolledLoading } = useStudentDashboard(user!.id);
   const { enroll, loading: enrolling, error: enrollError } = useEnrollment();
+
+  const enrolledIds = useMemo(() => new Set(enrolledCourses.map(c => c.id)), [enrolledCourses]);
+  const availableCourses = useMemo(
+    () => allCourses.filter(c => !enrolledIds.has(c.id)),
+    [allCourses, enrolledIds]
+  );
+
+  const loading = coursesLoading || enrolledLoading;
 
   const [dialogCourse, setDialogCourse] = useState<ExploreCourse | null>(null);
 
@@ -55,14 +66,23 @@ function InscribirCursosPage() {
           <p className="text-sm text-text-danger">{fetchError}</p>
         )}
 
-        {!loading && !fetchError && courses.length === 0 && (
+        {!loading && !fetchError && allCourses.length === 0 && (
           <p className="text-sm text-text-body">No hay cursos disponibles.</p>
         )}
 
-        {courses.length > 0 && (
+        {!loading && !fetchError && allCourses.length > 0 && availableCourses.length === 0 && (
+          <div className="flex flex-col items-center gap-4 py-12">
+            <img src={welcomeGekobot} alt="" className="w-32" />
+            <p className="text-sm text-text-body text-center">
+              ¡Felicidades! Ya estás inscrito en todos los cursos disponibles. Sigue aprendiendo.
+            </p>
+          </div>
+        )}
+
+        {!loading && availableCourses.length > 0 && (
           <section aria-label="Lista de cursos disponibles">
             <ul className="grid list-none grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {courses.map((course) => (
+              {availableCourses.map((course) => (
                 <li key={course.id} className="h-full">
                   <div className="flex h-full flex-col gap-4 rounded-2xl border border-border-card bg-surface-primary p-5">
                     <div className="flex flex-col gap-2">

@@ -3,7 +3,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui/Button';
 import FocusTTS from '../../components/ui/FocusTTS';
-import heroImage from '../../assets/imgs/landing-page-image.png';
+import heroImage from '../../assets/hero-landing.png';
 
 const platformOptions = [
   {

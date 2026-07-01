@@ -83,7 +83,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
   const navLinks: NavbarLink[] = [
     ...links.slice(0, 1),
     ...(user?.role === 'student' ? [{ label: "Cursos", href: "/cursos/inscribir" }] : []),
-    ...links.slice(1),
+    ...links.slice(1).filter(l => !isAuthenticated || l.label !== "Acerca de"),
   ];
 
   return (
