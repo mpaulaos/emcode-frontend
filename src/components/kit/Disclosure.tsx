@@ -13,7 +13,7 @@ import { tv } from "tailwind-variants";
 import { ChevronDown, Plus } from "lucide-react";
 
 const disclosure = tv({
-    base: "group min-w-50 font-sans rounded-lg text-neutral-900 dark:text-neutral-200"
+    base: "group min-w-0 font-sans rounded-lg text-neutral-900 dark:text-neutral-200"
 });
 
 const chevron = tv({

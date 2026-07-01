@@ -482,7 +482,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
         <div
           ref={dialogRef}
           tabIndex={-1}
-          className="relative flex w-full max-w-5xl max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] flex-col gap-4 rounded-2xl bg-surface-primary p-4 shadow-xl sm:gap-6 sm:p-6 overflow-y-auto"
+          className="relative flex w-[min(64rem,calc(100vw-2rem))] max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] flex-col gap-4 rounded-2xl bg-surface-primary p-4 shadow-xl sm:gap-6 sm:p-6 overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
           onKeyDown={handleKeyDown}
         >

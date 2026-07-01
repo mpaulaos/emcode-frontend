@@ -184,7 +184,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
         style={{ backgroundColor: '#fff' }}
       >
           <div
-            className={`flex flex-1 flex-col min-h-screen gap-8 transition-transform duration-200 ease-in-out bg-surface-page ${
+            className={`flex flex-1 flex-col min-h-[100dvh] gap-8 transition-transform duration-200 ease-in-out bg-surface-page ${
               isMobileMenuOpen ? "translate-y-0" : "-translate-y-4"
             }`}
           >

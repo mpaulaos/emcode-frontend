@@ -10,7 +10,7 @@ export interface MeterProps extends AriaMeterProps {
 
 export function Meter({ label, ...props }: MeterProps) {
   return (
-    <AriaMeter {...props} className="flex flex-col gap-2 font-sans w-full max-w-150 min-w-50 ">
+    <AriaMeter {...props} className="flex flex-col gap-2 font-sans w-full max-w-150 min-w-0 ">
       {({ percentage, valueText }) => (
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Label className="text-(--text-body-lg-size) leading-(--text-body-lg-lh) font-normal">

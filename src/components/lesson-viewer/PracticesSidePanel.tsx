@@ -64,7 +64,7 @@ export function PracticesSidePanel({
           Ejercicios
         </span>
 
-        <div className="grid grid-cols-5 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-3 gap-2">
           {Array.from({ length: slideCount }, (_, i) => {
             const isActive = i === currentIndex;
             const isAnswered = answered[i];

@@ -64,7 +64,7 @@ export function LoginPage() {
   }
 
   return (
-    <FocusTTS><div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-[1240px] p-lg sm:p-xl">
+    <FocusTTS><div className="mx-auto min-h-[calc(100vh-80px)] w-full max-w-310 p-lg sm:p-xl">
       <section className="sm:rounded-xxl sm:border sm:border-border-card sm:bg-surface-card sm:p-2xl">
         <div className="flex flex-col gap-lg">
           <div className="space-y-sm">

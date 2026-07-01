@@ -77,7 +77,7 @@ export function HomePage() {
   }
   return (
     <FocusTTS><div className="flex w-full flex-col">
-      <div className="mx-auto w-full max-w-310 px-6 py-12 sm:px-8 lg:px-12 mb-64">
+      <div className="mx-auto w-full max-w-310 px-6 py-12 sm:px-8 lg:px-12 mb-16 md:mb-32">
         <section aria-label="Hero" className="rounded-[20px] sm:border sm:border-border-card bg-surface-primary sm:p-16">
           <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             <div className="space-y-6">
@@ -99,7 +99,7 @@ export function HomePage() {
         </section>
       </div>
 
-      <div className="mx-auto w-full max-w-310 px-6 sm:px-8 lg:px-12 mb-64">
+      <div className="mx-auto w-full max-w-310 px-6 sm:px-8 lg:px-12 mb-16 md:mb-32">
         <section aria-label="Secciones de la plataforma">
           <div className="text-center">
             <h2 className="text-2xl md:text-4xl font-semibold text-text-headings">¿Qué podés hacer en la plataforma?</h2>
@@ -117,7 +117,7 @@ export function HomePage() {
         </section>
       </div>
 
-      <div className="mx-auto w-full max-w-310 px-6 sm:px-8 lg:px-12 mb-64">
+      <div className="mx-auto w-full max-w-310 px-6 sm:px-8 lg:px-12 mb-16 md:mb-32">
         <section aria-label="Características principales">
           <div className="text-center">
             <h3 className="text-2xl md:text-4xl font-semibold text-text-headings">Características principales</h3>

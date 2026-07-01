@@ -23,7 +23,7 @@ function Footer() {
           {/* RESPONSIVE Mobile: grid de 3 cols, Desktop: flex row con gap fijo, alineado al inicio*/}
           <nav
             aria-label="Links del footer"
-            className="grid grid-cols-3 justify-items-center gap-8 w-full lg:flex lg:gap-16 lg:w-auto lg:justify-items-start "
+            className="grid grid-cols-2 sm:grid-cols-3 justify-items-center gap-8 w-full lg:flex lg:gap-16 lg:w-auto lg:justify-items-start "
           >
             {footerColumns.map((col) => (
               <FooterColumn

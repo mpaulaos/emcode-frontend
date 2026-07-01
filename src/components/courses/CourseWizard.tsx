@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "react-aria-components";
 import { API_URL } from "../../lib/api";
 
@@ -19,15 +19,6 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
   const [form, setForm] = useState<CourseFormState>(initialFormState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const step1Ref = useRef<HTMLDivElement>(null);
-  const [step1Height, setStep1Height] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (step === 1 && step1Ref.current) {
-      setStep1Height(step1Ref.current.offsetHeight);
-    }
-  }, [step]);
-
   function handleChange(field: keyof CourseFormState, value: string | File | null) {
     setError(null);
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -76,10 +67,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
     <div className="flex min-w-0 flex-col gap-6">
       <WizardProgress currentStep={step} />
 
-      <div
-        ref={step === 1 ? step1Ref : undefined}
-        style={step === 2 && step1Height ? { height: step1Height } : undefined}
-      >
+      <div>
         {step === 1 && <Step1Form form={form} onChange={handleChange} />}
         {step === 2 && <Step2Preview form={form} />}
       </div>

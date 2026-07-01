@@ -72,7 +72,7 @@ function ChatWidget() {
       <Popover placement="left" offset={12} shouldFlip={false}>
         <Dialog
           aria-label="Asistente de Emcode Gekobot"
-          className="fixed bottom-25 right-8 w-90 h-110 bg-neutral-white border border-neutral-100 rounded-xl shadow-sm flex flex-col outline-none z-50"
+          className="fixed inset-x-4 bottom-4 md:inset-x-auto md:bottom-25 md:right-8 w-auto md:w-90 h-[80dvh] md:h-110 bg-neutral-white border border-neutral-100 rounded-xl shadow-sm flex flex-col outline-none z-50"
         >
           {/* Header */}
           <div className="flex justify-between items-center p-3 border-b border-neutral-200 bg-neutral-100 rounded-t-xl">

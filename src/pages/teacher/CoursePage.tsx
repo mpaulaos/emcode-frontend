@@ -173,7 +173,7 @@ function CoursePage() {
         )}
 
         {(isStudent || activeTab === "temas") && (
-          <section aria-label="Temas del curso" className="w-full mx-auto p-4 justify-center gap-4 flex flex-col">
+          <section aria-label="Temas del curso" className="w-full mx-auto justify-center gap-4 flex flex-col">
             {!isStudent && (
               <div className="flex items-center justify-between">
                 <h2>Temas</h2>
@@ -274,7 +274,7 @@ function CoursePage() {
           </section>
         )}
 
-        <section aria-label="Foro del curso" className="w-full mx-auto p-3 sm:p-4 justify-center gap-4 flex flex-col">
+        <section aria-label="Foro del curso" className="w-full mx-auto justify-center gap-4 flex flex-col">
           <div className="flex items-center gap-2">
             <MessageSquare size={24} className="text-text-headings" aria-hidden="true" />
             <h2 className="text-xl font-bold text-text-headings">Foro</h2>

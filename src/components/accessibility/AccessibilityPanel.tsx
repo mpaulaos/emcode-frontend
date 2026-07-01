@@ -61,7 +61,7 @@ export function AccessibilityPanel({ isOpen, onClose }: AccessibilityPanelProps)
           isOpen ? 'right-0' : 'right-[-100%]'
         }`}
       >
-        <div className="flex h-full w-72 flex-col bg-surface-page shadow-xl sm:w-80 md:w-96">
+        <div className="flex h-full w-72 max-w-[calc(100vw-1rem)] flex-col bg-surface-page shadow-xl sm:w-80 md:w-96">
           <div className="flex shrink-0 items-center justify-between border-b border-border-card px-5 py-4">
             <h2 className="text-lg font-semibold text-text-headings">
               Accesibilidad
