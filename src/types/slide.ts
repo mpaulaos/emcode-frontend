@@ -46,7 +46,7 @@ export interface Slide {
   id: number;
   lessonId: number;
   slideType: SlideTemplateType;
-  title: string;
+  title?: string;
   text: string;
   order: number;
   imageUrl?: string;
@@ -56,7 +56,6 @@ export interface Slide {
 
 export interface CreateSlideInput {
   slideType: SlideTemplateType;
-  title: string;
   text: string;
   order: number;
   imageUrl?: string;

@@ -29,6 +29,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { ExplorarCursosPage } from "./pages/ExplorarCursosPage";
 import StudentDashboardPage from "./pages/StudentDashboardPage";
 import InscribirCursosPage from "./pages/InscribirCursosPage";
+import LessonViewPage from "./pages/LessonViewPage";
 
 function App() {
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
@@ -61,6 +62,7 @@ function App() {
             <Route path="/guides" element={<GuidesPage />} />
             <Route path="/teacher/students" element={<TeacherStudentsListPage />} />
               <Route path="/courses/:id/students" element={<StudentsPage />} />
+            <Route path="/courses/:courseId/lesson/:topicId/:lessonId" element={<LessonViewPage />} />
             </Route>
           </Routes>
           
