@@ -5,6 +5,7 @@ import { X, ChevronDown, Check, AlertTriangle, FileText, Image, ListChecks, Chec
 import type { DraftSlide, SlideTemplateType, CreateSlideInput, SingleChoiceContent, MultipleChoiceContent, FillBlanksContent } from "../types/slide";
 import { getTemplatesForLessonType, templateLabels, createEmptyDraftSlide } from "../types/slide";
 import { useSlides } from "../hooks/useSlides";
+import { useAuth } from "../context/AuthContext";
 import ProgressBar from "./ProgressBar";
 import SlideNavPanel from "./SlideNavPanel";
 import TextSlideFields from "./fields/TextSlideFields";
@@ -65,10 +66,10 @@ function validateSlide(slide: DraftSlide): string[] {
 }
 
 function buildCreateInput(slide: DraftSlide, position: number): CreateSlideInput {
+  const raw = slide.slideType === "text" || slide.slideType === "text_image" ? slide.content : slide.question;
   const base: CreateSlideInput = {
     slideType: slide.slideType,
-    title: slide.title,
-    text: slide.slideType === "text" || slide.slideType === "text_image" ? slide.content : slide.question,
+    text: slide.title ? `${slide.title}\n\n${raw}` : raw,
     order: position,
   };
 
@@ -122,6 +123,8 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
   const [showSlideDropdown, setShowSlideDropdown] = useState(false);
 
   const { createSlidesBatch } = useSlides();
+  const { user } = useAuth();
+  const isTeacher = user?.role === 'teacher';
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
 
@@ -602,7 +605,14 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
             </div>
           )}
 
-          {isTheory ? (
+          {!isTeacher && (
+            <div role="alert" className="flex items-start gap-2 rounded-lg border border-border-danger bg-surface-danger px-3 py-2.5 text-sm text-text-danger">
+              <AlertTriangle size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
+              <span>Solo los profesores pueden agregar slides.</span>
+            </div>
+          )}
+
+          {isTeacher && isTheory ? (
             <>
               {renderTheoryLayout()}
 
@@ -637,7 +647,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
                 </Button>
               </div>
             </>
-          ) : (
+          ) : isTeacher && !isTheory ? (
             <>
               {/* Mobile: Nav panel at top */}
               <div className="md:hidden">
@@ -778,7 +788,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
                 </div>
               </div>
             </>
-          )}
+          ) : null}
 
         </div>
       </div>

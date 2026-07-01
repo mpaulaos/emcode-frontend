@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
-import { Plus, UserPlus, BookOpen, MessageSquare, Users } from "lucide-react";
+import { Plus, UserPlus, BookOpen, MessageSquare, Users, ArrowLeft } from "lucide-react";
 
 import { useCourse } from '../hooks/useCourse';
 import { useTopicData } from '../hooks/useTopicData';
@@ -23,6 +23,7 @@ import AddOrEditStudentModal from '../components/StudentModal';
 import PostCreator from '../components/PostCreator';
 import PostCard from '../components/PostCard';
 import FocusTTS from '../components/FocusTTS';
+import StudentLessonLinks from '../components/StudentLessonLinks';
 import { Alert } from '../components/Alert';
 
 import type { Topic } from '../types/topic';
@@ -37,7 +38,7 @@ const PAGE_SIZE = 4;
 
 function CoursePage() {
   const { id } = useParams<{ id: string }>();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { course, loading, error, notFound } = useCourse(id);
   const { topics, loading: topicsLoading, error: topicsError } = useTopicData(id);
   const { posts, loading: forumLoading, error: forumError, fetchPosts } = useForum();
@@ -60,6 +61,9 @@ function CoursePage() {
     useCourseStudents(hasVisitedStudents ? id : undefined, studentQuery, studentPage, PAGE_SIZE);
   const { removeStudent, loading: removing } = useRemoveStudentFromCourse();
   const [forumInitialFetchDone, setForumInitialFetchDone] = useState(false);
+
+  const isStudent = user?.role === 'student';
+  const visibleTabs = isStudent ? TABS.filter((t) => t.id !== 'estudiantes') : TABS;
 
   const topicList = [...topics, ...localTopics];
   const totalStudentPages = studentsData ? Math.max(Math.ceil(studentsData.total / studentsData.pageSize), 1) : 1;
@@ -119,6 +123,14 @@ function CoursePage() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-page">
       <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col gap-10 px-4 py-8 focus:outline-none lg:px-16 lg:py-12">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-sm text-text-body hover:text-text-headings transition w-fit focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded-lg"
+        >
+          <ArrowLeft size={16} aria-hidden="true" />
+          Volver al inicio
+        </Link>
+
         <section aria-label="Detalle del curso" className="flex flex-col gap-4">
           {loading && <p className="text-sm text-text-body">Cargando...</p>}
           {error && <p role="alert" className="text-sm text-text-danger">{error}</p>}
@@ -143,26 +155,41 @@ function CoursePage() {
           )}
         </section>
 
-        <DashboardTabs tabs={TABS} activeId={activeTab} onSelect={handleTabSelect} />
+        <DashboardTabs tabs={visibleTabs} activeId={activeTab} onSelect={handleTabSelect} />
 
         {activeTab === "temas" && (
           <section aria-label="Temas del curso" className="w-full mx-auto p-4 justify-center gap-4 flex flex-col">
-            <div className="flex items-center justify-between">
-              <h2>Temas</h2>
-              <Button
-                aria-label="Crear nuevo tema"
-                onPress={() => setShowTopicModal(true)}
-                className="flex items-center gap-2 rounded-lg bg-surface-action px-4 py-2 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-              >
-                <Plus size={18} aria-hidden="true" />
-                Agregar tema
-              </Button>
-            </div>
+            {!isStudent && (
+              <div className="flex items-center justify-between">
+                <h2>Temas</h2>
+                <Button
+                  aria-label="Crear nuevo tema"
+                  onPress={() => setShowTopicModal(true)}
+                  className="flex items-center gap-2 rounded-lg bg-surface-action px-4 py-2 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                >
+                  <Plus size={18} aria-hidden="true" />
+                  Agregar tema
+                </Button>
+              </div>
+            )}
 
             {topicsLoading && <p className="text-sm text-text-body">Cargando temas…</p>}
             {topicsError && <p role="alert" className="text-sm text-text-danger">{topicsError}</p>}
 
-            {!topicsLoading && !topicsError && (
+            {!topicsLoading && !topicsError && isStudent ? (
+              <DisclosureGroup>
+                {topicList.map((topic: Topic) => (
+                  <Disclosure key={topic.id}>
+                    <DisclosureHeader showAddButton={false}>
+                      {topic.topicName}
+                    </DisclosureHeader>
+                    <DisclosurePanel className="p-4">
+                      <StudentLessonLinks topicId={topic.id} courseId={id!} />
+                    </DisclosurePanel>
+                  </Disclosure>
+                ))}
+              </DisclosureGroup>
+            ) : !topicsLoading && !topicsError && (
               <DisclosureGroup expandedKeys={expandedKeys} onExpandedChange={setExpandedKeys}>
                 {topicList.map((topic: Topic) => (
                   <Disclosure key={topic.id}>
@@ -185,7 +212,7 @@ function CoursePage() {
           </section>
         )}
 
-        {activeTab === "estudiantes" && (
+        {!isStudent && activeTab === "estudiantes" && (
           <section aria-label="Estudiantes del curso" className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -276,7 +303,7 @@ function CoursePage() {
         </section>
       </main>
 
-      {showTopicModal && id && (
+      {!isStudent && showTopicModal && id && (
         <CreateTopicModal
           courseId={id}
           onClose={() => setShowTopicModal(false)}
@@ -284,7 +311,7 @@ function CoursePage() {
         />
       )}
 
-      {showAddStudentModal && id && (
+      {!isStudent && showAddStudentModal && id && (
         <AddOrEditStudentModal
           courseId={Number(id)}
           onClose={() => setShowAddStudentModal(false)}
@@ -292,7 +319,7 @@ function CoursePage() {
         />
       )}
 
-      {studentToEdit && id && (
+      {!isStudent && studentToEdit && id && (
         <AddOrEditStudentModal
           courseId={Number(id)}
           studentToEdit={studentToEdit}
@@ -301,11 +328,11 @@ function CoursePage() {
         />
       )}
 
-      {studentToView !== null && (
+      {!isStudent && studentToView !== null && (
         <StudentDetailModal studentId={studentToView} onClose={() => setStudentToView(null)} />
       )}
 
-      {studentToRemove && id && (
+      {!isStudent && studentToRemove && id && (
         <RemoveStudentConfirmModal
           studentName={`${studentToRemove.firstName} ${studentToRemove.lastName}`}
           courseName={studentsData?.course.title}
@@ -323,7 +350,7 @@ function CoursePage() {
         />
       )}
 
-      {removing && (
+      {!isStudent && removing && (
         <p role="status" aria-live="polite" className="sr-only">
           Removiendo estudiante del curso...
         </p>

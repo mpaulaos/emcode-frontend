@@ -46,10 +46,11 @@ export function Disclosure({ children, ...props }: DisclosureProps) {
 export interface DisclosureHeaderProps {
     children: React.ReactNode;
     isDisabled?: boolean;
-    onAddLessonPress: () => void; 
+    onAddLessonPress?: () => void;
+    showAddButton?: boolean;
 }
 
-export function DisclosureHeader({ children, isDisabled, onAddLessonPress }: DisclosureHeaderProps) {
+export function DisclosureHeader({ children, isDisabled, onAddLessonPress, showAddButton = true }: DisclosureHeaderProps) {
     const { isExpanded } = useContext(DisclosureStateContext)!;
 
     return (
@@ -60,6 +61,7 @@ export function DisclosureHeader({ children, isDisabled, onAddLessonPress }: Dis
                     <span className="truncate text-body-lg font-semibold">{children}</span>
                 </Button>
 
+                {showAddButton && (
                 <Button
                     aria-label="Crear nueva lección"
                     className="flex items-center gap-1 sm:gap-2 rounded-lg bg-surface-action px-2 sm:px-3 py-1.5 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus shrink-0"
@@ -68,6 +70,7 @@ export function DisclosureHeader({ children, isDisabled, onAddLessonPress }: Dis
                     <Plus size={18} aria-hidden="true" />
                     <span className="hidden sm:inline">Agregar</span>
                 </Button>
+                )}
 
                 <ChevronDown aria-hidden className={`${chevron({ isExpanded, isDisabled })} shrink-0`} />
             </div>
