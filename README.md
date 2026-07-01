@@ -132,7 +132,7 @@ npm run typecheck # valida tipos con TypeScript
 npm run test      # ejecuta pruebas con Vitest
 ```
 
-## 🧭 Rutas principales
+## Rutas principales
 
 La app usa React Router y define rutas públicas y protegidas, por ejemplo:
 
