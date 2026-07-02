@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import { useAllProgress } from "../../hooks/useProgress";
 import { BookOpen, Beaker, CheckCircle2 } from "lucide-react";
+import FocusTTS from "../ui/FocusTTS";
 
 interface StudentLessonLinksProps {
   topicId: number;
@@ -45,25 +46,29 @@ function StudentLessonLinks({ topicId, courseId }: StudentLessonLinksProps) {
         const isCompleted = completedLessonIds.has(lesson.id);
         return (
           <li key={lesson.id}>
-            <Link
-              to={`/courses/${courseId}/lesson/${topicId}/${lesson.id}`}
-              className="mx-auto flex w-full items-center justify-between rounded border-md border-neutral-100 p-2 text-text-body transition hover:bg-surface-action-hover-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+            <FocusTTS
+              text={`${lesson.lessonType === "theory" ? "Lección" : "Laboratorio"} ${lesson.lessonName}. ${isCompleted ? "Completado" : "Pendiente"}`}
             >
-              <div className="flex flex-wrap items-center gap-2">
-                {lesson.lessonType === "theory" ? (
-                  <BookOpen size={16} aria-hidden="true" className="shrink-0 text-primary-700" />
-                ) : (
-                  <Beaker size={16} aria-hidden="true" className="shrink-0 text-primary-700" />
+              <Link
+                to={`/courses/${courseId}/lesson/${topicId}/${lesson.id}`}
+                className="mx-auto flex w-full items-center justify-between rounded border-md border-neutral-100 p-2 text-text-body transition hover:bg-surface-action-hover-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  {lesson.lessonType === "theory" ? (
+                    <BookOpen size={16} aria-hidden="true" className="shrink-0 text-primary-700" />
+                  ) : (
+                    <Beaker size={16} aria-hidden="true" className="shrink-0 text-primary-700" />
+                  )}
+                  <p className="text-body font-semibold">
+                    {lesson.lessonType === "theory" ? "Lección:" : "Laboratorio:"}
+                  </p>
+                  <p className="text-body">{lesson.lessonName}</p>
+                </div>
+                {isCompleted && (
+                  <CheckCircle2 size={18} className="shrink-0 text-green-600" aria-label="Completado" />
                 )}
-                <p className="text-body font-semibold">
-                  {lesson.lessonType === "theory" ? "Lección:" : "Laboratorio:"}
-                </p>
-                <p className="text-body">{lesson.lessonName}</p>
-              </div>
-              {isCompleted && (
-                <CheckCircle2 size={18} className="shrink-0 text-green-600" aria-label="Completado" />
-              )}
-            </Link>
+              </Link>
+            </FocusTTS>
           </li>
         );
       })}

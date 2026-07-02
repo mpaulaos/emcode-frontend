@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import FocusTTS from "../ui/FocusTTS";
 import {
   MenuTrigger,
   Button as AriaButton,
@@ -39,6 +40,12 @@ export function TheoryLessonView({
 }: TheoryLessonViewProps) {
   const showImage = slide.slideType === "text_image" && !!slide.imageUrl;
 
+  const formatSlideText = (text: string) =>
+    text
+      .trim()
+      .replace(/\s*(•)\s*/g, "\n$1 ")
+      .trim();
+
   const parsedContent = useMemo(() => {
     const blocks = slide.text.split(/\n\s*\n/).filter((b) => b.trim());
     if (blocks.length === 0) return null;
@@ -46,12 +53,12 @@ export function TheoryLessonView({
     const [first, ...rest] = blocks;
     return (
       <>
-        <h2 className="mb-4 text-2xl font-bold text-text-headings">{first.trim()}</h2>
+        <h2 className="mb-4 text-2xl font-bold text-text-headings">{formatSlideText(first)}</h2>
         {rest.length > 0 && (
           <div className="space-y-4">
             {rest.map((block, i) => (
-              <p key={i} className="text-body text-text-body leading-relaxed">
-                {block.trim()}
+              <p key={i} className="whitespace-pre-line text-body text-text-body leading-relaxed">
+                {formatSlideText(block)}
               </p>
             ))}
           </div>
@@ -61,6 +68,13 @@ export function TheoryLessonView({
   }, [slide.text]);
 
   const { lessons: allLessons } = useLessonsListData(String(currentTopicId));
+
+  const slideSpeechText = useMemo(() => {
+    const parts = [lessonName, slide.title || `Slide ${currentIndex + 1}`];
+    if (slide.text) parts.push(slide.text);
+    if (slide.imageAlt) parts.push(slide.imageAlt);
+    return parts.filter(Boolean).join(". ");
+  }, [currentIndex, lessonName, slide.imageAlt, slide.text, slide.title]);
 
   const menuLessons = useMemo(() => {
     const visible = allLessons.filter((l) => l.isVisible);
@@ -106,30 +120,32 @@ export function TheoryLessonView({
         </Popover>
       </MenuTrigger>
 
-      <div
-        className="bg-surface-primary border border-border-card rounded-xl p-lg lg:p-xl"
-        role="region"
-        aria-label="Contenido del slide"
-      >
-        {showImage ? (
-          <section className="grid lg:grid-cols-2 gap-lg items-center">
-            <div>
+      <FocusTTS text={slideSpeechText}>
+        <div
+          className="bg-surface-primary border border-border-card rounded-xl p-lg lg:p-xl"
+          role="region"
+          aria-label="Contenido del slide"
+        >
+          {showImage ? (
+            <section className="grid lg:grid-cols-2 gap-lg items-center">
+              <div>
+                {parsedContent}
+              </div>
+              <div className="bg-primary-700 rounded-xl aspect-[4/3] flex items-center justify-center p-md">
+                <img
+                  src={slide.imageUrl}
+                  alt={slide.imageAlt ?? `Diagrama ilustrativo: ${slide.title ?? ''}`}
+                  className="object-contain w-full h-full"
+                />
+              </div>
+            </section>
+          ) : (
+            <section className="max-w-prose">
               {parsedContent}
-            </div>
-            <div className="bg-primary-700 rounded-xl aspect-[4/3] flex items-center justify-center p-md">
-              <img
-                src={slide.imageUrl}
-                alt={slide.imageAlt ?? `Diagrama ilustrativo: ${slide.title ?? ''}`}
-                className="object-contain w-full h-full"
-              />
-            </div>
-          </section>
-        ) : (
-          <section className="max-w-prose">
-            {parsedContent}
-          </section>
-        )}
-      </div>
+            </section>
+          )}
+        </div>
+      </FocusTTS>
 
       <div className="mt-lg pt-lg border-t border-border-card">
         <SlidePagination

@@ -101,23 +101,34 @@ function TopicLessonsPanel({ topicId, showLessonModal, onCloseLessonModal }: Top
             aria-hidden="true"
             onClick={() => setConfirmDeleteId(null)}
           />
-          <div className="relative flex w-full max-w-sm flex-col gap-6 rounded-2xl bg-surface-primary p-6 shadow-xl">
-            <h3 id="delete-confirm-title" className="text-lg font-semibold text-text-headings">
-              ¿Eliminar lección?
-            </h3>
-            <p id="delete-confirm-desc" className="text-sm text-text-body">
-              Esta acción no se puede deshacer. Se eliminarán todos los slides asociados.
-            </p>
-            <div className="flex items-center justify-end gap-3">
+          <div
+            className="relative flex w-[min(32rem,calc(100vw-2rem))] max-w-none flex-col gap-5 overflow-hidden rounded-2xl border border-border-card bg-surface-primary p-6 shadow-xl"
+            onClick={(event) => event.stopPropagation()}
+            tabIndex={-1}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setConfirmDeleteId(null);
+            }}
+          >
+            <div className="flex flex-col gap-1">
+              <h3 id="delete-confirm-title" className="text-lg font-semibold text-text-headings">
+                ¿Eliminar lección?
+              </h3>
+              <p id="delete-confirm-desc" className="text-sm text-text-body">
+                Esta acción no se puede deshacer. Se eliminarán todos los slides asociados.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-end gap-3">
               <button
+                type="button"
                 onClick={() => setConfirmDeleteId(null)}
-                className="rounded-lg border border-border-card px-5 py-2 text-sm font-medium text-text-body transition hover:bg-surface-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                className="shrink-0 rounded-lg border border-border-card px-5 py-2 text-sm font-medium text-text-body transition hover:bg-surface-card focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
               >
                 Cancelar
               </button>
               <button
+                type="button"
                 onClick={confirmDelete}
-                className="rounded-lg bg-surface-danger px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-danger-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                className="shrink-0 rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
               >
                 Eliminar
               </button>

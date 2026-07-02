@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { MoreVertical, FileText, Pencil, Trash2 } from "lucide-react";
+import FocusTTS from "../ui/FocusTTS";
 import {
   MenuTrigger,
   Button as AriaButton,
@@ -59,14 +60,18 @@ export const LessonsList = memo(function LessonsList({ lessons, loading, error, 
             key={lesson.id}
           >
             <div className="flex items-center w-full justify-between">
-              <div className="flex flex-wrap items-center gap-2">
-                {lesson.lessonType === "theory" ? (
-                  <p className="text-body font-semibold">Lección: </p>
-                ) : (
-                  <p className="text-body font-semibold">Laboratorio: </p>
-                )}
-                <p className="text-body">{lesson.lessonName}</p>
-              </div>
+              <FocusTTS
+                text={`${lesson.lessonType === "theory" ? "Lección" : "Laboratorio"} ${lesson.lessonName}`}
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  {lesson.lessonType === "theory" ? (
+                    <p className="text-body font-semibold">Lección: </p>
+                  ) : (
+                    <p className="text-body font-semibold">Laboratorio: </p>
+                  )}
+                  <p className="text-body">{lesson.lessonName}</p>
+                </div>
+              </FocusTTS>
 
               <div className="flex items-center gap-2">
                 <Switch

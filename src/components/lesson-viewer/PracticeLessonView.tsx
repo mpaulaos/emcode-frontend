@@ -1,4 +1,5 @@
 import { useMemo, useState, useCallback, useEffect } from "react";
+import FocusTTS from "../ui/FocusTTS";
 import {
   MenuTrigger,
   Button as AriaButton,
@@ -120,6 +121,23 @@ export function PracticeLessonView({
   const slide = slides[currentIndex];
 
   const { lessons: allLessons } = useLessonsListData(String(currentTopicId));
+
+  const slideSpeechText = useMemo(() => {
+    const parts = [lessonName, slide.title || `Ejercicio ${currentIndex + 1}`];
+
+    if (slide.practiceContent) {
+      if (slide.slideType === "single_choice" || slide.slideType === "multiple_choice") {
+        const content = slide.practiceContent as SingleChoiceContent | MultipleChoiceContent;
+        parts.push(content.question);
+        parts.push(`Opciones: ${content.options.map((option) => option.text).join(", ")}`);
+      } else if (slide.slideType === "fill_blank") {
+        const content = slide.practiceContent as FillBlanksContent;
+        parts.push(content.textWithBlanks.replace(/\{\{\d+\}\}/g, "espacio"));
+      }
+    }
+
+    return parts.filter(Boolean).join(". ");
+  }, [currentIndex, lessonName, slide.practiceContent, slide.slideType, slide.title]);
 
   const menuLessons = useMemo(() => {
     const visible = allLessons.filter((l) => l.isVisible);
@@ -307,38 +325,40 @@ export function PracticeLessonView({
 
         <Meter value={progressPercent} label="Progreso" />
 
-        <div
-          className="bg-surface-primary border border-border-card rounded-xl p-lg lg:p-xl"
-          role="region"
-          aria-label="Contenido del ejercicio"
-        >
-          <h2 className="text-2xl font-bold text-text-headings mb-lg">
-            {slide.title || `Ejercicio ${currentIndex + 1}`}
-          </h2>
+        <FocusTTS text={slideSpeechText}>
+          <div
+            className="bg-surface-primary border border-border-card rounded-xl p-lg lg:p-xl"
+            role="region"
+            aria-label="Contenido del ejercicio"
+          >
+            <h2 className="text-2xl font-bold text-text-headings mb-lg">
+              {slide.title || `Ejercicio ${currentIndex + 1}`}
+            </h2>
 
-          {isChoice && slide.practiceContent && (
-            <div className="space-y-md">
-              <p className="text-body text-text-body leading-relaxed whitespace-pre-line text-pretty">
-                {(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).question}
-              </p>
-              <ChoiceOptionsList
-                type={slide.slideType === "single_choice" ? "single" : "multiple"}
-                options={(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).options}
-                value={(answers[slide.id] ?? (slide.slideType === "single_choice" ? "" : [])) as string | string[]}
+            {isChoice && slide.practiceContent && (
+              <div className="space-y-md">
+                <p className="text-body text-text-body leading-relaxed whitespace-pre-line text-pretty">
+                  {(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).question}
+                </p>
+                <ChoiceOptionsList
+                  type={slide.slideType === "single_choice" ? "single" : "multiple"}
+                  options={(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).options}
+                  value={(answers[slide.id] ?? (slide.slideType === "single_choice" ? "" : [])) as string | string[]}
+                  onChange={handleAnswerChange}
+                />
+              </div>
+            )}
+
+            {isFill && slide.practiceContent && (
+              <FillBlankOptions
+                textWithBlanks={(slide.practiceContent as FillBlanksContent).textWithBlanks}
+                blanks={(slide.practiceContent as FillBlanksContent).blanks}
+                value={(answers[slide.id] as Record<string, string>) ?? {}}
                 onChange={handleAnswerChange}
               />
-            </div>
-          )}
-
-          {isFill && slide.practiceContent && (
-            <FillBlankOptions
-              textWithBlanks={(slide.practiceContent as FillBlanksContent).textWithBlanks}
-              blanks={(slide.practiceContent as FillBlanksContent).blanks}
-              value={(answers[slide.id] as Record<string, string>) ?? {}}
-              onChange={handleAnswerChange}
-            />
-          )}
-        </div>
+            )}
+          </div>
+        </FocusTTS>
 
         <div className="pt-lg border-t border-border-card">
           <SlidePagination

@@ -73,7 +73,7 @@ src/
 - widget de chat integrado
 - comunicación con un backend mediante la ruta configurada en variables de entorno
 
-## 🛠 Requisitos previos
+## Requisitos previos
 
 Asegurate de tener instalado:
 

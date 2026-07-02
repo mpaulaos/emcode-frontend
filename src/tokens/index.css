@@ -232,7 +232,7 @@
   --text-h6-lh: 1.45;
   --text-body-lg-size: clamp(18px, 1.125rem + 0.3vw, 22px);
   --text-body-lg-lh: 1.5;
-  --text-body-size: clamp(16px, 1rem + 0.25vw, 20px);
+  --text-body-size: 16px;
   --text-body-lh: 1.6;
   --text-body-sm-size: clamp(14px, 0.875rem + 0.15vw, 16px);
   --text-body-sm-lh: 1.5;
