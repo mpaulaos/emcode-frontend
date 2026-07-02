@@ -64,11 +64,11 @@
 
 @media (min-resolution: 200dpi) {
   html {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .text-sm {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
 }
 
