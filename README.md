@@ -73,7 +73,7 @@ src/
 - widget de chat integrado
 - comunicación con un backend mediante la ruta configurada en variables de entorno
 
-## 🛠 Requisitos previos
+## Requisitos previos
 
 Asegurate de tener instalado:
 
@@ -132,7 +132,7 @@ npm run typecheck # valida tipos con TypeScript
 npm run test      # ejecuta pruebas con Vitest
 ```
 
-## 🧭 Rutas principales
+## Rutas principales
 
 La app usa React Router y define rutas públicas y protegidas, por ejemplo:
 
@@ -146,7 +146,7 @@ La app usa React Router y define rutas públicas y protegidas, por ejemplo:
 - `/courses/:id` — detalle de curso
 - `/courses/:courseId/lesson/:topicId/:lessonId` — vista de lección
 
-## 🔧 Variables de entorno
+## Variables de entorno
 
 | Variable | Descripción |
 | --- | --- |
