@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Button } from "react-aria-components";
+import FocusTTS from "../ui/FocusTTS";
 import {
     Disclosure as AriaDisclosure,
     DisclosurePanel as AriaDisclosurePanel,
@@ -52,14 +53,16 @@ export interface DisclosureHeaderProps {
 
 export function DisclosureHeader({ children, isDisabled, onAddLessonPress, showAddButton = true }: DisclosureHeaderProps) {
     const { isExpanded } = useContext(DisclosureStateContext)!;
+    const headerText = typeof children === "string" ? children : String(children);
 
     return (
         <Heading className="m-0 text-black ">
             <div className="flex flex-wrap items-center justify-between w-full gap-6 border-md border-neutral-100 p-sm rounded-lg border-l-6 border-l-purple-600 ">
-
-                <Button slot="trigger" isDisabled={isDisabled} className="flex-1 min-w-0 flex items-center gap-6 cursor-pointer font-semibold">
-                    <span className="truncate text-body-lg font-semibold">{children}</span>
-                </Button>
+                <FocusTTS text={headerText} focusable={false}>
+                    <Button slot="trigger" isDisabled={isDisabled} className="flex-1 min-w-0 flex items-center gap-6 cursor-pointer font-semibold">
+                        <span className="truncate text-body-lg font-semibold">{children}</span>
+                    </Button>
+                </FocusTTS>
 
                 {showAddButton && (
                 <Button
