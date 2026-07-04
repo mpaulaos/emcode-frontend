@@ -8,6 +8,7 @@ import { useEnrollment } from '../../hooks/useEnrollment';
 import { useAuth } from '../../context/AuthContext';
 import welcomeGekobot from "../../assets/gekobot-welcome.png";
 import ConfirmEnrollDialog from '../../components/dashboard/ConfirmEnrollDialog';
+import { CourseCardSkeleton } from '../../components/courses/CourseCardSkeleton';
 import type { ExploreCourse } from '../../types/explore';
 
 function InscribirCursosPage() {
@@ -60,7 +61,11 @@ function InscribirCursosPage() {
         </h1>
 
         {loading && (
-          <p className="text-sm text-text-body">Cargando cursos...</p>
+          <ul className="grid list-none grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Cargando cursos">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <li key={i}><CourseCardSkeleton /></li>
+            ))}
+          </ul>
         )}
         {fetchError && (
           <p className="text-sm text-text-danger">{fetchError}</p>

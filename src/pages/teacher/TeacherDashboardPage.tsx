@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CourseList from "../../components/courses/CourseList";
+import { DashboardCourseCardSkeleton } from "../../components/courses/DashboardCourseCardSkeleton";
 import { Button } from "react-aria-components";
 import { Plus } from "lucide-react";
 import type { Course } from "../../types/dashboard";
@@ -54,7 +55,11 @@ function TeacherDashboardPage() {
           </div>
 
           {loading && (
-            <p className="text-sm text-text-body">Cargando cursos...</p>
+            <ul className="grid list-none grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Cargando cursos">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <li key={i}><DashboardCourseCardSkeleton /></li>
+              ))}
+            </ul>
           )}
           {error && <p className="text-sm text-text-danger">{error}</p>}
           {!loading && courseList.length === 0 && (

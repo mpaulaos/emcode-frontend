@@ -43,6 +43,44 @@ export const footerColumns: FooterColumn[] = [
   },
 ];
 
+export const studentColumns: FooterColumn[] = [
+  {
+    title: "Mi cuenta",
+    links: [
+      { label: "Mi perfil", href: "/profile" },
+      { label: "Mis cursos", href: "/cursos/inscribir" },
+      { label: "Explorar cursos", href: "/cursos/explorar" },
+    ],
+  },
+  {
+    title: "Recursos",
+    links: [
+      { label: "Ayuda", href: "/ayuda" },
+      { label: "Términos", href: "/terminos" },
+      { label: "Privacidad", href: "/privacidad" },
+    ],
+  },
+];
+
+export const teacherColumns: FooterColumn[] = [
+  {
+    title: "Mi cuenta",
+    links: [
+      { label: "Mi perfil", href: "/profile" },
+      { label: "Dashboard", href: "/teacher" },
+      { label: "Mis cursos", href: "/teacher" },
+    ],
+  },
+  {
+    title: "Recursos",
+    links: [
+      { label: "Ayuda", href: "/ayuda" },
+      { label: "Términos", href: "/terminos" },
+      { label: "Privacidad", href: "/privacidad" },
+    ],
+  },
+];
+
 export const socialLinks: SocialLink[] = [
   { label: "GitHub", href: "https://github.com", icon: FaGithub },
   { label: "Instagram", href: "https://instagram.com", icon: FaInstagram },

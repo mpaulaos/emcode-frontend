@@ -49,6 +49,13 @@ const menuIcon = (
   </svg>
 );
 
+const cameraIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+    <circle cx="12" cy="13" r="3" />
+  </svg>
+);
+
 export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProps) {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -63,6 +70,7 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
   const closeMobileTTS = useButtonTTS("Cerrar menú");
   const logoTTS = useButtonTTS("EMCODE");
   const mobileA11yTTS = useButtonTTS("Abrir panel de accesibilidad");
+  const cameraTTS = useButtonTTS("Abrir descriptor de imágenes");
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -123,6 +131,17 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
           >
             {accessibilityIcon}
           </Button>
+          {isAuthenticated && (
+            <Button
+              onPress={() => navigate("/webcam")}
+              aria-label="Abrir descriptor de imágenes"
+              variant="secondary"
+              className="hidden md:flex"
+              {...cameraTTS}
+            >
+              {cameraIcon}
+            </Button>
+          )}
           <div className="hidden items-center gap-3 md:flex">
             {isAuthenticated ? (
               <>
@@ -229,6 +248,15 @@ export function Navbar({ links = defaultLinks, onAccessibilityOpen }: NavbarProp
             >
               Accesibilidad
             </Button>
+            {isAuthenticated && (
+              <Button
+                onPress={() => { navigate("/webcam"); closeMenu(); }}
+                aria-label="Abrir descriptor de imágenes"
+                variant="secondary"
+              >
+                Describir imagen
+              </Button>
+            )}
             {isAuthenticated ? (
               <>
                 <NavLink to="/profile" onClick={closeMenu} className="text-sm text-text-body text-center py-2 hover:text-text-headings transition block">

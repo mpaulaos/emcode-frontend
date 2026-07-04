@@ -1,9 +1,18 @@
 import FooterColumn from "./FooterColumn";
 import FooterSocialLinks from "./FooterSocialLinks";
-import { footerColumns, legalLinks } from "../../data/footer";
+import { footerColumns, studentColumns, teacherColumns, legalLinks } from "../../data/footer";
 import { Link } from "react-aria-components";
+import { useAuth } from "../../context/AuthContext";
 
 function Footer() {
+  const { user, isAuthenticated } = useAuth();
+
+  const columns = !isAuthenticated
+    ? footerColumns
+    : user?.role === "teacher"
+      ? teacherColumns
+      : studentColumns;
+
   return (
     <footer className="bg-black text-gray-50">
       <div className="flex w-full flex-col gap-8 px-4 py-12 lg:px-16">
@@ -23,9 +32,11 @@ function Footer() {
           {/* RESPONSIVE Mobile: grid de 3 cols, Desktop: flex row con gap fijo, alineado al inicio*/}
           <nav
             aria-label="Links del footer"
-            className="grid grid-cols-2 sm:grid-cols-3 justify-items-center gap-8 w-full lg:flex lg:gap-16 lg:w-auto lg:justify-items-start "
+            className={`grid justify-items-center gap-8 w-full lg:flex lg:gap-16 lg:w-auto lg:justify-items-start ${
+              columns.length === 2 ? "grid-cols-2 sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-3"
+            }`}
           >
-            {footerColumns.map((col) => (
+            {columns.map((col) => (
               <FooterColumn
                 key={col.title}
                 title={col.title}

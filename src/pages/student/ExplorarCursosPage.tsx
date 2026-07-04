@@ -6,6 +6,7 @@ import { Input as AriaInput } from 'react-aria-components/Input';
 import { useCoursesData } from '../../hooks/useCoursesData';
 import { Alert } from '../../components/ui/Alert';
 import FocusTTS from '../../components/ui/FocusTTS';
+import { CourseCardSkeleton } from '../../components/courses/CourseCardSkeleton';
 
 export function ExplorarCursosPage() {
   const { courses, loading, error } = useCoursesData();
@@ -49,12 +50,6 @@ export function ExplorarCursosPage() {
           </AriaTextField>
         </div>
 
-        <div aria-live="polite" aria-atomic="true" className="sr-only">
-          {loading
-            ? 'Cargando cursos...'
-            : `Mostrando ${resultCount} de ${totalCount} cursos`}
-        </div>
-
         {!loading && (
           <p className="mt-4 text-sm text-text-body" aria-hidden="true">
             Mostrando {resultCount} de {totalCount} cursos
@@ -62,34 +57,11 @@ export function ExplorarCursosPage() {
         )}
 
         {loading && (
-          <div className="mt-12 flex justify-center" role="status" aria-label="Cargando cursos">
-            <svg
-              className="h-8 w-8 animate-spin text-primary-700"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                strokeWidth="4"
-                fill="none"
-                className="opacity-25"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                strokeWidth="4"
-                strokeLinecap="round"
-                fill="none"
-                pathLength="100"
-                strokeDasharray="60 140"
-                strokeDashoffset="0"
-              />
-            </svg>
-            <span className="sr-only">Cargando cursos...</span>
-          </div>
+          <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Cargando cursos">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <li key={i}><CourseCardSkeleton /></li>
+            ))}
+          </ul>
         )}
 
         {error && (
