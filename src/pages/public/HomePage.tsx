@@ -84,7 +84,7 @@ export function HomePage() {
               <h1 className="text-3xl md:text-5xl leading-tight font-extrabold text-text-headings">Aprendé y enseñá programación de forma accesible</h1>
               <p className="max-w-155 text-base text-text-body">Accedé a cursos, materiales y guías prácticas para mejorar la enseñanza y el aprendizaje de la programación, considerando distintas necesidades y estilos de aprendizaje.</p>
               <div className="pt-4">
-                <Button variant="primary" onPress={() => navigate("/cursos/explorar")}>Explorar cursos</Button>
+                <Button variant="primary" onPress={() => navigate(isAuthenticated ? "/cursos/explorar" : "/login")}>Explorar cursos</Button>
               </div>
             </div>
 

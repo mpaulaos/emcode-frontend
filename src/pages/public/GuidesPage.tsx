@@ -4,6 +4,7 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 import { useFetch } from "../../lib/useFetch";
 import { processBody } from "../../lib/textUtils";
 import FocusTTS from "../../components/ui/FocusTTS";
+import { GuideCardSkeleton } from "../../components/guides/GuideCardSkeleton";
 
 interface GuideSection {
   heading: string;
@@ -163,9 +164,11 @@ function GuidesPage() {
             className="flex flex-col gap-4"
           >
             {loadingList ? (
-              <p className="text-sm text-text-body" aria-live="polite">
-                Cargando guías...
-              </p>
+              <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2" aria-label="Cargando guías">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <li key={i}><GuideCardSkeleton /></li>
+                ))}
+              </ul>
             ) : (
               <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
                 {(guides ?? []).map((guide) => (

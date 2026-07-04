@@ -1,5 +1,6 @@
 import CourseList from '../../components/courses/CourseList';
 import EnrollCourseCard from '../../components/courses/EnrollCourseCard';
+import { DashboardCourseCardSkeleton } from '../../components/courses/DashboardCourseCardSkeleton';
 import { useStudentDashboard } from '../../hooks/useStudentDashboard';
 import { useAuth } from '../../context/AuthContext';
 
@@ -31,7 +32,11 @@ function StudentDashboardPage() {
           </div>
 
           {loading && (
-            <p className="text-sm text-text-body">Cargando cursos...</p>
+            <ul className="grid list-none grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-label="Cargando cursos">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <li key={i}><DashboardCourseCardSkeleton /></li>
+              ))}
+            </ul>
           )}
           {error && <p className="text-sm text-text-danger">{error}</p>}
           {!loading && !error && courseList.length === 0 && <EnrollCourseCard />}

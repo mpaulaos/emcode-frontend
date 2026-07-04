@@ -30,6 +30,7 @@ import { ExplorarCursosPage } from "./pages/student/ExplorarCursosPage";
 import StudentDashboardPage from "./pages/student/StudentDashboardPage";
 import InscribirCursosPage from "./pages/student/InscribirCursosPage";
 import LessonViewPage from "./pages/student/LessonViewPage";
+import WebcamTestPage from "./pages/student/WebcamTestPage";
 
 function App() {
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
@@ -63,6 +64,7 @@ function App() {
             <Route path="/teacher/students" element={<TeacherStudentsListPage />} />
               <Route path="/courses/:id/students" element={<StudentsPage />} />
             <Route path="/courses/:courseId/lesson/:topicId/:lessonId" element={<LessonViewPage />} />
+            <Route path="/webcam" element={<WebcamTestPage />} />
             </Route>
           </Routes>
           

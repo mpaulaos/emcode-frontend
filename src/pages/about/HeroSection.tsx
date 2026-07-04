@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
+import { useAuth } from '../../context/AuthContext';
 
 export function HeroSection() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   return (
     <section aria-label="Hero" className="rounded-[20px] sm:border sm:border-border-card bg-surface-primary sm:p-16">
       <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
@@ -15,23 +17,18 @@ export function HeroSection() {
             eliminando barreras y fomentando una comunidad de aprendizaje inclusiva.
           </p>
           <div className="pt-4">
-            <Button variant="primary" onPress={() => navigate("/cursos")}>
+            <Button variant="primary" onPress={() => navigate(isAuthenticated ? "/cursos/explorar" : "/login")}>
               Explorar cursos
             </Button>
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <div
-            role="img"
-            aria-label="Ilustración representativa de la plataforma Emcode"
-            className="flex h-64 w-full max-w-[540px] items-center justify-center rounded-[20px] bg-primary-700/10 text-primary-700 md:h-80"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-          </div>
+          <img
+            src="/about-image.webp"
+            alt="Ilustración representativa de la plataforma Emcode"
+            className="h-64 w-full max-w-[540px] rounded-[20px] object-cover md:h-80"
+            loading="lazy"
+          />
         </div>
       </div>
     </section>
