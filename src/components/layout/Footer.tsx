@@ -1,11 +1,16 @@
 import FooterColumn from "./FooterColumn";
 import FooterSocialLinks from "./FooterSocialLinks";
 import { footerColumns, studentColumns, teacherColumns, legalLinks } from "../../data/footer";
-import { Link } from "react-aria-components";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import FocusTTS from "../ui/FocusTTS";
+import { useAccessibility } from "../../hooks/useAccessibility";
+import { useSpeechContext } from "../../context/SpeechContext";
 
 function Footer() {
   const { user, isAuthenticated } = useAuth();
+  const { settings } = useAccessibility();
+  const { speak, stop } = useSpeechContext();
 
   const columns = !isAuthenticated
     ? footerColumns
@@ -14,20 +19,22 @@ function Footer() {
       : studentColumns;
 
   return (
-    <footer className="bg-black text-gray-50">
+    <footer aria-label="Pie de página" className="bg-black text-gray-50">
       <div className="flex w-full flex-col gap-8 px-4 py-12 lg:px-16">
         {/* Parte superior */}
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-start lg:justify-between">
-          <div className="flex w-full flex-col items-center gap-3 text-center lg:flex-1 lg:items-start lg:text-left">
-            <div className="flex items-center gap-2">
-              <img src="/emcode.svg" alt="Emcode" width={24} height={24} />
-              <span className="text-base font-bold text-gray-50">EMCODE</span>
+          <FocusTTS text="EMCODE. La plataforma ideal para aprender programación y tecnología con cursos interactivos diseñados para impulsar tu carrera.">
+            <div className="flex w-full flex-col items-center gap-3 text-center lg:flex-1 lg:items-start lg:text-left">
+              <div className="flex items-center gap-2">
+                <img src="/emcode.svg" alt="Emcode" width={24} height={24} />
+                <span className="text-base font-bold text-gray-50">EMCODE</span>
+              </div>
+              <p className="text-base leading-7 text-gray-50 lg:line-clamp-2 max-w-[520px]">
+                La plataforma ideal para aprender programación y tecnología con cursos interactivos diseñados para impulsar tu carrera.
+              </p>
+              <FooterSocialLinks />
             </div>
-            <p className="text-base leading-7 text-gray-50 lg:line-clamp-2 max-w-[520px]">
-              La plataforma ideal para aprender programación y tecnología con cursos interactivos diseñados para impulsar tu carrera.
-            </p>
-            <FooterSocialLinks />
-          </div>
+          </FocusTTS>
 
           {/* RESPONSIVE Mobile: grid de 3 cols, Desktop: flex row con gap fijo, alineado al inicio*/}
           <nav
@@ -47,26 +54,36 @@ function Footer() {
         </div>
 
         {/*Linea que divide*/}
-        <hr className="border-t border-white/28" />
+        <hr aria-hidden="true" className="border-t border-white/28" />
 
         {/*inferior */}
         <div className="flex flex-col items-center gap-4 text-base text-gray-50 lg:flex-row lg:justify-between">
-          <div className=" flex flex-wrap items-center justify-center gap-x-4 gap-y-2 lg:order-2">
+          <nav aria-label="Enlaces legales" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 lg:order-2">
             {legalLinks.map((link) => (
               <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
+                onFocus={() => {
+                  if (settings.ttsEnabled) {
+                    stop();
+                    speak(link.label);
+                  }
+                }}
                 className="rounded-sm text-base underline underline-offset-4 transition hover:opacity-70
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
-                {link.label}{" "}
+                {link.label}
               </Link>
             ))}
-          </div>
-          <p className="text-center lg:order-1 lg:text-left">
-            {" "}
-            © 2026 Emcode. Todos los derechos reservados.
-          </p>
+          </nav>
+          <FocusTTS
+            focusable={false}
+            text="© 2026 Emcode. Todos los derechos reservados."
+          >
+            <p className="text-center lg:order-1 lg:text-left">
+              © 2026 Emcode. Todos los derechos reservados.
+            </p>
+          </FocusTTS>
         </div>
       </div>
     </footer>

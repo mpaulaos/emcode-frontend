@@ -82,9 +82,9 @@ export const teacherColumns: FooterColumn[] = [
 ];
 
 export const socialLinks: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com", icon: FaGithub },
-  { label: "Instagram", href: "https://instagram.com", icon: FaInstagram },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: FaLinkedin },
+  { label: "GitHub de Emcode", href: "https://github.com", icon: FaGithub },
+  { label: "Instagram de Emcode", href: "https://instagram.com", icon: FaInstagram },
+  { label: "LinkedIn de Emcode", href: "https://linkedin.com", icon: FaLinkedin },
 ];
 
 export const legalLinks: FooterLink[] = [

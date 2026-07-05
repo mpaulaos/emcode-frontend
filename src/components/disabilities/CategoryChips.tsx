@@ -1,3 +1,6 @@
+import { useAccessibility } from "../../hooks/useAccessibility";
+import { useSpeechContext } from "../../context/SpeechContext";
+
 interface Category {
   id: string;
   label: string;
@@ -10,6 +13,9 @@ interface CategoryChipsProps {
 }
 
 function CategoryChips({ categories, activeId, onSelect }: CategoryChipsProps) {
+  const { settings } = useAccessibility();
+  const { speak, stop } = useSpeechContext();
+
   return (
     <div
       role="tablist"
@@ -25,6 +31,12 @@ function CategoryChips({ categories, activeId, onSelect }: CategoryChipsProps) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onSelect(cat.id)}
+            onFocus={() => {
+              if (settings.ttsEnabled) {
+                stop();
+                speak(cat.label);
+              }
+            }}
             className={`rounded-xl border-[1.5px] px-3 py-2.5 text-sm font-medium transition text-center ${
               isActive
                 ? "border-primary bg-primary font-bold text-text-on-action"

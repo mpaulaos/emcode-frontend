@@ -1,5 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import type { DisabilityCategory } from "../../types/disability";
+import { useAccessibility } from "../../hooks/useAccessibility";
+import { useSpeechContext } from "../../context/SpeechContext";
 
 interface DisabilitySidebarProps {
   category: DisabilityCategory;
@@ -12,6 +14,9 @@ function DisabilitySidebar({
   activeItemId,
   onSelectItem,
 }: DisabilitySidebarProps) {
+  const { settings } = useAccessibility();
+  const { speak, stop } = useSpeechContext();
+
   return (
     <aside className="w-full shrink-0 rounded-xl border border-border-card bg-surface-primary p-4 lg:w-64 lg:p-6">
       <h3 className="mb-3 border-b border-border-card pb-2 text-sm font-bold text-text-headings">
@@ -23,7 +28,15 @@ function DisabilitySidebar({
           {category.sections.map((section) => (
             <li key={section.id}>
               <details className="group" open>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-bold text-text-headings [&::-webkit-details-marker]:hidden">
+                <summary
+                  className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-bold text-text-headings [&::-webkit-details-marker]:hidden"
+                  onFocus={() => {
+                    if (settings.ttsEnabled) {
+                      stop();
+                      speak(section.label);
+                    }
+                  }}
+                >
                   {section.label}
                   <ChevronDown
                     size={14}
@@ -40,6 +53,12 @@ function DisabilitySidebar({
                         <button
                           type="button"
                           onClick={() => onSelectItem(section.id, item.id)}
+                          onFocus={() => {
+                            if (settings.ttsEnabled) {
+                              stop();
+                              speak(item.label);
+                            }
+                          }}
                           aria-current={isActive ? "true" : undefined}
                           className={`w-full rounded px-2 py-1 text-left text-sm transition ${
                             isActive

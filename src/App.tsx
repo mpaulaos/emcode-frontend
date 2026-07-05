@@ -44,6 +44,7 @@ function App() {
         <div className="min-h-screen bg-surface-page text-text-body">
           <Navbar onAccessibilityOpen={() => setIsAccessibilityOpen(true)} />
 
+          <main id="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/cursos" element={<CoursesPage />} />
@@ -67,7 +68,7 @@ function App() {
             <Route path="/webcam" element={<WebcamTestPage />} />
             </Route>
           </Routes>
-          
+          </main>
           <Footer />
           <AccessibilityWidget
             isOpen={isAccessibilityOpen}
