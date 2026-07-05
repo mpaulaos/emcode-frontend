@@ -27,7 +27,7 @@ function CreateCourseModal({ onClose, onAddCourse }: CreateCourseModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:items-center"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
         <div
           className="relative flex w-[min(42rem,calc(100vw-2rem))] max-w-none min-w-0 flex-col gap-6 rounded-2xl bg-surface-primary p-4 shadow-xl sm:p-6"
