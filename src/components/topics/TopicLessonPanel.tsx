@@ -1,10 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import { useLessons } from "../../hooks/useLessons";
+import { useSlides } from "../../hooks/useSlides";
 import { LessonsList } from "../lessons/LessonsList";
 import CreateLessonModal from "../lessons/CreateLessonModal";
+import EditLessonModal from "../lessons/EditLessonModal";
 import SlideFormModal from "../slides/SlideFormModal";
+import SlideViewerModal from "../slides/SlideViewerModal";
 import type { Lesson } from "../../types/lesson";
+import type { Slide } from "../../types/slide";
 
 interface TopicLessonsPanelProps {
   topicId: number;
@@ -15,8 +19,12 @@ interface TopicLessonsPanelProps {
 function TopicLessonsPanel({ topicId, showLessonModal, onCloseLessonModal }: TopicLessonsPanelProps) {
   const { lessons, loading, error } = useLessonsListData(topicId.toString());
   const { deleteLesson } = useLessons();
+  const { fetchSlidesByLesson } = useSlides();
   const [displayLessons, setDisplayLessons] = useState<Lesson[]>([]);
   const [openSlideModalFor, setOpenSlideModalFor] = useState<Lesson | null>(null);
+  const [existingSlidesForModal, setExistingSlidesForModal] = useState<Slide[] | undefined>(undefined);
+  const [viewingSlidesFor, setViewingSlidesFor] = useState<Lesson | null>(null);
+  const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -34,12 +42,22 @@ function TopicLessonsPanel({ topicId, showLessonModal, onCloseLessonModal }: Top
     );
   }
 
-  const handleManageSlides = useCallback((lesson: Lesson) => {
+  const handleManageSlides = useCallback(async (lesson: Lesson) => {
     setOpenSlideModalFor(lesson);
+    try {
+      const slides = await fetchSlidesByLesson(lesson.id);
+      setExistingSlidesForModal(slides.length > 0 ? slides : undefined);
+    } catch {
+      setExistingSlidesForModal(undefined);
+    }
+  }, [fetchSlidesByLesson]);
+
+  const handleViewSlides = useCallback((lesson: Lesson) => {
+    setViewingSlidesFor(lesson);
   }, []);
 
-  const handleEditLesson = useCallback((_lesson: Lesson) => {
-    // TODO: open edit modal when available
+  const handleEditLesson = useCallback((lesson: Lesson) => {
+    setEditingLesson(lesson);
   }, []);
 
   const handleDeleteLesson = useCallback((lesson: Lesson) => {
@@ -65,6 +83,7 @@ function TopicLessonsPanel({ topicId, showLessonModal, onCloseLessonModal }: Top
         error={error}
         onLessonUpdated={handleLessonUpdated}
         onManageSlides={handleManageSlides}
+        onViewSlides={handleViewSlides}
         onEditLesson={handleEditLesson}
         onDeleteLesson={handleDeleteLesson}
       />
@@ -77,13 +96,34 @@ function TopicLessonsPanel({ topicId, showLessonModal, onCloseLessonModal }: Top
         />
       )}
 
+      {viewingSlidesFor && (
+        <SlideViewerModal
+          lessonId={viewingSlidesFor.id}
+          lessonType={viewingSlidesFor.lessonType}
+          onClose={() => setViewingSlidesFor(null)}
+        />
+      )}
+
+      {editingLesson && (
+        <EditLessonModal
+          topicId={topicId.toString()}
+          lesson={editingLesson}
+          onClose={() => setEditingLesson(null)}
+          onLessonUpdated={handleLessonUpdated}
+        />
+      )}
+
       {openSlideModalFor && (
         <SlideFormModal
           lessonId={openSlideModalFor.id}
           lessonType={openSlideModalFor.lessonType}
-          onClose={() => setOpenSlideModalFor(null)}
+          existingSlides={existingSlidesForModal}
+          onClose={() => {
+            setOpenSlideModalFor(null);
+            setExistingSlidesForModal(undefined);
+          }}
           onSlidesCreated={() => {
-            // slides were created; parent can refresh if needed
+            // slides were created/updated; parent can refresh if needed
           }}
         />
       )}

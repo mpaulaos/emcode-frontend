@@ -1,10 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { DisclosurePanel, type Key, Button } from "react-aria-components";
-import { Plus, UserPlus, BookOpen, MessageSquare, Users, ArrowLeft } from "lucide-react";
+import { Plus, UserPlus, BookOpen, MessageSquare, Users, ArrowLeft, Pencil, Trash2 } from "lucide-react";
 
 import { useCourse } from '../../hooks/useCourse';
 import { useTopicData } from '../../hooks/useTopicData';
+import { useTopics } from '../../hooks/useTopics';
 import { useCourseStudents, useRemoveStudentFromCourse } from '../../hooks/useStudentList';
 import { useAuth } from '../../context/AuthContext';
 import { useForum } from '../../hooks/useForum';
@@ -14,6 +15,7 @@ import { Meter } from '../../components/kit/Meter';
 import { DisclosureGroup } from "../../components/kit/DisclosureGroup";
 import { Disclosure, DisclosureHeader } from "../../components/kit/Disclosure";
 import CreateTopicModal from '../../components/topics/CreateTopicModal';
+import EditTopicModal from '../../components/topics/EditTopicModal';
 import TopicLessonsPanel from '../../components/topics/TopicLessonPanel';
 import DashboardTabs from '../../components/dashboard/DashboardTabs';
 import CourseStudentList from '../../components/students/CourseStudentList';
@@ -51,6 +53,9 @@ function CoursePage() {
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [localTopics, setLocalTopics] = useState<Topic[]>([]);
   const [openLessonModalFor, setOpenLessonModalFor] = useState<number | null>(null);
+  const [editingTopic, setEditingTopic] = useState<Topic | null>(null);
+  const [deletingTopicId, setDeletingTopicId] = useState<number | null>(null);
+  const { deleteTopic } = useTopics();
 
   const [activeTab, setActiveTab] = useState("temas");
   const [studentQuery, setStudentQuery] = useState("");
@@ -88,6 +93,27 @@ function CoursePage() {
 
   function handleTopicCreated(newTopic: Topic) {
     setLocalTopics((prev) => [...prev, newTopic]);
+  }
+
+  function handleTopicUpdated(updatedTopic: Topic) {
+    setLocalTopics((prev) =>
+      prev.map((t) => (t.id === updatedTopic.id ? updatedTopic : t))
+    );
+  }
+
+  function handleTopicDeleted(topicId: number) {
+    setLocalTopics((prev) => prev.filter((t) => t.id !== topicId));
+  }
+
+  async function confirmDeleteTopic() {
+    if (deletingTopicId === null) return;
+    try {
+      await deleteTopic(deletingTopicId);
+      handleTopicDeleted(deletingTopicId);
+    } catch {
+      // error handled by hook
+    }
+    setDeletingTopicId(null);
   }
 
   function handleStudentSearchChange(value: string) {
@@ -195,7 +221,7 @@ function CoursePage() {
               <DisclosureGroup>
                 {topicList.map((topic: Topic) => (
                   <Disclosure key={topic.id}>
-                    <DisclosureHeader showAddButton={false}>
+                    <DisclosureHeader>
                       {topic.topicName}
                     </DisclosureHeader>
                     <DisclosurePanel className="p-4">
@@ -208,12 +234,36 @@ function CoursePage() {
               <DisclosureGroup expandedKeys={expandedKeys} onExpandedChange={setExpandedKeys}>
                 {topicList.map((topic: Topic) => (
                   <Disclosure key={topic.id}>
-                    <DisclosureHeader
-                      onAddLessonPress={() => setOpenLessonModalFor(topic.id)}
-                    >
+                    <DisclosureHeader>
                       {topic.topicName}
                     </DisclosureHeader>
                     <DisclosurePanel className="p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Button
+                          aria-label="Crear nueva lección"
+                          className="flex items-center gap-1 sm:gap-2 rounded-lg bg-surface-action px-2 sm:px-3 py-1.5 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                          onPress={() => setOpenLessonModalFor(topic.id)}
+                        >
+                          <Plus size={18} aria-hidden="true" />
+                          <span className="hidden sm:inline">Agregar lección</span>
+                        </Button>
+                        <Button
+                          aria-label="Editar tema"
+                          className="flex items-center gap-1 sm:gap-2 rounded-lg border border-border-card px-2 sm:px-3 py-1.5 text-sm font-medium text-text-body border-none cursor-pointer transition hover:bg-surface-card focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                          onPress={() => setEditingTopic(topic)}
+                        >
+                          <Pencil size={15} aria-hidden="true" />
+                          <span className="hidden sm:inline">Editar tema</span>
+                        </Button>
+                        <Button
+                          aria-label="Eliminar tema"
+                          className="flex items-center gap-1 sm:gap-2 rounded-lg bg-surface-danger px-2 sm:px-3 py-1.5 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-danger-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                          onPress={() => setDeletingTopicId(topic.id)}
+                        >
+                          <Trash2 size={15} aria-hidden="true" />
+                          <span className="hidden sm:inline">Eliminar tema</span>
+                        </Button>
+                      </div>
                       <TopicLessonsPanel
                         topicId={topic.id}
                         showLessonModal={openLessonModalFor === topic.id}
@@ -324,6 +374,64 @@ function CoursePage() {
           onClose={() => setShowTopicModal(false)}
           onAddTopic={handleTopicCreated}
         />
+      )}
+
+      {!isStudent && editingTopic && id && (
+        <EditTopicModal
+          courseId={id}
+          topic={editingTopic}
+          onClose={() => setEditingTopic(null)}
+          onTopicUpdated={handleTopicUpdated}
+        />
+      )}
+
+      {!isStudent && deletingTopicId !== null && (
+        <div
+          className="fixed inset-0 z-60 flex items-center justify-center p-4"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="delete-topic-confirm-title"
+          aria-describedby="delete-topic-confirm-desc"
+        >
+          <div
+            className="fixed inset-0 bg-black/50"
+            aria-hidden="true"
+            onClick={() => setDeletingTopicId(null)}
+          />
+          <div
+            className="relative flex w-[min(32rem,calc(100vw-2rem))] max-w-none flex-col gap-5 overflow-hidden rounded-2xl border border-border-card bg-surface-primary p-6 shadow-xl"
+            onClick={(event) => event.stopPropagation()}
+            tabIndex={-1}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setDeletingTopicId(null);
+            }}
+          >
+            <div className="flex flex-col gap-1">
+              <h3 id="delete-topic-confirm-title" className="text-lg font-semibold text-text-headings">
+                ¿Eliminar tema?
+              </h3>
+              <p id="delete-topic-confirm-desc" className="text-sm text-text-body">
+                Esta acción no se puede deshacer. Se eliminarán todas las lecciones y slides asociados.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setDeletingTopicId(null)}
+                className="shrink-0 rounded-lg border border-border-card px-5 py-2 text-sm font-medium text-text-body transition hover:bg-surface-card focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteTopic}
+                className="shrink-0 rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {!isStudent && showAddStudentModal && id && (

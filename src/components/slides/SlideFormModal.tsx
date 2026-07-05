@@ -2,8 +2,8 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { Button } from "react-aria-components";
 import { X, ChevronDown, Check, AlertTriangle, FileText, Image, ListChecks, CheckSquare, AlignLeft, Plus, Upload } from "lucide-react";
 
-import type { DraftSlide, SlideTemplateType, CreateSlideInput, SingleChoiceContent, MultipleChoiceContent, FillBlanksContent } from "../../types/slide";
-import { getTemplatesForLessonType, templateLabels, createEmptyDraftSlide } from "../../types/slide";
+import type { DraftSlide, Slide, SlideTemplateType, CreateSlideInput, UpdateSlideInput, SingleChoiceContent, MultipleChoiceContent, FillBlanksContent } from "../../types/slide";
+import { getTemplatesForLessonType, templateLabels, createEmptyDraftSlide, slideToDraftSlide } from "../../types/slide";
 import { useSlides } from "../../hooks/useSlides";
 import { useAuth } from "../../context/AuthContext";
 import ProgressBar from "../ui/ProgressBar";
@@ -19,6 +19,7 @@ interface SlideFormModalProps {
   lessonType: "theory" | "practice";
   onClose: () => void;
   onSlidesCreated?: () => void;
+  existingSlides?: Slide[];
 }
 
 const templateIcons: Record<SlideTemplateType, React.ReactNode> = {
@@ -104,7 +105,7 @@ function buildCreateInput(slide: DraftSlide, position: number): CreateSlideInput
   return base;
 }
 
-function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: SlideFormModalProps) {
+function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated, existingSlides }: SlideFormModalProps) {
   const safeLessonType = lessonType === "theory" ? "theory" : "practice";
   const availableTemplates = getTemplatesForLessonType(safeLessonType);
   const isTheory = safeLessonType === "theory";
@@ -112,17 +113,23 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
   const confirmCancelRef = useRef<HTMLButtonElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [draftSlides, setDraftSlides] = useState<DraftSlide[]>(() => [
-    createEmptyDraftSlide(availableTemplates[0]),
-  ]);
+  const isEditing = !!existingSlides && existingSlides.length > 0;
+
+  const [draftSlides, setDraftSlides] = useState<DraftSlide[]>(() => {
+    if (existingSlides && existingSlides.length > 0) {
+      return existingSlides.map(slideToDraftSlide);
+    }
+    return [createEmptyDraftSlide(availableTemplates[0])];
+  });
   const [activeIndex, setActiveIndex] = useState(0);
+  const [deletedSlideIds, setDeletedSlideIds] = useState<number[]>([]);
   const [slideErrors, setSlideErrors] = useState<string[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [draftError, setDraftError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showSlideDropdown, setShowSlideDropdown] = useState(false);
 
-  const { createSlidesBatch } = useSlides();
+  const { createSlidesBatch, updateSlide, deleteSlide: deleteSlideHook } = useSlides();
   const { user } = useAuth();
   const isTeacher = user?.role === 'teacher';
   const onCloseRef = useRef(onClose);
@@ -187,6 +194,18 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
     setShowSlideDropdown(false);
   }
 
+  function deleteSlide(index: number) {
+    const slide = draftSlides[index];
+    if (slide.existingId) {
+      setDeletedSlideIds((prev) => [...prev, slide.existingId!]);
+    }
+    setDraftSlides((prev) => prev.filter((_, i) => i !== index));
+    if (activeIndex >= index && activeIndex > 0) {
+      setActiveIndex((prev) => Math.min(prev, draftSlides.length - 2));
+    }
+    setSlideErrors([]);
+  }
+
   function handleSave() {
     const errors = validateSlide(draftSlides[activeIndex]);
     if (errors.length > 0) {
@@ -216,10 +235,27 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
     setSubmitting(true);
     setDraftError(null);
     try {
-      const slidesData: CreateSlideInput[] = draftSlides.map((s, i) =>
-        buildCreateInput(s, i + 1)
-      );
-      await createSlidesBatch(lessonId, slidesData);
+      if (isEditing) {
+        for (const id of deletedSlideIds) {
+          await deleteSlideHook(id);
+        }
+        let position = 1;
+        for (const s of draftSlides) {
+          if (s.existingId) {
+            const input = buildCreateInput(s, position) as UpdateSlideInput;
+            await updateSlide(s.existingId, input);
+          } else {
+            const input = buildCreateInput(s, position);
+            await createSlidesBatch(lessonId, [input]);
+          }
+          position++;
+        }
+      } else {
+        const slidesData: CreateSlideInput[] = draftSlides.map((s, i) =>
+          buildCreateInput(s, i + 1)
+        );
+        await createSlidesBatch(lessonId, slidesData);
+      }
       onSlidesCreated?.();
       onClose();
     } catch (err) {
@@ -573,7 +609,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
                 id="slide-modal-title"
                 className="text-lg font-semibold text-text-headings"
               >
-                Gestionar slides
+                {isEditing ? "Editar slides" : "Agregar slides"}
               </h2>
 
               <div className="flex items-center gap-2">
@@ -656,6 +692,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
                   activeIndex={activeIndex}
                   onSelect={selectSlide}
                   onAdd={addSlide}
+                  onDelete={draftSlides.length > 1 ? deleteSlide : undefined}
                 />
               </div>
 
@@ -784,6 +821,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated }: Slid
                     activeIndex={activeIndex}
                     onSelect={selectSlide}
                     onAdd={addSlide}
+                    onDelete={draftSlides.length > 1 ? deleteSlide : undefined}
                   />
                 </div>
               </div>
