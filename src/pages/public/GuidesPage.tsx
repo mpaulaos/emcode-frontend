@@ -1,10 +1,12 @@
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState, useEffect, useCallback } from "react";
 import { Button } from "react-aria-components";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { useFetch } from "../../lib/useFetch";
 import { processBody } from "../../lib/textUtils";
 import FocusTTS from "../../components/ui/FocusTTS";
 import { GuideCardSkeleton } from "../../components/guides/GuideCardSkeleton";
+import { useAccessibility } from "../../hooks/useAccessibility";
+import { useSpeechContext } from "../../context/SpeechContext";
 
 interface GuideSection {
   heading: string;
@@ -58,6 +60,27 @@ function GuidesPage() {
   const error = listError ?? state.detailError;
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [highlightedSection, setHighlightedSection] = useState<string | null>(null);
+  const { settings } = useAccessibility();
+  const { speak, stop } = useSpeechContext();
+
+  useEffect(() => {
+    const headingRegion = document.querySelector(
+      'section[aria-label="Encabezado"] [role="region"]'
+    ) as HTMLElement | null;
+    if (headingRegion) {
+      headingRegion.focus();
+    } else {
+      const main = document.getElementById("main-content");
+      if (main) main.focus();
+    }
+  }, []);
+
+  const handleGuideFocus = useCallback((title: string, index: number, total: number) => () => {
+    if (settings.ttsEnabled) {
+      stop();
+      speak(`Guía ${index + 1} de ${total}: ${title}`);
+    }
+  }, [settings.ttsEnabled, stop, speak]);
 
   useEffect(() => {
     if (!state.selected) return;
@@ -145,15 +168,17 @@ function GuidesPage() {
           )}
 
           {!state.selected && (
-            <>
-              <h1 className="text-2xl font-bold text-text-headings sm:text-3xl">
-                Guías para docentes
-              </h1>
-              <p className="text-sm text-text-body sm:text-base">
-                Recursos y estrategias para adaptar tu enseñanza a distintas
-                necesidades.
-              </p>
-            </>
+            <FocusTTS text="Guías para docentes. Recursos y estrategias para adaptar tu enseñanza a distintas necesidades.">
+              <div className="flex flex-col gap-2">
+                <h1 className="text-2xl font-bold text-text-headings sm:text-3xl">
+                  Guías para docentes
+                </h1>
+                <p className="text-sm text-text-body sm:text-base">
+                  Recursos y estrategias para adaptar tu enseñanza a distintas
+                  necesidades.
+                </p>
+              </div>
+            </FocusTTS>
           )}
         </section>
 
@@ -171,10 +196,11 @@ function GuidesPage() {
               </ul>
             ) : (
               <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
-                {(guides ?? []).map((guide) => (
+                {(guides ?? []).map((guide, index) => (
                   <li key={guide.id} className="h-full">
                     <Button
                       onPress={() => handleSelect(guide.id)}
+                      onFocus={handleGuideFocus(guide.title, index, guides?.length ?? 0)}
                       isDisabled={state.loadingDetail}
                       aria-label={`Seleccionar guía: ${guide.title}`}
                       className="h-full w-full text-left flex flex-row items-center gap-5 rounded-2xl border border-border-card bg-surface-primary p-5 shadow-sm transition duration-300 motion-safe:hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
