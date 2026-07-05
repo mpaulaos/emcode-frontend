@@ -7,6 +7,8 @@ import { Alert } from '../components/ui/Alert';
 import { useAuth } from '../context/AuthContext';
 import { useUpdateProfile } from '../hooks/useUpdateProfile';
 import { useChangePassword } from '../hooks/useChangePassword';
+import { useDisabilities } from '../hooks/useStudentList';
+import DisabilityTagInput from '../components/disabilities/DisabilityTagInput';
 import FocusTTS from '../components/ui/FocusTTS';
 
 export function ProfilePage() {
@@ -18,6 +20,11 @@ export function ProfilePage() {
   const [lastName, setLastName] = useState(user?.lastName ?? '');
   const [phone, setPhone] = useState(user?.phone ?? '');
   const [profilePicture, setProfilePicture] = useState(user?.profilePicture ?? '');
+  const [disabilityIds, setDisabilityIds] = useState<number[]>(
+    (user?.disabilities ?? []).map(d => d.id),
+  );
+
+  const { data: disabilityOptions, loading: disabilitiesLoading, error: disabilitiesError } = useDisabilities();
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -35,6 +42,7 @@ export function ProfilePage() {
       lastName: lastName || undefined,
       phone: phone || null,
       profilePicture: profilePicture || null,
+      disabilityIds: user?.role === 'student' ? disabilityIds : undefined,
     });
 
     if (result) {
@@ -136,6 +144,24 @@ export function ProfilePage() {
                 onChange={setProfilePicture}
                 description="Opcional. URL de una imagen para tu perfil"
               />
+
+              {user?.role === 'student' && (
+                <>
+                  {disabilitiesLoading && (
+                    <p className="text-sm text-text-body">Cargando opciones de discapacidad...</p>
+                  )}
+                  {disabilitiesError && <p className="text-sm text-text-danger">{disabilitiesError}</p>}
+                  {!disabilitiesLoading && !disabilitiesError && (
+                    <DisabilityTagInput
+                      label="Discapacidad"
+                      placeholder="Buscar discapacidad..."
+                      options={(disabilityOptions ?? []).map((d) => ({ value: d.id, label: d.name }))}
+                      selected={disabilityIds}
+                      onChange={setDisabilityIds}
+                    />
+                  )}
+                </>
+              )}
 
               {profileError && <Alert>{profileError}</Alert>}
               {profileSaved && (
