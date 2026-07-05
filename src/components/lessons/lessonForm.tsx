@@ -7,22 +7,32 @@ interface LessonFormProps {
   topicId: string;
   onCancel: () => void;
   onPublish: (lesson: Lesson) => void;
+  initialLesson?: Lesson;
 }
 
-function LessonForm({ topicId, onCancel, onPublish }: LessonFormProps) {
-  const [lessonName, setLessonName] = useState("");
-  const [lessonType, setLessonType] = useState<"theory" | "practice">("theory");
-  const { createLesson, loading, error } = useLessons();
+function LessonForm({ topicId, onCancel, onPublish, initialLesson }: LessonFormProps) {
+  const [lessonName, setLessonName] = useState(initialLesson?.lessonName ?? "");
+  const [lessonType, setLessonType] = useState<"theory" | "practice">(initialLesson?.lessonType ?? "theory");
+  const { createLesson, updateLesson, loading, error } = useLessons();
 
+  const isEditing = !!initialLesson;
   const canSubmit = lessonName.trim().length > 0;
 
   async function handlePublish() {
     try {
-      const newLesson = await createLesson(topicId, {
-        lessonName: lessonName.trim(),
-        lessonType,
-      });
-      onPublish(newLesson);
+      if (isEditing && initialLesson) {
+        const updated = await updateLesson(initialLesson.id, {
+          lessonName: lessonName.trim(),
+          lessonType,
+        });
+        onPublish(updated);
+      } else {
+        const newLesson = await createLesson(topicId, {
+          lessonName: lessonName.trim(),
+          lessonType,
+        });
+        onPublish(newLesson);
+      }
     } catch { /* error handled by hook */ }
   }
 
@@ -88,7 +98,7 @@ function LessonForm({ topicId, onCancel, onPublish }: LessonFormProps) {
           onPress={handlePublish}
           className="rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus"
         >
-          {loading ? "Creando..." : "Crear"}
+          {loading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
         </Button>
       </div>
     </div>

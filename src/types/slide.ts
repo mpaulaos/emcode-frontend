@@ -80,12 +80,69 @@ export interface DraftSlide {
   blanks: BlankItem[];
   isValid: boolean;
   isDirty: boolean;
+  existingId?: number;
 }
 
 let tempIdCounter = 0;
 export function generateTempId(): string {
   tempIdCounter += 1;
   return `draft-${tempIdCounter}-${Date.now()}`;
+}
+
+export function slideToDraftSlide(slide: Slide): DraftSlide {
+  const id1 = generateTempId();
+  const id2 = generateTempId();
+  const base: DraftSlide = {
+    tempId: generateTempId(),
+    slideType: slide.slideType,
+    title: '',
+    content: '',
+    imageUrl: slide.imageUrl ?? '',
+    imageAlt: slide.imageAlt ?? '',
+    question: '',
+    options: [{ id: id1, text: '' }, { id: id2, text: '' }],
+    correctAnswer: '',
+    correctAnswers: [],
+    textWithBlanks: '',
+    blanks: [],
+    isValid: true,
+    isDirty: false,
+    existingId: slide.id,
+  };
+
+  if (slide.slideType === 'text' || slide.slideType === 'text_image') {
+    const parts = slide.text.split('\n\n');
+    if (parts.length >= 2) {
+      base.title = parts[0];
+      base.content = parts.slice(1).join('\n\n');
+    } else {
+      base.content = slide.text;
+    }
+    if (slide.slideType === 'text' && !base.content) {
+      base.content = slide.text;
+    }
+  }
+
+  if (slide.slideType === 'single_choice' || slide.slideType === 'multiple_choice') {
+    base.question = slide.text;
+    const pc = slide.practiceContent as SingleChoiceContent | MultipleChoiceContent | undefined;
+    if (pc) {
+      base.options = pc.options.length > 0 ? pc.options : base.options;
+      if (slide.slideType === 'single_choice') {
+        base.correctAnswer = (pc as SingleChoiceContent).correctAnswer;
+      } else {
+        base.correctAnswers = (pc as MultipleChoiceContent).correctAnswers;
+      }
+    }
+  }
+
+  if (slide.slideType === 'fill_blank') {
+    base.question = slide.text;
+    base.textWithBlanks = (slide.practiceContent as FillBlanksContent)?.textWithBlanks ?? '';
+    base.blanks = (slide.practiceContent as FillBlanksContent)?.blanks ?? [];
+  }
+
+  return base;
 }
 
 export function createEmptyDraftSlide(slideType: SlideTemplateType): DraftSlide {

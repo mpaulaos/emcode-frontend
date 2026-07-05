@@ -7,18 +7,25 @@ interface TopicFormProps {
   courseId: string;
   onCancel: () => void;
   onPublish: (topic: Topic) => void;
+  initialTopic?: Topic;
 }
 
-function TopicForm({ courseId, onCancel, onPublish }: TopicFormProps) {
-  const [topicName, setTopicName] = useState("");
-  const { createTopic, loading, error } = useTopics();
+function TopicForm({ courseId, onCancel, onPublish, initialTopic }: TopicFormProps) {
+  const [topicName, setTopicName] = useState(initialTopic?.topicName ?? "");
+  const { createTopic, updateTopic, loading, error } = useTopics();
 
+  const isEditing = !!initialTopic;
   const canSubmit = topicName.trim().length > 0;
 
   async function handlePublish() {
     try {
-      const newTopic = await createTopic(courseId, { topicName: topicName.trim() });
-      onPublish(newTopic);
+      if (isEditing && initialTopic) {
+        const updated = await updateTopic(initialTopic.id, { topicName: topicName.trim() });
+        onPublish(updated);
+      } else {
+        const newTopic = await createTopic(courseId, { topicName: topicName.trim() });
+        onPublish(newTopic);
+      }
     } catch { /* error handled by hook */ }
   }
 
@@ -50,7 +57,7 @@ function TopicForm({ courseId, onCancel, onPublish }: TopicFormProps) {
           onPress={handlePublish}
           className="rounded-lg bg-surface-action px-5 py-2 text-sm font-semibold text-text-on-action transition hover:bg-surface-action-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-border-focus"
         >
-          {loading ? "Creando..." : "Crear"}
+          {loading ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
         </Button>
       </div>
     </div>

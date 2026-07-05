@@ -11,7 +11,7 @@ import {
 } from 'react-aria-components/Disclosure';
 import { composeRenderProps } from 'react-aria-components/composeRenderProps';
 import { tv } from "tailwind-variants";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const disclosure = tv({
     base: "group min-w-0 font-sans rounded-lg text-neutral-900 dark:text-neutral-200"
@@ -47,11 +47,9 @@ export function Disclosure({ children, ...props }: DisclosureProps) {
 export interface DisclosureHeaderProps {
     children: React.ReactNode;
     isDisabled?: boolean;
-    onAddLessonPress?: () => void;
-    showAddButton?: boolean;
 }
 
-export function DisclosureHeader({ children, isDisabled, onAddLessonPress, showAddButton = true }: DisclosureHeaderProps) {
+export function DisclosureHeader({ children, isDisabled }: DisclosureHeaderProps) {
     const { isExpanded } = useContext(DisclosureStateContext)!;
     const headerText = typeof children === "string" ? children : String(children);
 
@@ -63,17 +61,6 @@ export function DisclosureHeader({ children, isDisabled, onAddLessonPress, showA
                         <span className="truncate text-body-lg font-semibold">{children}</span>
                     </Button>
                 </FocusTTS>
-
-                {showAddButton && (
-                <Button
-                    aria-label="Crear nueva lección"
-                    className="flex items-center gap-1 sm:gap-2 rounded-lg bg-surface-action px-2 sm:px-3 py-1.5 text-sm font-semibold text-text-on-action border-none cursor-pointer transition hover:bg-surface-action-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus shrink-0"
-                    onPress={onAddLessonPress}
-                >
-                    <Plus size={18} aria-hidden="true" />
-                    <span className="hidden sm:inline">Agregar</span>
-                </Button>
-                )}
 
                 <ChevronDown aria-hidden className={`${chevron({ isExpanded, isDisabled })} shrink-0`} />
             </div>

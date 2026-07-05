@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { MoreVertical, FileText, Pencil, Trash2 } from "lucide-react";
+import { MoreVertical, Eye, FileText, Pencil, Trash2 } from "lucide-react";
 import FocusTTS from "../ui/FocusTTS";
 import {
   MenuTrigger,
@@ -19,11 +19,12 @@ interface LessonsListProps {
   error: string | null;
   onLessonUpdated: (updatedLesson: Lesson) => void;
   onManageSlides?: (lesson: Lesson) => void;
+  onViewSlides?: (lesson: Lesson) => void;
   onEditLesson?: (lesson: Lesson) => void;
   onDeleteLesson?: (lesson: Lesson) => void;
 }
 
-export const LessonsList = memo(function LessonsList({ lessons, loading, error, onLessonUpdated, onManageSlides, onEditLesson, onDeleteLesson }: LessonsListProps) {
+export const LessonsList = memo(function LessonsList({ lessons, loading, error, onLessonUpdated, onManageSlides, onViewSlides, onEditLesson, onDeleteLesson }: LessonsListProps) {
   const { updateLesson } = useLessons();
 
   async function handleToggleVisibility(lesson: Lesson, isVisible: boolean) {
@@ -94,6 +95,7 @@ export const LessonsList = memo(function LessonsList({ lessons, loading, error, 
                       className="min-w-44 rounded-lg border border-border-card bg-surface-primary p-1 shadow-lg outline-none"
                       onAction={(key) => {
                         if (key === "slides") onManageSlides?.(lesson);
+                        if (key === "view") onViewSlides?.(lesson);
                         if (key === "edit") onEditLesson?.(lesson);
                         if (key === "delete") onDeleteLesson?.(lesson);
                       }}
@@ -104,6 +106,13 @@ export const LessonsList = memo(function LessonsList({ lessons, loading, error, 
                       >
                         <FileText size={15} aria-hidden="true" />
                         Agregar slide
+                      </MenuItem>
+                      <MenuItem
+                        id="view"
+                        className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-text-body outline-none transition data-hovered:bg-surface-card data-focused:bg-surface-card"
+                      >
+                        <Eye size={15} aria-hidden="true" />
+                        Ver slides
                       </MenuItem>
                       <MenuItem
                         id="edit"
