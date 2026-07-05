@@ -1,3 +1,5 @@
+import type { StudentDisability } from './Student';
+
 export interface User {
   id: number;
   firstName: string;
@@ -12,6 +14,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   studentId?: number;
+  disabilities?: StudentDisability[];
 }
 
 export interface LoginCredentials {
@@ -36,6 +39,7 @@ export interface UpdateProfileData {
   lastName?: string;
   phone?: string | null;
   profilePicture?: string | null;
+  disabilityIds?: number[];
 }
 
 export interface ChangePasswordData {
