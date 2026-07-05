@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import FocusTTS from "../ui/FocusTTS";
 import { X } from "lucide-react";
 
 export interface DisabilityTagOption {
@@ -16,7 +17,6 @@ interface DisabilityTagInputProps {
   error?: string | null;
 }
 
-
 function DisabilityTagInput({
   label,
   placeholder = "Buscar discapacidad...",
@@ -27,10 +27,12 @@ function DisabilityTagInput({
 }: DisabilityTagInputProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const listboxRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const optionRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
   const fieldId = useId();
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
 
@@ -42,11 +44,33 @@ function DisabilityTagInput({
         listboxRef.current && !listboxRef.current.contains(target)
       ) {
         setOpen(false);
+        setFocusedIndex(null);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function updatePosition() {
+      if (triggerRef.current) {
+        setTriggerRect(triggerRef.current.getBoundingClientRect());
+      }
+    }
+
+    window.addEventListener('scroll', updatePosition, { capture: true });
+    return () => window.removeEventListener('scroll', updatePosition, { capture: true });
+  }, [open]);
+
+  useEffect(() => {
+    if (focusedIndex === null || !open) return;
+    const option = filteredOptions[focusedIndex];
+    if (!option) return;
+    const btn = optionRefs.current.get(option.value);
+    btn?.focus();
+  }, [focusedIndex, open]);
 
   const selectedOptions = options.filter((opt) => selected.includes(opt.value));
 
@@ -59,7 +83,9 @@ function DisabilityTagInput({
   function addValue(value: number) {
     onChange([...selected, value]);
     setQuery("");
-    inputRef.current?.focus();
+    setOpen(false);
+    setFocusedIndex(null);
+    setTimeout(() => inputRef.current?.focus(), 0);
   }
 
   function openDropdown() {
@@ -73,12 +99,58 @@ function DisabilityTagInput({
     onChange(selected.filter((v) => v !== value));
   }
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Backspace" && query === "" && selectedOptions.length > 0) {
       removeValue(selectedOptions[selectedOptions.length - 1].value);
+      return;
     }
     if (event.key === "Escape") {
       setOpen(false);
+      setFocusedIndex(null);
+      return;
+    }
+    if (event.key === "ArrowDown" && open && filteredOptions.length > 0) {
+      event.preventDefault();
+      setFocusedIndex(0);
+      return;
+    }
+    if (event.key === "ArrowUp" && open && filteredOptions.length > 0) {
+      event.preventDefault();
+      setFocusedIndex(filteredOptions.length - 1);
+      return;
+    }
+  }
+
+  function handleOptionKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      const next = index + 1;
+      if (next < filteredOptions.length) {
+        setFocusedIndex(next);
+      }
+      return;
+    }
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      const prev = index - 1;
+      if (prev >= 0) {
+        setFocusedIndex(prev);
+      } else {
+        setFocusedIndex(null);
+        inputRef.current?.focus();
+      }
+      return;
+    }
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addValue(filteredOptions[index].value);
+      return;
+    }
+    if (event.key === "Escape") {
+      setOpen(false);
+      setFocusedIndex(null);
+      inputRef.current?.focus();
+      return;
     }
   }
 
@@ -128,9 +200,10 @@ function DisabilityTagInput({
             onChange={(e) => {
               setQuery(e.target.value);
               setOpen(true);
+              setFocusedIndex(null);
             }}
             onFocus={() => openDropdown()}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleInputKeyDown}
             placeholder={selectedOptions.length === 0 ? placeholder : ""}
             className="min-w-[8ch] flex-1 border-0 bg-transparent py-1 text-sm text-text-body placeholder:text-text-placeholders focus:outline-none"
           />
@@ -154,17 +227,25 @@ function DisabilityTagInput({
                 {options.length === 0 ? "No hay opciones disponibles." : "Sin coincidencias."}
               </li>
             )}
-            {filteredOptions.map((option) => (
+            {filteredOptions.map((option, index) => (
               <li key={option.value}>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={false}
-                  onClick={() => addValue(option.value)}
-                  className="flex w-full items-center rounded-md px-3 py-2 text-left text-sm text-text-body transition hover:bg-surface-card focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-                >
-                  {option.label}
-                </button>
+                <FocusTTS text={option.label} focusable={false}>
+                  <button
+                    ref={(el) => {
+                      if (el) optionRefs.current.set(option.value, el);
+                      else optionRefs.current.delete(option.value);
+                    }}
+                    type="button"
+                    role="option"
+                    id={`${fieldId}-option-${option.value}`}
+                    aria-selected={focusedIndex === index}
+                    onClick={() => addValue(option.value)}
+                    onKeyDown={(e) => handleOptionKeyDown(e, index)}
+                    className="flex w-full items-center rounded-md px-3 py-2 text-left text-sm text-text-body transition hover:bg-surface-card focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
+                  >
+                    {option.label}
+                  </button>
+                </FocusTTS>
               </li>
             ))}
           </ul>,
