@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Slide, CreateSlideInput, UpdateSlideInput } from '../types/slide';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 interface UseSlidesResult {
   fetchSlidesByLesson: (lessonId: number) => Promise<Slide[]>;
@@ -20,7 +21,7 @@ export function useSlides(): UseSlidesResult {
   async function handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       const body = await response.json().catch(() => null);
-      throw new Error(body?.message ?? `Error en la solicitud (HTTP ${response.status})`);
+      throw new Error(getApiErrorMessage(body, response.status, 'No pudimos completar la acción del contenido. Inténtalo de nuevo.'));
     }
     if (response.status === 204) return undefined as T;
     return response.json();
@@ -33,8 +34,9 @@ export function useSlides(): UseSlidesResult {
       const response = await apiFetch(`${API_URL}/api/slides/lesson/${lessonId}`);
       return await handleResponse<Slide[]>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos cargar el contenido. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -47,8 +49,9 @@ export function useSlides(): UseSlidesResult {
       const response = await apiFetch(`${API_URL}/api/slides/${id}`);
       return await handleResponse<Slide>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos cargar el contenido. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -64,8 +67,9 @@ export function useSlides(): UseSlidesResult {
       });
       return await handleResponse<Slide>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos crear el contenido. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -86,8 +90,9 @@ export function useSlides(): UseSlidesResult {
       }
       return results;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos crear el contenido. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -103,8 +108,9 @@ export function useSlides(): UseSlidesResult {
       });
       return await handleResponse<Slide>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos guardar los cambios. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -119,8 +125,9 @@ export function useSlides(): UseSlidesResult {
       });
       return await handleResponse<void>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos eliminar el contenido. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }

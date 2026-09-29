@@ -2,6 +2,7 @@ import { useReducer, useState, useEffect, useCallback } from "react";
 import { Button } from "react-aria-components";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { useFetch } from "../../lib/useFetch";
+import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 import { processBody } from "../../lib/textUtils";
 import FocusTTS from "../../components/ui/FocusTTS";
 import { GuideCardSkeleton } from "../../components/guides/GuideCardSkeleton";
@@ -56,7 +57,7 @@ function GuidesPage() {
   });
 
   const API_URL = import.meta.env.VITE_API_URL;
-  const { data: guides, loading: loadingList, error: listError } = useFetch<Guide[]>(`${API_URL}/api/guides`);
+  const { data: guides, loading: loadingList, error: listError } = useFetch<Guide[]>(`${API_URL}/api/guides`, 'No pudimos cargar las guías. Inténtalo de nuevo.');
   const error = listError ?? state.detailError;
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [highlightedSection, setHighlightedSection] = useState<string | null>(null);
@@ -135,7 +136,7 @@ function GuidesPage() {
       const data: GuideDetail = await res.json();
       dispatch({ type: 'SELECT', guide: data });
     } catch (err) {
-      dispatch({ type: 'SET_DETAIL_ERROR', error: (err as Error).message });
+      dispatch({ type: 'SET_DETAIL_ERROR', error: getFriendlyErrorMessage(err, 'No pudimos cargar el contenido de la guía. Inténtalo de nuevo.') });
     } finally {
       dispatch({ type: 'SET_LOADING_DETAIL', loading: false });
     }

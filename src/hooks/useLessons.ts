@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Lesson } from '../types/lesson';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 interface CreateLessonInput {
   lessonName: string;
@@ -29,7 +30,7 @@ export function useLessons(): UseLessonsResult {
   async function handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       const body = await response.json().catch(() => null);
-      throw new Error(body?.message ?? `Error en la solicitud (HTTP ${response.status})`);
+      throw new Error(getApiErrorMessage(body, response.status, 'No pudimos completar la acción de la lección. Inténtalo de nuevo.'));
     }
     if (response.status === 204) return undefined as T;
     return response.json();
@@ -45,8 +46,9 @@ export function useLessons(): UseLessonsResult {
       });
       return await handleResponse<Lesson>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos crear la lección. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -62,8 +64,9 @@ export function useLessons(): UseLessonsResult {
       });
       return await handleResponse<Lesson>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos guardar los cambios de la lección. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -78,8 +81,9 @@ export function useLessons(): UseLessonsResult {
       });
       return await handleResponse<void>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos eliminar la lección. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
