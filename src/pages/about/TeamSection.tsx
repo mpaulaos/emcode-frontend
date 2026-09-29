@@ -7,6 +7,9 @@ const teamMembers = [
     description:
       "Apasionada por construir interfaces accesibles y experiencias de usuario inclusivas.",
     initials: "L",
+    github: "https://github.com/Luzdary2006",
+    linkedin:
+      "https://www.linkedin.com/in/luzdary-fern%C3%A1ndez-2b671a323",
   },
   {
     name: "María Paula",
@@ -14,6 +17,9 @@ const teamMembers = [
     description:
       "Enfocada en crear diseños centrados en el usuario que combinan estética y funcionalidad.",
     initials: "MP",
+    github: "https://github.com/mpaulaos",
+    linkedin:
+      "https://www.linkedin.com/in/mar%C3%ADa-paula-obando-sol%C3%ADs-8a18b33b9",
   },
   {
     name: "Óscar",
@@ -21,6 +27,8 @@ const teamMembers = [
     description:
       "Comprometido con el desarrollo de soluciones tecnológicas robustas y escalables.",
     initials: "O",
+    github: "https://github.com/OscarMVM",
+    linkedin: "https://www.linkedin.com/in/oscarvegam",
   },
 ];
 
@@ -56,15 +64,19 @@ export function TeamSection() {
             </p>
             <div className="mt-4 flex gap-3">
               <a
-                href="#"
-                aria-label={`GitHub de ${member.name}`}
+                href={member.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`GitHub de ${member.name}. Se abre en una nueva pestaña`}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-text-body transition hover:bg-surface-action-hover-2 hover:text-text-headings"
               >
                 <FaGithub size={18} aria-hidden="true" />
               </a>
               <a
-                href="#"
-                aria-label={`LinkedIn de ${member.name}`}
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`LinkedIn de ${member.name}. Se abre en una nueva pestaña`}
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-text-body transition hover:bg-surface-action-hover-2 hover:text-text-headings"
               >
                 <FaLinkedin size={18} aria-hidden="true" />
