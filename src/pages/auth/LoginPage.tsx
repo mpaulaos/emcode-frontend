@@ -105,7 +105,7 @@ export function LoginPage() {
 
             <div className="flex flex-col gap-md sm:flex-row sm:items-center sm:justify-between">
               <Checkbox>Recordar Contraseña</Checkbox>
-              <Link href="#" variant="secondary">Olvidé mi contraseña</Link>
+              <Link href="/forgot-password" variant="secondary">Olvidé mi contraseña</Link>
             </div>
 
             <Button
