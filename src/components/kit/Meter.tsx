@@ -6,7 +6,7 @@ import {
 
 export interface MeterProps extends AriaMeterProps {
   label?: string;
-}
+} 
 
 export function Meter({ label, ...props }: MeterProps) {
   return (

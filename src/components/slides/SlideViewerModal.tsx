@@ -5,6 +5,7 @@ import { X, FileText, Image, ListChecks, CheckSquare, AlignLeft, Trash2, Pencil,
 import type { Slide, SlideTemplateType } from "../../types/slide";
 import { templateLabels } from "../../types/slide";
 import { useSlides } from "../../hooks/useSlides";
+import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 import SlideFormModal from "./SlideFormModal";
 
 interface SlideViewerModalProps {
@@ -48,7 +49,7 @@ function SlideViewerModal({ lessonId, lessonType, onClose }: SlideViewerModalPro
       const data = await fetchSlidesByLesson(lessonId);
       setSlides(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al cargar slides");
+      setError(getFriendlyErrorMessage(err, "No pudimos cargar el contenido. Inténtalo de nuevo."));
     }
     setLoading(false);
   }

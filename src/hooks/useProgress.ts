@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { CourseProgress, StudentProgressRecord, QuizSubmissionAnswer, QuizResult, LastQuizAttempt } from '../types/progress';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const body = await response.json().catch(() => null);
-    throw new Error(body?.message ?? `Error en la solicitud (HTTP ${response.status})`);
+    throw new Error(getApiErrorMessage(body, response.status, 'No pudimos cargar tu progreso. Inténtalo de nuevo.'));
   }
   if (response.status === 204) return undefined as T;
   return response.json();
@@ -25,7 +26,7 @@ export function useCourseProgress(courseId: string | undefined) {
       const data = await handleResponse<CourseProgress>(response);
       setProgress(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
+      setError(getFriendlyErrorMessage(err, 'No pudimos cargar tu progreso. Inténtalo de nuevo.'));
     } finally {
       setLoading(false);
     }
@@ -57,7 +58,7 @@ export function useAllProgress() {
         setError(null);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') return;
-        setError(err instanceof Error ? err.message : 'Error inesperado');
+        setError(getFriendlyErrorMessage(err, 'No pudimos cargar tu progreso. Inténtalo de nuevo.'));
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }

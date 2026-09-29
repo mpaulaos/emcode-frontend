@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Topic } from '../types/topic';
 import { API_URL } from '../lib/api';
+import { getFriendlyErrorMessage } from '../lib/friendlyErrors';
 import { useEffect } from 'react';
 
 interface UseTopicDataResult {
@@ -25,7 +26,7 @@ export function useTopicData(id: string | undefined): UseTopicDataResult {
                 const response = await fetch(`${API_URL}/api/topics/course/${id}`, { signal: controller.signal });
 
                 if (!response.ok) {
-                    throw new Error(`Error fetching topics (HTTP ${response.status})`);
+                    throw new Error('No pudimos cargar los temas. Inténtalo de nuevo.');
                 }
 
                 const data: Topic[] = await response.json();
@@ -36,7 +37,7 @@ export function useTopicData(id: string | undefined): UseTopicDataResult {
 
                 if (err instanceof DOMException && err.name === 'AbortError') return;
 
-                setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+                setError(getFriendlyErrorMessage(err, 'No pudimos cargar los temas. Inténtalo de nuevo.'));
 
             } finally {
                 setLoading(false);
