@@ -1,4 +1,5 @@
 import { Button } from "react-aria-components";
+import { useButtonTTS } from "../../hooks/useButtonTTS";
 
 interface SlidePaginationProps {
   currentIndex: number;
@@ -30,6 +31,9 @@ function SlidePagination({
 }: SlidePaginationProps) {
   const safeTotal = Math.max(totalSlides, 1);
   const isLastSlide = currentIndex >= totalSlides - 1;
+  const previousTTS = useButtonTTS("Anterior");
+  const nextTTS = useButtonTTS("Siguiente");
+  const completeTTS = useButtonTTS(completing ? "Enviando..." : completeLabel);
 
   return (
     <nav
@@ -39,6 +43,7 @@ function SlidePagination({
       <Button
         isDisabled={currentIndex <= 0}
         onPress={onPrevious}
+        onFocus={previousTTS.onFocus}
         className={`${btnBase} border-2 border-border-card bg-transparent text-text-body data-hovered:bg-surface-card`}
       >
         Anterior
@@ -67,6 +72,7 @@ function SlidePagination({
         <Button
           isDisabled={completing}
           onPress={onComplete}
+          onFocus={completeTTS.onFocus}
           className={`${btnBase} bg-primary text-text-on-action data-hovered:bg-surface-action-hover`}
         >
           {completing ? "Enviando..." : completeLabel}
@@ -75,6 +81,7 @@ function SlidePagination({
         <Button
           isDisabled={currentIndex >= totalSlides - 1}
           onPress={onNext}
+          onFocus={nextTTS.onFocus}
           className={`${btnBase} bg-primary text-text-on-action data-hovered:bg-surface-action-hover`}
         >
           Siguiente

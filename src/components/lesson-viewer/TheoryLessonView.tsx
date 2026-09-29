@@ -1,16 +1,10 @@
 import { useMemo } from "react";
 import FocusTTS from "../ui/FocusTTS";
-import {
-  MenuTrigger,
-  Button as AriaButton,
-  Menu,
-  MenuItem,
-  Popover,
-} from "react-aria-components";
 import { BookOpen } from "lucide-react";
 
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import SlidePagination from "../slides/SlidePagination";
+import { LessonSelector } from "./LessonSelector";
 import type { Slide } from "../../types/slide";
 
 export interface TheoryLessonViewProps {
@@ -88,37 +82,15 @@ export function TheoryLessonView({
 
   return (
     <div className="flex flex-col gap-lg">
-      <MenuTrigger>
-        <AriaButton
-          aria-label={`Lección actual: ${lessonName}. Abrir menú de lecciones`}
-          className="flex items-center gap-2 bg-primary-50 text-primary-700 font-semibold px-4 py-2 rounded-lg hover:bg-primary-100 cursor-pointer transition focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-        >
-          <BookOpen size={16} aria-hidden="true" />
-          Lección: {lessonName}
-        </AriaButton>
-        <Popover placement="bottom start" offset={4}>
-          <Menu
-            className="min-w-48 rounded-lg border border-border-card bg-surface-primary p-1 shadow-lg outline-none"
-            onAction={(key) => onNavigateToLesson(Number(key))}
-          >
-            {menuLessons.map((lesson) => (
-              <MenuItem
-                key={lesson.id}
-                id={String(lesson.id)}
-                isDisabled={lesson.id === currentLessonId}
-                className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-text-body outline-none transition data-hovered:bg-surface-card data-focused:bg-surface-card data-disabled:text-text-disabled data-disabled:cursor-not-allowed"
-              >
-                {lesson.lessonName}
-                {lesson.id === currentLessonId && (
-                  <span className="ml-auto text-xs text-text-disabled">
-                    (actual)
-                  </span>
-                )}
-              </MenuItem>
-            ))}
-          </Menu>
-        </Popover>
-      </MenuTrigger>
+      <LessonSelector
+        label="Lección"
+        currentLessonId={currentLessonId}
+        currentLessonName={lessonName}
+        lessons={menuLessons}
+        icon={<BookOpen size={16} aria-hidden="true" />}
+        variant="theory"
+        onNavigate={onNavigateToLesson}
+      />
 
       <FocusTTS text={slideSpeechText}>
         <div

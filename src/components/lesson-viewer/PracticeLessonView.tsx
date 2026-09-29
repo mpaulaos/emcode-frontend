@@ -1,21 +1,17 @@
 import { useMemo, useState, useCallback, useEffect } from "react";
 import FocusTTS from "../ui/FocusTTS";
-import {
-  MenuTrigger,
-  Button as AriaButton,
-  Menu,
-  MenuItem,
-  Popover,
-} from "react-aria-components";
 import { FlaskConical, RotateCcw, ArrowRight } from "lucide-react";
 
 import { Meter } from "../kit/Meter";
 import { ChoiceOptionsList } from "../slides/ChoiceOptionsList";
 import { FillBlankOptions } from "../slides/FillBlankOptions";
 import { PracticesSidePanel } from "./PracticesSidePanel";
+import { LessonSelector } from "./LessonSelector";
 import SlidePagination from "../slides/SlidePagination";
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import { submitQuiz, getLastQuizAttempt } from "../../hooks/useProgress";
+import { useButtonTTS } from "../../hooks/useButtonTTS";
+import { useAccessibility } from "../../hooks/useAccessibility";
 import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 import type { Slide, SingleChoiceContent, MultipleChoiceContent, FillBlanksContent } from "../../types/slide";
 import type { QuizResult, QuizSubmissionAnswer, LastQuizAttempt, GradedSlideResult } from "../../types/progress";
@@ -97,6 +93,7 @@ export function PracticeLessonView({
   onNavigateToLesson,
   onGoBack,
 }: PracticeLessonViewProps) {
+  const { settings } = useAccessibility();
   const [answers, setAnswers] = useState<AnswersState>({});
   const [panelOpen, setPanelOpen] = useState(false);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
@@ -122,23 +119,6 @@ export function PracticeLessonView({
   const slide = slides[currentIndex];
 
   const { lessons: allLessons } = useLessonsListData(String(currentTopicId));
-
-  const slideSpeechText = useMemo(() => {
-    const parts = [lessonName, slide.title || `Ejercicio ${currentIndex + 1}`];
-
-    if (slide.practiceContent) {
-      if (slide.slideType === "single_choice" || slide.slideType === "multiple_choice") {
-        const content = slide.practiceContent as SingleChoiceContent | MultipleChoiceContent;
-        parts.push(content.question);
-        parts.push(`Opciones: ${content.options.map((option) => option.text).join(", ")}`);
-      } else if (slide.slideType === "fill_blank") {
-        const content = slide.practiceContent as FillBlanksContent;
-        parts.push(content.textWithBlanks.replace(/\{\{\d+\}\}/g, "espacio"));
-      }
-    }
-
-    return parts.filter(Boolean).join(". ");
-  }, [currentIndex, lessonName, slide.practiceContent, slide.slideType, slide.title]);
 
   const menuLessons = useMemo(() => {
     const visible = allLessons.filter((l) => l.isVisible);
@@ -171,6 +151,7 @@ export function PracticeLessonView({
   const isChoice =
     slide.slideType === "single_choice" || slide.slideType === "multiple_choice";
   const isFill = slide.slideType === "fill_blank";
+  const nextLessonTTS = useButtonTTS("Siguiente");
 
   const hasPracticeSlides = slides.some(
     (s) => s.slideType === "single_choice" || s.slideType === "multiple_choice" || s.slideType === "fill_blank",
@@ -263,6 +244,7 @@ export function PracticeLessonView({
               <button
                 type="button"
                 onClick={onGoBack}
+                onFocus={nextLessonTTS.onFocus}
                 className="flex items-center gap-2 rounded-lg bg-primary px-6 py-2 text-sm font-semibold text-text-on-action hover:bg-surface-action-hover transition cursor-pointer"
               >
                 Siguiente
@@ -292,41 +274,19 @@ export function PracticeLessonView({
   return (
     <div className="flex flex-col gap-lg md:flex-row">
       <div className="flex-1 space-y-lg">
-        <MenuTrigger>
-          <AriaButton
-            aria-label={`Lección actual: ${lessonName}. Abrir menú de lecciones`}
-            className="flex items-center gap-2 bg-accent-50 text-accent-700 font-semibold px-4 py-2 rounded-lg hover:bg-accent-100 cursor-pointer transition focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus"
-          >
-            <FlaskConical size={16} aria-hidden="true" />
-            Laboratorio: {lessonName}
-          </AriaButton>
-          <Popover placement="bottom start" offset={4}>
-            <Menu
-              className="min-w-48 rounded-lg border border-border-card bg-surface-primary p-1 shadow-lg outline-none"
-              onAction={(key) => onNavigateToLesson(Number(key))}
-            >
-              {menuLessons.map((lesson) => (
-                <MenuItem
-                  key={lesson.id}
-                  id={String(lesson.id)}
-                  isDisabled={lesson.id === currentLessonId}
-                  className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-text-body outline-none transition data-hovered:bg-surface-card data-focused:bg-surface-card data-disabled:text-text-disabled data-disabled:cursor-not-allowed"
-                >
-                  {lesson.lessonName}
-                  {lesson.id === currentLessonId && (
-                    <span className="ml-auto text-xs text-text-disabled">
-                      (actual)
-                    </span>
-                  )}
-                </MenuItem>
-              ))}
-            </Menu>
-          </Popover>
-        </MenuTrigger>
+        <LessonSelector
+          label="Laboratorio"
+          currentLessonId={currentLessonId}
+          currentLessonName={lessonName}
+          lessons={menuLessons}
+          icon={<FlaskConical size={16} aria-hidden="true" />}
+          variant="practice"
+          onNavigate={onNavigateToLesson}
+        />
 
         <Meter value={progressPercent} label="Progreso" />
 
-        <FocusTTS text={slideSpeechText}>
+        <FocusTTS focusable={false} focusChildrenOnly>
           <div
             className="bg-surface-primary border border-border-card rounded-xl p-lg lg:p-xl"
             role="region"
@@ -338,13 +298,18 @@ export function PracticeLessonView({
 
             {isChoice && slide.practiceContent && (
               <div className="space-y-md">
-                <p className="text-body text-text-body leading-relaxed whitespace-pre-line text-pretty">
+                <p
+                  id={`practice-question-${slide.id}`}
+                  tabIndex={settings.ttsEnabled ? 0 : undefined}
+                  className="text-body text-text-body leading-relaxed whitespace-pre-line text-pretty focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus rounded"
+                >
                   {(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).question}
                 </p>
                 <ChoiceOptionsList
                   type={slide.slideType === "single_choice" ? "single" : "multiple"}
                   options={(slide.practiceContent as SingleChoiceContent | MultipleChoiceContent).options}
                   value={(answers[slide.id] ?? (slide.slideType === "single_choice" ? "" : [])) as string | string[]}
+                  labelledBy={`practice-question-${slide.id}`}
                   onChange={handleAnswerChange}
                 />
               </div>

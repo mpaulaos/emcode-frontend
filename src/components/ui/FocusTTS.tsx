@@ -6,9 +6,10 @@ interface FocusTTSProps {
   readonly text?: string;
   readonly children: ReactNode;
   readonly focusable?: boolean;
+  readonly focusChildrenOnly?: boolean;
 }
 
-function FocusTTS({ text, children, focusable = true }: FocusTTSProps) {
+function FocusTTS({ text, children, focusable = true, focusChildrenOnly = false }: FocusTTSProps) {
   const { settings } = useAccessibility();
   const { speak, stop } = useSpeechContext();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -46,6 +47,16 @@ function FocusTTS({ text, children, focusable = true }: FocusTTSProps) {
 
     const target = e.target as HTMLElement;
 
+    if (focusChildrenOnly) {
+      if (target === wrapperRef.current) return;
+      const label = getElementLabel(target);
+      if (label) {
+        stop();
+        speak(label);
+      }
+      return;
+    }
+
     if (INTERACTIVE.includes(target.tagName)) {
       const label = getElementLabel(target);
       if (label) {
@@ -70,6 +81,7 @@ function FocusTTS({ text, children, focusable = true }: FocusTTSProps) {
   }
 
   function handleClick(e: React.MouseEvent) {
+    if (focusChildrenOnly) return;
     if (INTERACTIVE.includes((e.target as HTMLElement).tagName)) return;
     hasRead.current = true;
     stop();
