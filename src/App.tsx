@@ -11,6 +11,8 @@ import { AboutPage } from "./pages/public/AboutPage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { AuthCallbackPage } from "./pages/auth/AuthCallbackPage";
+import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
+import { ResetPasswordPage } from "./pages/auth/ResetPasswordPage";
 import TeacherDashboardPage  from "./pages/teacher/TeacherDashboardPage";
 import Footer from "./components/layout/Footer";
 import { AuthProvider } from "./context/AuthContext";
@@ -54,6 +56,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/auth/callback" element={<AuthCallbackPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/disabilities" element={<DisabilityInfoPage />} />
             <Route path="/cursos/explorar" element={<ExplorarCursosPage />} />
             <Route element={<ProtectedRoute />}>
