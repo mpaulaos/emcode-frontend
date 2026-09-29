@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { apiFetch } from "../lib/api";
+import { getFriendlyErrorMessage, sanitizeBackendMessage } from "../lib/friendlyErrors";
 
 const MAX_SIZE_BYTES = 4 * 1024 * 1024;
 
@@ -34,29 +35,32 @@ export function useDescribeImage() {
       );
 
       if (res.status === 401) {
-        throw new Error("Token no proporcionado. Iniciá sesión nuevamente.");
+        throw new Error("Tu sesión expiró. Iniciá sesión nuevamente.");
       }
 
       if (res.status === 400) {
         const body = await res.json();
-        const msg = body.errors?.[0]?.message ?? body.message ?? "Formato inválido";
+        const msg = sanitizeBackendMessage(
+          body.errors?.[0]?.message ?? body.message,
+          "La imagen no tiene un formato válido. Intentá con otra imagen.",
+        );
         throw new Error(msg);
       }
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
         console.error("Backend error:", res.status, body);
-        throw new Error(
-          body?.error ?? body?.message ?? "No se pudo procesar la imagen. Intentá de nuevo.",
-        );
+        throw new Error("No pudimos procesar la imagen. Intentá de nuevo.");
       }
 
       const data = await res.json();
       setDescription(data.description);
       return data.description as string;
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Error desconocido";
+      const message = getFriendlyErrorMessage(
+        err,
+        "No pudimos procesar la imagen. Intentá de nuevo.",
+      );
       setError(message);
       return null;
     } finally {

@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { PostTreeNode } from '../types/forum';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 interface UseForumResult {
   posts: PostTreeNode[];
@@ -13,14 +14,10 @@ interface UseForumResult {
   deletePost: (postId: number) => Promise<void>;
 }
 
-async function handleResponse<T>(response: Response): Promise<T> {
+async function handleResponse<T>(response: Response, fallback = 'No se pudo completar la acción del foro. Inténtalo de nuevo.'): Promise<T> {
   if (!response.ok) {
     const body = await response.json().catch(() => null);
-    if (response.status === 400 && body?.errors) {
-      const msgs = body.errors.map((e: { message: string }) => e.message).join('; ');
-      throw new Error(msgs);
-    }
-    throw new Error(body?.message ?? `Error en la solicitud (HTTP ${response.status})`);
+    throw new Error(getApiErrorMessage(body, response.status, fallback));
   }
   if (response.status === 204) return undefined as T;
   return response.json();
@@ -36,11 +33,12 @@ export function useForum(): UseForumResult {
     setError(null);
     try {
       const response = await apiFetch(`${API_URL}/api/posts/course/${courseId}`);
-      const data = await handleResponse<PostTreeNode[]>(response);
+      const data = await handleResponse<PostTreeNode[]>(response, 'No pudimos cargar las publicaciones. Inténtalo de nuevo.');
       setPosts(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos cargar las publicaciones. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -54,11 +52,12 @@ export function useForum(): UseForumResult {
         method: 'POST',
         body: JSON.stringify({ content }),
       });
-      await handleResponse(response);
+      await handleResponse(response, 'No pudimos publicar tu mensaje. Inténtalo de nuevo.');
       await fetchPosts(courseId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos publicar tu mensaje. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -72,10 +71,11 @@ export function useForum(): UseForumResult {
         method: 'POST',
         body: JSON.stringify({ content }),
       });
-      await handleResponse(response);
+      await handleResponse(response, 'No pudimos enviar tu respuesta. Inténtalo de nuevo.');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos enviar tu respuesta. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -89,10 +89,11 @@ export function useForum(): UseForumResult {
         method: 'PATCH',
         body: JSON.stringify({ content }),
       });
-      await handleResponse(response);
+      await handleResponse(response, 'No pudimos guardar los cambios. Inténtalo de nuevo.');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos guardar los cambios. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -105,10 +106,11 @@ export function useForum(): UseForumResult {
       const response = await apiFetch(`${API_URL}/api/posts/${postId}`, {
         method: 'DELETE',
       });
-      await handleResponse(response);
+      await handleResponse(response, 'No pudimos eliminar la publicación. Inténtalo de nuevo.');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos eliminar la publicación. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }

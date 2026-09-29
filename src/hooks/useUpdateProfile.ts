@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import type { User, UpdateProfileData } from "../types/auth";
 import { API_URL, apiFetch } from "../lib/api";
+import { getApiErrorMessage, getFriendlyErrorMessage } from "../lib/friendlyErrors";
 
 interface UpdateProfileResponse {
   user: User;
@@ -27,17 +28,13 @@ export function useUpdateProfile(_token: string | null) {
 
       if (!response.ok) {
         const body = await response.json().catch(() => null);
-        if (body?.errors && Array.isArray(body.errors)) {
-          const msgs = body.errors.map((e: { message: string }) => e.message).join('; ');
-          throw new Error(msgs);
-        }
-        throw new Error(body?.message ?? `Error al actualizar perfil (HTTP ${response.status})`);
+        throw new Error(getApiErrorMessage(body, response.status, 'No pudimos actualizar tu perfil. Inténtalo de nuevo.'));
       }
 
       const result: UpdateProfileResponse = await response.json();
       return result;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error inesperado';
+      const message = getFriendlyErrorMessage(err, 'No pudimos actualizar tu perfil. Inténtalo de nuevo.');
       setError(message);
       return null;
     } finally {

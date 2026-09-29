@@ -3,6 +3,7 @@ import { Button } from "react-aria-components";
 import { CharCounter } from "../ui/CharCounter";
 import { POST_CONTENT_MAX } from "../../types/forum";
 import { useForum } from "../../hooks/useForum";
+import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 
 interface PostReplyFormProps {
   readonly postId: number;
@@ -23,7 +24,7 @@ function PostReplyForm({ postId, onCancel, onReplied }: PostReplyFormProps) {
       await replyToPost(postId, trimmed);
       onReplied();
     } catch (err) {
-      setLocalError(err instanceof Error ? err.message : "Error inesperado");
+      setLocalError(getFriendlyErrorMessage(err, "No pudimos enviar tu respuesta. Inténtalo de nuevo."));
     }
   }
 

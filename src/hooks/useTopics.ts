@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Topic } from '../types/topic';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 interface CreateTopicInput {
   topicName: string;
@@ -27,7 +28,7 @@ export function useTopics(): UseTopicsResult {
   async function handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       const body = await response.json().catch(() => null);
-      throw new Error(body?.message ?? `Error en la solicitud (HTTP ${response.status})`);
+      throw new Error(getApiErrorMessage(body, response.status, 'No pudimos completar la acción del tema. Inténtalo de nuevo.'));
     }
     if (response.status === 204) return undefined as T;
     return response.json();
@@ -43,8 +44,9 @@ export function useTopics(): UseTopicsResult {
       });
       return await handleResponse<Topic>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos crear el tema. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -60,8 +62,9 @@ export function useTopics(): UseTopicsResult {
       });
       return await handleResponse<Topic>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos guardar los cambios del tema. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -76,8 +79,9 @@ export function useTopics(): UseTopicsResult {
       });
       return await handleResponse<void>(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error inesperado');
-      throw err;
+      const message = getFriendlyErrorMessage(err, 'No pudimos eliminar el tema. Inténtalo de nuevo.');
+      setError(message);
+      throw new Error(message);
     } finally {
       setLoading(false);
     }

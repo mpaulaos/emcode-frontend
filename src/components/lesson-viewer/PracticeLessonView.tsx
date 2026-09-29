@@ -16,6 +16,7 @@ import { PracticesSidePanel } from "./PracticesSidePanel";
 import SlidePagination from "../slides/SlidePagination";
 import { useLessonsListData } from "../../hooks/useLessonsList";
 import { submitQuiz, getLastQuizAttempt } from "../../hooks/useProgress";
+import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 import type { Slide, SingleChoiceContent, MultipleChoiceContent, FillBlanksContent } from "../../types/slide";
 import type { QuizResult, QuizSubmissionAnswer, LastQuizAttempt, GradedSlideResult } from "../../types/progress";
 
@@ -206,7 +207,7 @@ export function PracticeLessonView({
       const result = await submitQuiz(currentLessonId, submissionAnswers);
       setQuizResult(result);
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Error al enviar el quiz");
+      setSubmitError(getFriendlyErrorMessage(err, "No pudimos enviar tus respuestas. Inténtalo de nuevo."));
     } finally {
       setSubmitting(false);
     }

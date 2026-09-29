@@ -9,6 +9,7 @@ import type {
   DisabilityOption,
 } from "../types/Student";
 import { API_URL, apiFetch } from "../lib/api";
+import { getApiErrorMessage, getFriendlyErrorMessage } from "../lib/friendlyErrors";
 
 // -------------------------------------------------------------
 // Lista general del profesor autenticado ("Mis estudiantes"),
@@ -160,15 +161,15 @@ export function useCreateStudent(): UseCreateStudentResult {
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(
-          body?.message ?? `Error al crear el estudiante (HTTP ${response.status})`,
+          getApiErrorMessage(body, response.status, 'No pudimos crear al estudiante. Inténtalo de nuevo.'),
         );
       }
 
       return await response.json();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error inesperado";
+      const message = getFriendlyErrorMessage(err, "No pudimos crear al estudiante. Inténtalo de nuevo.");
       setError(message);
-      throw err;
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -200,15 +201,15 @@ export function useUpdateStudent(): UseUpdateStudentResult {
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(
-          body?.message ?? `Error al actualizar el estudiante (HTTP ${response.status})`,
+          getApiErrorMessage(body, response.status, 'No pudimos guardar los cambios del estudiante. Inténtalo de nuevo.'),
         );
       }
 
       return await response.json();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error inesperado";
+      const message = getFriendlyErrorMessage(err, "No pudimos guardar los cambios del estudiante. Inténtalo de nuevo.");
       setError(message);
-      throw err;
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -242,13 +243,13 @@ export function useEnrollStudent(): UseEnrollStudentResult {
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(
-          body?.message ?? `Error al agregar el estudiante al curso (HTTP ${response.status})`,
+          getApiErrorMessage(body, response.status, 'No pudimos agregar al estudiante al curso. Inténtalo de nuevo.'),
         );
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error inesperado";
+      const message = getFriendlyErrorMessage(err, "No pudimos agregar al estudiante al curso. Inténtalo de nuevo.");
       setError(message);
-      throw err;
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -279,13 +280,13 @@ export function useRemoveStudentFromCourse(): UseRemoveStudentFromCourseResult {
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(
-          body?.message ?? `Error al remover el estudiante del curso (HTTP ${response.status})`,
+          getApiErrorMessage(body, response.status, 'No pudimos remover al estudiante del curso. Inténtalo de nuevo.'),
         );
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error inesperado";
+      const message = getFriendlyErrorMessage(err, "No pudimos remover al estudiante del curso. Inténtalo de nuevo.");
       setError(message);
-      throw err;
+      throw new Error(message);
     } finally {
       setLoading(false);
     }

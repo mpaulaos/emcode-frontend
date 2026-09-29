@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 interface UseEnrollmentResult {
   enroll: (courseId: number, studentId: number) => Promise<void>;
@@ -24,14 +25,14 @@ export function useEnrollment(): UseEnrollmentResult {
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(
-          body?.message ?? `Error al matricularte en el curso (HTTP ${response.status})`,
+          getApiErrorMessage(body, response.status, 'No pudimos matricularte en el curso. Inténtalo de nuevo.'),
         );
       }
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
-      const message = err instanceof Error ? err.message : 'Error inesperado';
+      const message = getFriendlyErrorMessage(err, 'No pudimos matricularte en el curso. Inténtalo de nuevo.');
       setError(message);
-      throw err;
+      throw new Error(message);
     } finally {
       setLoading(false);
     }

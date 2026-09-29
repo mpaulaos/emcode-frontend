@@ -1,6 +1,7 @@
 import { createContext, use, useState, useCallback, useMemo, type ReactNode } from 'react';
 import type { User, LoginCredentials } from '../types/auth';
 import { API_URL } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
@@ -52,7 +53,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(
-          body?.message ?? `Error al iniciar sesión (HTTP ${response.status})`,
+          getApiErrorMessage(body, response.status, 'No pudimos iniciar sesión. Revisa tus datos e inténtalo de nuevo.'),
         );
       }
 
@@ -65,7 +66,7 @@ export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
       setUser(loggedUser);
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
-      setError(err instanceof Error ? err.message : 'Error inesperado');
+      setError(getFriendlyErrorMessage(err, 'No pudimos iniciar sesión. Revisa tus datos e inténtalo de nuevo.'));
     } finally {
       setLoading(false);
     }

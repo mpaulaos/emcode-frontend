@@ -3,6 +3,7 @@ import { Button } from "react-aria-components";
 import { CharCounter } from "../ui/CharCounter";
 import { POST_CONTENT_MAX } from "../../types/forum";
 import { useForum } from "../../hooks/useForum";
+import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 
 interface PostCreatorProps {
   readonly courseId: string;
@@ -24,7 +25,7 @@ function PostCreator({ courseId, onPostCreated }: PostCreatorProps) {
       setContent("");
       onPostCreated();
     } catch (err) {
-      setLocalError(err instanceof Error ? err.message : "Error inesperado");
+      setLocalError(getFriendlyErrorMessage(err, "No pudimos publicar tu mensaje. Inténtalo de nuevo."));
     }
   }
 

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { API_URL, apiFetch } from "../lib/api";
+import { getApiErrorMessage, getFriendlyErrorMessage } from "../lib/friendlyErrors";
 
 export function useChangePassword(_token: string | null) {
   const [loading, setLoading] = useState(false);
@@ -23,17 +24,13 @@ export function useChangePassword(_token: string | null) {
 
       if (!response.ok) {
         const body = await response.json().catch(() => null);
-        if (body?.errors && Array.isArray(body.errors)) {
-          const msgs = body.errors.map((e: { message: string }) => e.message).join('; ');
-          throw new Error(msgs);
-        }
-        throw new Error(body?.message ?? `Error al cambiar contraseña (HTTP ${response.status})`);
+        throw new Error(getApiErrorMessage(body, response.status, 'No pudimos cambiar tu contraseña. Inténtalo de nuevo.'));
       }
 
       setSuccess(true);
       return true;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error inesperado';
+      const message = getFriendlyErrorMessage(err, 'No pudimos cambiar tu contraseña. Inténtalo de nuevo.');
       setError(message);
       return false;
     } finally {

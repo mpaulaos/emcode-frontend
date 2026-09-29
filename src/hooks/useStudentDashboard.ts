@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Course } from '../types/dashboard';
 import { API_URL, apiFetch } from '../lib/api';
+import { getApiErrorMessage, getFriendlyErrorMessage } from '../lib/friendlyErrors';
 
 interface StudentResponse {
   id: number;
@@ -39,7 +40,7 @@ export function useStudentDashboard(studentId: number): UseStudentDashboardResul
         if (!response.ok) {
           const body = await response.json().catch(() => null);
           throw new Error(
-            body?.message ?? `Error al cargar los cursos (HTTP ${response.status})`,
+            getApiErrorMessage(body, response.status, 'No pudimos cargar tus cursos. Inténtalo de nuevo.'),
           );
         }
 
@@ -47,7 +48,7 @@ export function useStudentDashboard(studentId: number): UseStudentDashboardResul
         setCourses(json.courses ?? []);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') return;
-        setError(err instanceof Error ? err.message : 'Error inesperado');
+        setError(getFriendlyErrorMessage(err, 'No pudimos cargar tus cursos. Inténtalo de nuevo.'));
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }

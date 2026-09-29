@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "react-aria-components";
 import { API_URL } from "../../lib/api";
+import { getApiErrorMessage, getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 
 import WizardProgress from "./WizardProgress";
 import Step1Form from "./StepOneForm";
@@ -47,7 +48,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
 
       if (!response.ok) {
         const body = await response.json().catch(() => null);
-        throw new Error(body?.message ?? `Error al crear el curso (HTTP ${response.status})`);
+        throw new Error(getApiErrorMessage(body, response.status, 'No pudimos crear el curso. Inténtalo de nuevo.'));
       }
 
       const newCourse: Course = await response.json();
@@ -56,7 +57,7 @@ function CourseWizard({ onCancel, onPublish }: CourseWizardProps) {
       if (err instanceof Error && err.message.includes('413')) {
         setError('La imagen es demasiado grande. Usá una imagen menor a 5MB.');
       } else {
-        setError(err instanceof Error ? err.message : 'Error inesperado');
+        setError(getFriendlyErrorMessage(err, 'No pudimos crear el curso. Inténtalo de nuevo.'));
       }
     } finally {
       setLoading(false);

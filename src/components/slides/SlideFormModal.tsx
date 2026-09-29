@@ -6,6 +6,7 @@ import type { DraftSlide, Slide, SlideTemplateType, CreateSlideInput, UpdateSlid
 import { getTemplatesForLessonType, templateLabels, createEmptyDraftSlide, slideToDraftSlide } from "../../types/slide";
 import { useSlides } from "../../hooks/useSlides";
 import { useAuth } from "../../context/AuthContext";
+import { getFriendlyErrorMessage } from "../../lib/friendlyErrors";
 import ProgressBar from "../ui/ProgressBar";
 import SlideNavPanel from "./SlideNavPanel";
 import TextSlideFields from "./fields/TextSlideFields";
@@ -260,7 +261,7 @@ function SlideFormModal({ lessonId, lessonType, onClose, onSlidesCreated, existi
       onClose();
     } catch (err) {
       setDraftError(
-        err instanceof Error ? err.message : "Error inesperado al crear slides."
+        getFriendlyErrorMessage(err, "No pudimos crear el contenido. Inténtalo de nuevo.")
       );
       setShowConfirm(false);
     } finally {
